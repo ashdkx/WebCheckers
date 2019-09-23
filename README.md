@@ -7,7 +7,7 @@ a web micro-framework.
 ## Team
 
 - Nicholas Curl
-- MEMBER2
+- Ash Nguyen
 - MEMBER3
 - MEMBER4
 
