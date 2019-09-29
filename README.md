@@ -8,7 +8,7 @@ a web micro-framework.
 
 - Nicholas Curl
 - Ash Nguyen
-- MEMBER3
+- Eric Brockman
 - MEMBER4
 
 
