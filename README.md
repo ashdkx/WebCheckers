@@ -9,6 +9,7 @@ a web micro-framework.
 - Nicholas Curl
 - Ash Nguyen
 - Eric Brockman
+- Alan Chen
 - MEMBER4
 
 
