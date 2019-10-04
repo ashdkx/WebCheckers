@@ -9,7 +9,7 @@ a web micro-framework.
 - Nicholas Curl
 - Ash Nguyen
 - Eric Brockman
-- MEMBER4
+- Alec Jackson
 
 
 ## Prerequisites
