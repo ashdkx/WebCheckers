@@ -43,7 +43,6 @@ public class PostSignInRoute implements Route {
         final String username = request.queryParams(USERNAME_PARAM);
         gameCenter.addPlayer(username);
 
-
         vm.put("title", "Sign In");
 
 
