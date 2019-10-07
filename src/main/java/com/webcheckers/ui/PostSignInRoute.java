@@ -17,11 +17,13 @@ public class PostSignInRoute implements Route {
 
     private final TemplateEngine templateEngine;
 
+    static final String USERNAME_PARAM = "username";
+
 
     public PostSignInRoute(final TemplateEngine templateEngine){
 
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
-        
+
         LOG.config("PostSignInRoute is initialized.");
 
 
@@ -33,6 +35,9 @@ public class PostSignInRoute implements Route {
 
         LOG.finer("GetHomeRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
+
+        final String username = request.queryParams(USERNAME_PARAM);
+
 
         vm.put("title", "Sign In");
 

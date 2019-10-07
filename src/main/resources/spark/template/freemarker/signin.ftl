@@ -14,7 +14,7 @@
     <#include "nav-bar.ftl" />
 
         <div class="body">
-            <form method="post">
+            <form action='./signin' method="POST">
                 User Name:<br>
                 <input type="text" name="username"><br><br>
                 <input type="submit" value="Submit">

@@ -142,7 +142,7 @@ public class WebServer {
     //Show the Checkers sign in page.
     get(SIGNIN_URL, new GetSignInRoute(templateEngine));
 
-
+    post(SIGNIN_URL, new PostSignInRoute(templateEngine));
 
     //
     LOG.config("WebServer is initialized.");

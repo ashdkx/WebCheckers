@@ -9,7 +9,7 @@ public class GameCenter{
         this.lobby = lobby;
     }
 
-    public void addPlayer(String username, String sessionID){
-        this.lobby.addPlayer(username, sessionID);
+    public void addPlayer(String username){
+        this.lobby.addPlayer(username);
     }
 }
