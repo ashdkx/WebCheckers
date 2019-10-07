@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.GameCenter;
 import spark.*;
 
 import java.util.HashMap;
@@ -16,13 +17,16 @@ public class PostSignInRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
 
     private final TemplateEngine templateEngine;
+    private final GameCenter gameCenter;
 
     static final String USERNAME_PARAM = "username";
 
 
-    public PostSignInRoute(final TemplateEngine templateEngine){
+    public PostSignInRoute(GameCenter gameCenter, final TemplateEngine templateEngine){
 
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
+
+        this.gameCenter = gameCenter;
 
         LOG.config("PostSignInRoute is initialized.");
 
@@ -37,6 +41,7 @@ public class PostSignInRoute implements Route {
         Map<String, Object> vm = new HashMap<>();
 
         final String username = request.queryParams(USERNAME_PARAM);
+        gameCenter.addPlayer(username);
 
 
         vm.put("title", "Sign In");
