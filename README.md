@@ -10,6 +10,7 @@ a web micro-framework.
 - Ash Nguyen
 - Eric Brockman
 - Alec Jackson
+- Alan Chen
 
 
 ## Prerequisites
