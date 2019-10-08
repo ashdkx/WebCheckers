@@ -32,4 +32,8 @@ public class GameCenter{
     public Player getCurrentUser() {
         return currentUser;
     }
+
+    public void removeCurrentUser(){
+        this.currentUser = null;
+    }
 }
