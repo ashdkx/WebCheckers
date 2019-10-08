@@ -23,7 +23,9 @@
     <#include "message.ftl" />
     <#if activePlayers??>
       <#list activePlayers?keys as key>
-        ${activePlayers[key].name}
+        <#if activePlayers[key].name != currentPlayer>
+          ${activePlayers[key].name}
+        </#if>
       </#list>
     <#else>
       <p>
