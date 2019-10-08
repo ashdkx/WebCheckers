@@ -1,6 +1,8 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
+import com.webcheckers.model.Player;
+import com.webcheckers.model.PlayerLobby;
 import spark.*;
 
 import java.util.HashMap;
@@ -40,10 +42,14 @@ public class PostSignInRoute implements Route {
         LOG.finer("GetHomeRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
 
-        final String username = request.queryParams(USERNAME_PARAM);
+        String username = request.queryParams(USERNAME_PARAM);
         gameCenter.addPlayer(username);
 
+
+
         vm.put("title", "Sign In");
+
+        vm.put("currentUser",gameCenter.getPlayer(username));
 
 
         return templateEngine.render(new ModelAndView(vm , "signin.ftl"));

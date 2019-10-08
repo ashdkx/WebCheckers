@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.appl.GameCenter;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -22,6 +23,7 @@ public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+  private final GameCenter gameCenter;
 
   private final TemplateEngine templateEngine;
 
@@ -31,7 +33,8 @@ public class GetHomeRoute implements Route {
    * @param templateEngine
    *   the HTML template rendering engine
    */
-  public GetHomeRoute(final TemplateEngine templateEngine) {
+  public GetHomeRoute(final GameCenter gameCenter, final TemplateEngine templateEngine) {
+    this.gameCenter = gameCenter;
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     //
     LOG.config("GetHomeRoute is initialized.");
@@ -57,6 +60,10 @@ public class GetHomeRoute implements Route {
 
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
+
+    if (gameCenter.getPlayers().size()>0){
+
+    }
 
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
