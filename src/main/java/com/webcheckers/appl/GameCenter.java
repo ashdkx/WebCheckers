@@ -5,8 +5,8 @@ import com.webcheckers.model.PlayerLobby;
 public class GameCenter{
     private PlayerLobby lobby;
 
-    public GameCenter(PlayerLobby lobby){
-        this.lobby = lobby;
+    public GameCenter(){
+        this.lobby = new PlayerLobby();
     }
 
     public void addPlayer(String username){
