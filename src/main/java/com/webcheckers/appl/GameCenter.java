@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 public class GameCenter{
     private PlayerLobby lobby;
+    private Player currentUser;
 
     public GameCenter(){
         this.lobby = new PlayerLobby();
@@ -22,5 +23,13 @@ public class GameCenter{
 
     public Player getPlayer(String username){
         return lobby.getPlayer(username);
+    }
+
+    public void setCurrentUser(Player player){
+        this.currentUser = player;
+    }
+
+    public Player getCurrentUser() {
+        return currentUser;
     }
 }

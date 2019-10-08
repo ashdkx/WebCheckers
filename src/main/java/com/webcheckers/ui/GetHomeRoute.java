@@ -62,7 +62,7 @@ public class GetHomeRoute implements Route {
     vm.put("message", WELCOME_MSG);
 
     if (gameCenter.getPlayers().size()>0){
-
+        vm.put("currentUser",gameCenter.getCurrentUser());
     }
 
     // render the View

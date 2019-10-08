@@ -50,6 +50,7 @@ public class PostSignInRoute implements Route {
         vm.put("title", "Sign In");
 
         vm.put("currentUser",gameCenter.getPlayer(username));
+        gameCenter.setCurrentUser(gameCenter.getPlayer(username));
 
 
         return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
