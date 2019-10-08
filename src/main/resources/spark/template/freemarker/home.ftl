@@ -17,11 +17,22 @@
 
   <div class="body">
 
+
+
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
-    <#list players as player>
-      ${player}
-    </#list>
+    <#if activePlayers??>
+      <#list activePlayers?keys as key>
+        ${activePlayers[key].name}
+      </#list>
+    <#else>
+      <p>
+        No players!
+      </p>
+    </#if>
+
+
+
 
 
 

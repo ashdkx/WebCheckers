@@ -33,4 +33,8 @@ public class Player{
         }
         return false;
     }
+
+    public String toString() {
+        return this.name;
+    }
 }

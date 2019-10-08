@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.webcheckers.appl.GameCenter;
+import com.webcheckers.model.Player;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -25,6 +26,8 @@ public class GetHomeRoute implements Route {
   private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
   private static final Message OTHER_PLAYERS_MSG = Message.info("Click on one of these players to begin a game of checkers.");
   private final GameCenter gameCenter;
+
+  private final String ACTIVE_PLAYERS = "activePlayers";
 
   private final TemplateEngine templateEngine;
 
@@ -67,7 +70,7 @@ public class GetHomeRoute implements Route {
     if(gameCenter.getCurrentUser() != null){
       vm.remove("message",WELCOME_MSG);
       vm.put("message",OTHER_PLAYERS_MSG);
-      vm.put("players",gameCenter.getPlayers());
+      vm.put(ACTIVE_PLAYERS, gameCenter.getPlayers());
 
     }
     else{

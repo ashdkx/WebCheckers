@@ -11,6 +11,7 @@ public class PlayerLobby{
 
     public PlayerLobby(){
         this.players = new HashMap<>();
+        this.playersWaiting = new HashMap<>();
     }
 
     public Player getPlayer(String username){
