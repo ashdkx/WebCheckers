@@ -70,6 +70,7 @@ public class GetHomeRoute implements Route {
     if(gameCenter.getCurrentUser() != null){
       vm.remove("message",WELCOME_MSG);
       vm.put("message",OTHER_PLAYERS_MSG);
+      // print out the list of players
       vm.put(ACTIVE_PLAYERS, gameCenter.getPlayers());
 
     }

@@ -34,6 +34,10 @@ public class Player{
         return false;
     }
 
+    /**
+     * Print out the username when called
+     * @return print username
+     */
     public String toString() {
         return this.name;
     }
