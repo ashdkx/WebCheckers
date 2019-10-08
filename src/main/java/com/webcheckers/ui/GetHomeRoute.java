@@ -1,6 +1,6 @@
 package com.webcheckers.ui;
 
-import java.util.HashMap;
+import java.util.*;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -23,6 +23,7 @@ public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+  private static final Message OTHER_PLAYERS_MSG = Message.info("Click on one of these players to begin a game of checkers.");
   private final GameCenter gameCenter;
 
   private final TemplateEngine templateEngine;
@@ -59,11 +60,21 @@ public class GetHomeRoute implements Route {
     vm.put("title", "Welcome!");
 
     // display a user message in the Home page
-    vm.put("message", WELCOME_MSG);
-
     if (gameCenter.getPlayers().size()>0){
         vm.put("currentUser",gameCenter.getCurrentUser());
     }
+
+    if(gameCenter.getCurrentUser() != null){
+      vm.remove("message",WELCOME_MSG);
+      vm.put("message",OTHER_PLAYERS_MSG);
+      vm.put("players",gameCenter.getPlayers());
+
+    }
+    else{
+      vm.put("message", WELCOME_MSG);
+
+    }
+
 
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));

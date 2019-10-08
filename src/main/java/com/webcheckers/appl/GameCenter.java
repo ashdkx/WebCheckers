@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class GameCenter{
     private PlayerLobby lobby;
-    private Player currentUser;
+    private Player currentUser = null;
 
     public GameCenter(){
         this.lobby = new PlayerLobby();

@@ -31,7 +31,7 @@ public class PostSignInRoute implements Route {
         this.gameCenter = gameCenter;
 
         LOG.config("PostSignInRoute is initialized.");
-
+      
 
     }
 

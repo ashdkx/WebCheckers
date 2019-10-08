@@ -19,6 +19,10 @@
 
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
+    <#list players as player>
+      ${player}
+    </#list>
+
 
 
 
