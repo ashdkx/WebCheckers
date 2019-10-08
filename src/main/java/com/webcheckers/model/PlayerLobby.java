@@ -10,8 +10,8 @@ public class PlayerLobby{
         this.players = new HashMap<>();
     }
 
-    public Player getPlayer(int playerNum){
-        return players.get(String.valueOf(playerNum));
+    public Player getPlayer(String username){
+        return players.get(username);
     }
 
     public HashMap<String, Player> getPlayers() {
@@ -24,7 +24,7 @@ public class PlayerLobby{
 
     public void addPlayer(String username){
         Player newPlayer = new Player(username, String.valueOf(playerNum));
-        this.players.put(String.valueOf(playerNum), newPlayer);
+        this.players.put(username, newPlayer);
         playerNum++;
     }
 }
