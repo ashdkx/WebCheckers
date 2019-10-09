@@ -50,12 +50,20 @@ public class PostSignInRoute implements Route {
         Map<String, Object> vm = new HashMap<>();
 
         vm.put("title", "Sign In");
+
         if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER)== null) {
             String username = request.queryParams(USERNAME_PARAM);
 
 
             ModelAndView mv;
-            //check if username input exists or nor
+
+            // keyword to bypass and create add some players to the list
+            if (username.equals("admin")) {
+                gameCenter.addPlayer("legend69");
+                gameCenter.addPlayer("nikki3413");
+                gameCenter.addPlayer("hillary239");
+            } else
+            //check if username input exists or not
             if (gameCenter.getPlayers().containsKey(username)) {
                 mv = error(vm, "Username exists");
                 return templateEngine.render(mv);
