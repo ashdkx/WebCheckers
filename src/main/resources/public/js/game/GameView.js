@@ -1,4 +1,4 @@
-/**
+  /**
  * This module exports the GameView class constructor.
  * 
  * This component manages the Client-side behavior of the Game view.

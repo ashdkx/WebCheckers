@@ -28,6 +28,7 @@ public class GetHomeRoute implements Route {
   private final GameCenter gameCenter;
 
   private final String ACTIVE_PLAYERS = "activePlayers";
+  private final String CURRENT_PLAYER = "currentPlayer";
 
   private final TemplateEngine templateEngine;
 
@@ -72,6 +73,7 @@ public class GetHomeRoute implements Route {
       vm.put("message",OTHER_PLAYERS_MSG);
       // print out the list of players
       vm.put(ACTIVE_PLAYERS, gameCenter.getPlayers());
+      vm.put(CURRENT_PLAYER, gameCenter.getCurrentUser().getName());
 
     }
     else{
