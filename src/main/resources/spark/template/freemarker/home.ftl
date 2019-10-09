@@ -21,6 +21,11 @@
 
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
+
+    <#if message??>
+        <div class="ERROR ${messageType}"> ${message}</div>
+    </#if>
+
     <#if activePlayers??>
       <#list activePlayers?keys as key>
         <#if activePlayers[key].name != currentPlayer>
