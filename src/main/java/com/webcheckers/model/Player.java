@@ -3,8 +3,10 @@ package com.webcheckers.model;
 public class Player{
     private String name;
     private String sessionID;
-    // whether the player is the first or second player
-    private int playerNumber = 0;
+
+    // if the player is in a game
+    private boolean ifPlaying = false;
+
 
     public Player(String name, String sessionID) {
         this.name = name;
@@ -19,12 +21,13 @@ public class Player{
         return sessionID;
     }
 
-    public int getPlayerNumber(){
-        return playerNumber;
+
+    public void setIfPlaying(boolean status){
+        ifPlaying = status;
     }
 
-    public void setPlayerNumber(int number){
-        playerNumber = number;
+    public boolean getIfPlaying(){
+        return ifPlaying;
     }
 
     public boolean equals(Player player){

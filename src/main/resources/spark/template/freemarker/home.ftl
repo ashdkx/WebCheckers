@@ -24,7 +24,9 @@
     <#if activePlayers??>
       <#list activePlayers?keys as key>
         <#if activePlayers[key].name != currentPlayer>
-          ${activePlayers[key].name}
+            <#if activePlayers[key].getIfPlaying() == false>
+                <a href="/game">${activePlayers[key].name}</a>
+            </#if>
         </#if>
       </#list>
     <#else>
