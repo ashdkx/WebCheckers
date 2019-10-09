@@ -22,15 +22,14 @@
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
 
-    <#if message??>
-        <div class="ERROR ${messageType}"> ${message}</div>
-    </#if>
 
     <#if activePlayers??>
       <#list activePlayers?keys as key>
         <#if activePlayers[key].name != currentPlayer>
             <#if activePlayers[key].getIfPlaying() == false>
-                <a href="/game">${activePlayers[key].name}</a>
+                <a href="/signin">${activePlayers[key].name}</a>
+                <br>
+
             </#if>
         </#if>
       </#list>
