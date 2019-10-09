@@ -56,7 +56,7 @@ public class PostSignInRoute implements Route {
         if (gameCenter.getPlayers().containsKey(username)) {
             mv = error(vm, "Username exists");
             return templateEngine.render(mv);
-        } else if (username.isBlank()) {
+        } else if (username.isEmpty()) {
             mv = error(vm, "Please enter a valid character");
             return templateEngine.render(mv);
         } else {

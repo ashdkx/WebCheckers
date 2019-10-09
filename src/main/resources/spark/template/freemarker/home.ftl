@@ -29,7 +29,7 @@
 
     <#if activePlayers??>
       <#list activePlayers?keys as key>
-        <#if activePlayers[key].name != currentPlayer>
+        <#if activePlayers[key].name != currentUser>
             <#if activePlayers[key].getIfPlaying() == false>
                 <a href="/signin">${activePlayers[key].name}</a>
                 <br>
