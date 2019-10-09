@@ -1,6 +1,8 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
+import com.webcheckers.model.GameBoard;
+import com.webcheckers.model.Player;
 import com.webcheckers.util.Message;
 import spark.*;
 
@@ -50,8 +52,22 @@ public class GetGameRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     LOG.finer("GetGameRoute is invoked.");
+    final Session httpSession = request.session();
+    Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
+
     //
     Map<String, Object> vm = new HashMap<>();
+    vm.put("title", "Checkers");
+
+    vm.put("gameID","test");
+    vm.put("currentUser",player);
+    vm.put("redPlayer",player);
+    vm.put("whitePlayer",player);
+    vm.put("activeColor","red");
+    vm.put("viewMode","player");
+    GameBoard board = new GameBoard(player,player);
+    vm.put("board",board);
+
 
 
 
@@ -59,3 +75,4 @@ public class GetGameRoute implements Route {
     return templateEngine.render(new ModelAndView(vm , "game.ftl"));
   }
 }
+

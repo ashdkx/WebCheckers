@@ -17,6 +17,7 @@ import static spark.Spark.halt;
  * The UI Controller to GET the Home page.
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author Ash Nguyen
  */
 public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
@@ -64,13 +65,23 @@ public class GetHomeRoute implements Route {
 
     // display a user message in the Home page
 
-
+    // show active players
+    vm.put("numPlayers", gameCenter.getPlayers().size());
     if(httpSession.attribute(CURRENT_PLAYER) != null){
       final Player player = httpSession.attribute(CURRENT_PLAYER);
-      vm.put("currentUser",player);
+
       vm.remove("message",WELCOME_MSG);
       vm.put("message",OTHER_PLAYERS_MSG);
+      // print out the list of players
       vm.put(ACTIVE_PLAYERS, gameCenter.getPlayers());
+      // remove current user from the list
+      vm.put("currentUser", player);
+
+      for(String name : gameCenter.getPlayers().keySet()){
+          if(request.params(name) != null){
+              System.out.println(name);
+          }
+      }
     }
     else{
       vm.put("message", WELCOME_MSG);

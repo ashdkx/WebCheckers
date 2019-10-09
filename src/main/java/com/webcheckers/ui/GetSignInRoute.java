@@ -28,7 +28,7 @@ public class GetSignInRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response){
-
+        final Session httpSession = request.session();
         LOG.finer("GetHomeRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
         final Session httpSession = request.session();

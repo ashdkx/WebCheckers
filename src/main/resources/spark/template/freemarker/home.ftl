@@ -22,20 +22,22 @@
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
 
-    <#if message??>
-        <div class="ERROR ${messageType}"> ${message}</div>
+    <#if numPlayers??>
+        Active Players: ${numPlayers}
+        <br>
     </#if>
 
     <#if activePlayers??>
       <#list activePlayers?keys as key>
         <#if activePlayers[key].name != currentUser>
-          ${activePlayers[key].name}
+            <#if activePlayers[key].getIfPlaying() == false>
+                <form action="/game" method="GET">
+                    <input type="submit" name=${activePlayers[key].name} value=${activePlayers[key].name}>
+                </form>
+                <br>
+            </#if>
         </#if>
       </#list>
-    <#else>
-      <p>
-        No players!
-      </p>
     </#if>
 
 
