@@ -31,7 +31,6 @@ public class GetSignInRoute implements Route {
         final Session httpSession = request.session();
         LOG.finer("GetHomeRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
-        final Session httpSession = request.session();
         vm.put("title", "Sign In");
 
         if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER)== null) {
