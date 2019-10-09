@@ -73,6 +73,11 @@ public class GetHomeRoute implements Route {
       vm.put("message",OTHER_PLAYERS_MSG);
       // print out the list of players
       vm.put(ACTIVE_PLAYERS, gameCenter.getPlayers());
+      for(String name : gameCenter.getPlayers().keySet()){
+        if(request.queryParams(name) != null){
+          System.out.println(name);
+        }
+      }
     }
     else{
       vm.put("message", WELCOME_MSG);
