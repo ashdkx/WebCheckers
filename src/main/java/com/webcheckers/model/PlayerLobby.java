@@ -16,12 +16,16 @@ public class PlayerLobby{
         return players.get(username);
     }
 
-    public HashMap<String, Player> getPlayers() {
+    public synchronized   HashMap<String, Player> getPlayers() {
         return players;
     }
 
-    public int getNumPlayers(){
+    public synchronized int getNumPlayers(){
         return this.players.size();
+    }
+
+    public synchronized void removePlayer(String name ){
+        players.remove(name);
     }
 
     public synchronized void addPlayer(String username){

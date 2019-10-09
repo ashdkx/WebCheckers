@@ -21,6 +21,10 @@ public class GameCenter{
         return lobby.getPlayers();
     }
 
+    public void removePlayer(String name ){
+        lobby.removePlayer(name);
+    }
+
     public Player getPlayer(String username){
         return lobby.getPlayer(username);
     }
