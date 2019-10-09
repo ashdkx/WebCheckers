@@ -1,12 +1,15 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
+import com.webcheckers.model.Player;
 import spark.*;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
+
+import static spark.Spark.halt;
 
 public class PostSignOutRoute implements Route {
 
@@ -42,8 +45,9 @@ public class PostSignOutRoute implements Route {
         vm.put("currentUser",null);
 
 
-
-        return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+        response.redirect(WebServer.HOME_URL);
+        halt();
+        return null;
 
     }
 
