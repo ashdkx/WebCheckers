@@ -1,7 +1,6 @@
 package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
-import com.webcheckers.model.PlayerLobby;
 
 import java.util.HashMap;
 

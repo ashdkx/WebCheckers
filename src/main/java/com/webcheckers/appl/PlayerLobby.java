@@ -1,10 +1,12 @@
-package com.webcheckers.model;
+package com.webcheckers.appl;
+
+import com.webcheckers.model.Player;
 
 import java.util.HashMap;
 
 public class PlayerLobby{
     // list of all players signed in
-    private HashMap<String,Player> players;
+    private HashMap<String, Player> players;
     // list of players waiting for a game
     private HashMap<String,Player> playersWaiting;
     private int playerNum = 0;

@@ -2,7 +2,6 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Player;
-import com.webcheckers.model.PlayerLobby;
 import spark.*;
 
 import java.util.HashMap;
