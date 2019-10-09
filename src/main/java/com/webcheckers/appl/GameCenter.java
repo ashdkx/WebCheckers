@@ -25,15 +25,4 @@ public class GameCenter{
         return lobby.getPlayer(username);
     }
 
-    public void setCurrentUser(Player player){
-        this.currentUser = player;
-    }
-
-    public Player getCurrentUser() {
-        return currentUser;
-    }
-
-    public void removeCurrentUser(){
-        this.currentUser = null;
-    }
 }

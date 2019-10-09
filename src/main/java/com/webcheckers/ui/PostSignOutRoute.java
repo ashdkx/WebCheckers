@@ -32,13 +32,15 @@ public class PostSignOutRoute implements Route {
     @Override
     public Object handle(Request request, Response response){
 
+        final Session httpSession = request.session();
+
         LOG.finer("GetHomeRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
 
         vm.put("title", "Sign Out");
-
+        httpSession.attribute(GetHomeRoute.CURRENT_PLAYER,null);
         vm.put("currentUser",null);
-        gameCenter.removeCurrentUser();
+
 
 
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));
