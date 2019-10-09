@@ -67,7 +67,6 @@ public class GetHomeRoute implements Route {
 
     if(httpSession.attribute(CURRENT_PLAYER) != null){
       final Player player = httpSession.attribute(CURRENT_PLAYER);
-      System.out.println(player.getName());
       vm.put("currentUser",player);
       vm.remove("message",WELCOME_MSG);
       vm.put("message",OTHER_PLAYERS_MSG);

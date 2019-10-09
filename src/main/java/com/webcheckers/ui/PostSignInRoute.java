@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import static spark.Spark.halt;
+
 
 /**
  * @author Nicholas Curl
@@ -51,8 +53,12 @@ public class PostSignInRoute implements Route {
 
         vm.put("currentUser",gameCenter.getPlayer(username));
         httpSession.attribute(GetHomeRoute.CURRENT_PLAYER,gameCenter.getPlayer(username));
-
-
+        Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
+        if (player == null){
+            response.redirect(WebServer.HOME_URL);
+            halt();
+            return null;
+        }
         return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
 
     }
