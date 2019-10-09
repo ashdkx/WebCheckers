@@ -2,8 +2,8 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Player;
-import com.webcheckers.model.PlayerLobby;
 import spark.*;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,14 +52,14 @@ public class PostSignInRoute implements Route {
 
         vm.put("title", "Sign In");
 
-        vm.put("ashdkx", new Player("ashdkx", "136"));
-        vm.put("legend69", new Player("lengend69", "316"));
-
         ModelAndView mv;
         if (gameCenter.getPlayers().containsKey(username)) {
             mv = error(vm, "Username exists");
             return templateEngine.render(mv);
-        } else if (gameCenter.getPlayers().size() > 0) {
+        } else if (username.isBlank()) {
+            mv = error(vm, "Please enter a valid character");
+            return templateEngine.render(mv);
+        } else {
             gameCenter.addPlayer(username);
             vm.put("currentUser",gameCenter.getPlayer(username));
             httpSession.attribute(GetHomeRoute.CURRENT_PLAYER,gameCenter.getPlayer(username));
@@ -70,8 +70,6 @@ public class PostSignInRoute implements Route {
                 return null;
             }
         }
-
-
 
 
         return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
