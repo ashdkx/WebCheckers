@@ -23,6 +23,10 @@ public class PostSignInRoute implements Route {
     private final TemplateEngine templateEngine;
     private final GameCenter gameCenter;
 
+    static final String MESSAGE_ATTR = "message";
+    static final String MESSAGE_TYPE_ATTR = "messageType";
+    static final String ERROR_TYPE = "error";
+
     static final String USERNAME_PARAM = "username";
 
 
@@ -45,21 +49,38 @@ public class PostSignInRoute implements Route {
         Map<String, Object> vm = new HashMap<>();
 
         String username = request.queryParams(USERNAME_PARAM);
-        gameCenter.addPlayer(username);
-
-
 
         vm.put("title", "Sign In");
 
-        vm.put("currentUser",gameCenter.getPlayer(username));
-        httpSession.attribute(GetHomeRoute.CURRENT_PLAYER,gameCenter.getPlayer(username));
-        Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
-        if (player == null){
-            response.redirect(WebServer.HOME_URL);
-            halt();
-            return null;
+        vm.put("ashdkx", new Player("ashdkx", "136"));
+        vm.put("legend69", new Player("lengend69", "316"));
+
+        ModelAndView mv;
+        if (gameCenter.getPlayers().containsKey(username)) {
+            mv = error(vm, "Username exists");
+            return templateEngine.render(mv);
+        } else if (gameCenter.getPlayers().size() > 0) {
+            gameCenter.addPlayer(username);
+            vm.put("currentUser",gameCenter.getPlayer(username));
+            httpSession.attribute(GetHomeRoute.CURRENT_PLAYER,gameCenter.getPlayer(username));
+            Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
+            if (player == null){
+                response.redirect(WebServer.HOME_URL);
+                halt();
+                return null;
+            }
         }
+
+
+
+
         return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
 
+    }
+
+    private ModelAndView error(final Map<String, Object> vm, final String message) {
+        vm.put(MESSAGE_ATTR, message);
+        vm.put(MESSAGE_TYPE_ATTR, ERROR_TYPE);
+        return new ModelAndView(vm, "signin.ftl");
     }
 }
