@@ -13,8 +13,13 @@
 
     <#include "nav-bar.ftl" />
 
+    <#if message??>
+        <br>
+        <div class="ERROR ${messageType}">${message}</div>
+    </#if>
+
         <div class="body">
-            <form method="post">
+            <form action='./signin' method="POST">
                 User Name:<br>
                 <input type="text" name="username"><br><br>
                 <input type="submit" value="Submit">

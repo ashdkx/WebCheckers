@@ -1,15 +1,30 @@
 package com.webcheckers.appl;
 
-import com.webcheckers.model.PlayerLobby;
+import com.webcheckers.model.Player;
+
+import java.util.HashMap;
 
 public class GameCenter{
     private PlayerLobby lobby;
+    private Player currentUser = null;
 
-    public GameCenter(PlayerLobby lobby){
-        this.lobby = lobby;
+    public GameCenter(){
+        this.lobby = new PlayerLobby();
     }
 
-    public void addPlayer(String username, String sessionID){
-        this.lobby.addPlayer(username, sessionID);
+    public void addPlayer(String username){
+        this.lobby.addPlayer(username);
+    }
+
+     public HashMap<String, Player> getPlayers() {
+        return lobby.getPlayers();
+    }
+
+    public Player getPlayer(String username){
+        return lobby.getPlayer(username);
+    }
+
+    public void removePlayer(String username){
+        lobby.getPlayers().remove(username);
     }
 }
