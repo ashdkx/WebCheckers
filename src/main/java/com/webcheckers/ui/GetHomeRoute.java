@@ -64,11 +64,11 @@ public class GetHomeRoute implements Route {
 
     // display a user message in the Home page
 
-
+    vm.put("numPlayers", gameCenter.getPlayers().size());
     if(httpSession.attribute(CURRENT_PLAYER) != null){
       final Player player = httpSession.attribute(CURRENT_PLAYER);
       System.out.println(player.getName());
-      vm.put("currentPlayer",player);
+      vm.put("currentPlayer", player);
       vm.remove("message",WELCOME_MSG);
       vm.put("message",OTHER_PLAYERS_MSG);
       // print out the list of players

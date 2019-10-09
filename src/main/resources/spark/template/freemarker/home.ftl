@@ -22,6 +22,10 @@
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
 
+    <#if numPlayers??>
+        Active Players: ${numPlayers}
+        <br>
+    </#if>
 
     <#if activePlayers??>
       <#list activePlayers?keys as key>
@@ -33,10 +37,6 @@
             </#if>
         </#if>
       </#list>
-    <#else>
-      <p>
-        No players!
-      </p>
     </#if>
 
 
