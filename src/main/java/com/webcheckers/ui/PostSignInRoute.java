@@ -38,7 +38,7 @@ public class PostSignInRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response){
-
+        final Session httpSession = request.session();
         LOG.finer("GetHomeRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
 
@@ -50,7 +50,7 @@ public class PostSignInRoute implements Route {
         vm.put("title", "Sign In");
 
         vm.put("currentUser",gameCenter.getPlayer(username));
-        gameCenter.setCurrentUser(gameCenter.getPlayer(username));
+        httpSession.attribute(GetHomeRoute.CURRENT_PLAYER,gameCenter.getPlayer(username));
 
 
         return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
