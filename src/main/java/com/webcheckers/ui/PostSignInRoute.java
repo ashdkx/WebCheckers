@@ -48,32 +48,38 @@ public class PostSignInRoute implements Route {
         LOG.finer("GetHomeRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
 
-        String username = request.queryParams(USERNAME_PARAM);
-
         vm.put("title", "Sign In");
+        if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER)== null) {
+            String username = request.queryParams(USERNAME_PARAM);
 
-        ModelAndView mv;
-        if (gameCenter.getPlayers().containsKey(username)) {
-            mv = error(vm, "Username exists");
-            return templateEngine.render(mv);
-        } else if (username.isEmpty()) {
-            mv = error(vm, "Please enter a valid character");
-            return templateEngine.render(mv);
-        } else {
-            gameCenter.addPlayer(username);
-            vm.put("currentUser",gameCenter.getPlayer(username));
-            httpSession.attribute(GetHomeRoute.CURRENT_PLAYER,gameCenter.getPlayer(username));
-            Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
-            if (player == null){
-                response.redirect(WebServer.HOME_URL);
-                halt();
-                return null;
+
+            ModelAndView mv;
+            if (gameCenter.getPlayers().containsKey(username)) {
+                mv = error(vm, "Username exists");
+                return templateEngine.render(mv);
+            } else if (username.isEmpty()) {
+                mv = error(vm, "Please enter a valid character");
+                return templateEngine.render(mv);
+            } else {
+                gameCenter.addPlayer(username);
+                vm.put("currentUser", gameCenter.getPlayer(username));
+                httpSession.attribute(GetHomeRoute.CURRENT_PLAYER, gameCenter.getPlayer(username));
+                Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
+                if (player == null) {
+                    response.redirect(WebServer.HOME_URL);
+                    halt();
+                    return null;
+                }
             }
+
+
+            return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
         }
-
-
-        return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
-
+        else{
+            response.redirect(WebServer.HOME_URL);
+            halt();
+            return null;
+        }
     }
 
     private ModelAndView error(final Map<String, Object> vm, final String message) {
