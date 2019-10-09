@@ -25,4 +25,7 @@ public class GameCenter{
         return lobby.getPlayer(username);
     }
 
+    public void removePlayer(String username){
+        lobby.getPlayers().remove(username);
+    }
 }

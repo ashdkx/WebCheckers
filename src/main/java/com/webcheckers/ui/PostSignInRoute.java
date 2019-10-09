@@ -44,22 +44,29 @@ public class PostSignInRoute implements Route {
         LOG.finer("GetHomeRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
 
-        String username = request.queryParams(USERNAME_PARAM);
-        gameCenter.addPlayer(username);
+
+        if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER)== null) {
+            String username = request.queryParams(USERNAME_PARAM);
+            gameCenter.addPlayer(username);
 
 
+            vm.put("title", "Sign In");
 
-        vm.put("title", "Sign In");
+            vm.put("currentUser", gameCenter.getPlayer(username));
+            httpSession.attribute(GetHomeRoute.CURRENT_PLAYER, gameCenter.getPlayer(username));
+            Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
+            if (player == null) {
+                response.redirect(WebServer.HOME_URL);
+                halt();
+                return null;
+            }
+            return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
+        }
 
-        vm.put("currentUser",gameCenter.getPlayer(username));
-        httpSession.attribute(GetHomeRoute.CURRENT_PLAYER,gameCenter.getPlayer(username));
-        Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
-        if (player == null){
+        else{
             response.redirect(WebServer.HOME_URL);
             halt();
             return null;
         }
-        return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
-
     }
 }

@@ -41,7 +41,10 @@ public class PostSignOutRoute implements Route {
         Map<String, Object> vm = new HashMap<>();
 
         vm.put("title", "Sign Out");
+        Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
+        gameCenter.removePlayer(player.getName());
         httpSession.attribute(GetHomeRoute.CURRENT_PLAYER,null);
+
         vm.put("currentUser",null);
 
 
