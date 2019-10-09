@@ -15,6 +15,7 @@ import static spark.Spark.halt;
 
 /**
  * @author Nicholas Curl
+ * @author Ash Nguyen
  */
 public class PostSignInRoute implements Route {
 
@@ -54,12 +55,15 @@ public class PostSignInRoute implements Route {
 
 
             ModelAndView mv;
+            //check if username input exists or nor
             if (gameCenter.getPlayers().containsKey(username)) {
                 mv = error(vm, "Username exists");
                 return templateEngine.render(mv);
+            // check if username input is not empty
             } else if (username.isEmpty()) {
                 mv = error(vm, "Please enter a valid character");
                 return templateEngine.render(mv);
+            // add new user to the list if it's valid
             } else {
                 gameCenter.addPlayer(username);
                 vm.put("currentUser", gameCenter.getPlayer(username));
@@ -81,6 +85,7 @@ public class PostSignInRoute implements Route {
             return null;
         }
     }
+
 
     private ModelAndView error(final Map<String, Object> vm, final String message) {
         vm.put(MESSAGE_ATTR, message);
