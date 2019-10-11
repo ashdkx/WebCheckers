@@ -2,6 +2,9 @@ package com.webcheckers.model;
 
 import java.util.HashMap;
 
+/**
+ * @author Nicholas Curl
+ */
 public class PlayerLobby{
     // list of all players signed in
     private HashMap<String,Player> players;

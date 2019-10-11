@@ -6,6 +6,9 @@ import com.webcheckers.model.Row;
 
 import java.util.Iterator;
 
+/**
+ * @author Nicholas Curl
+ */
 public class GameBoard implements Iterable<Row> {
 
     private GameView game;

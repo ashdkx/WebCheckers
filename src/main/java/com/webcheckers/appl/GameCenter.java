@@ -5,6 +5,9 @@ import com.webcheckers.model.PlayerLobby;
 
 import java.util.HashMap;
 
+/**
+ * @author Nicholas Curl
+ */
 public class GameCenter{
     private PlayerLobby lobby;
     private Player currentUser = null;

@@ -1,5 +1,9 @@
 package com.webcheckers.model;
 
+
+/**
+ * @author Nicholas Curl
+ */
 public class Space {
 
 

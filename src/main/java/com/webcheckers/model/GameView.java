@@ -1,27 +1,22 @@
 package com.webcheckers.model;
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GameView {
-    public enum squares{
-        EMPTY,
-        INVALID,
-        PLAYER1,
-        PLAYER2,
-    }
 
-    //private squares[][] board;
+/**
+ * @author Nicholas Curl
+ */
+public class GameView {
+
+
     private Player player1;
     private Player player2;
     private List<Row> board;
 
 
     public GameView(Player player1, Player player2) {
-        //this.board = new squares[8][8];
         this.player1 = player1;
         this.player2 = player2;
         this.board = new LinkedList<>();

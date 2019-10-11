@@ -11,6 +11,9 @@ import java.util.logging.Logger;
 
 import static spark.Spark.halt;
 
+/**
+ * @author Nicholas Curl
+ */
 public class PostSignOutRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
