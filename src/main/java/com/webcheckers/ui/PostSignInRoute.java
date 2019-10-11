@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import static spark.Spark.halt;
 
@@ -26,7 +27,6 @@ public class PostSignInRoute implements Route {
     static final String MESSAGE_ATTR = "message";
     static final String MESSAGE_TYPE_ATTR = "messageType";
     static final String ERROR_TYPE = "error";
-
     static final String USERNAME_PARAM = "username";
 
 
@@ -51,14 +51,14 @@ public class PostSignInRoute implements Route {
         vm.put("title", "Sign In");
         if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER)== null) {
             String username = request.queryParams(USERNAME_PARAM);
-
+            Pattern p = Pattern.compile("[^a-zA-Z0-9]");
 
             ModelAndView mv;
             if (gameCenter.getPlayers().containsKey(username)) {
                 mv = error(vm, "Username exists");
                 return templateEngine.render(mv);
-            } else if (username.isEmpty()) {
-                mv = error(vm, "Please enter a valid character");
+            } else if (username.isEmpty() || p.matcher(username).find()) {
+                mv = error(vm, "Please enter a valid username");
                 return templateEngine.render(mv);
             } else {
                 gameCenter.addPlayer(username);
