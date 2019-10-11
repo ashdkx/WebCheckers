@@ -1,6 +1,12 @@
 package com.webcheckers.model;
 
-public class GameBoard {
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+public class GameView {
     public enum squares{
         EMPTY,
         INVALID,
@@ -8,48 +14,35 @@ public class GameBoard {
         PLAYER2,
     }
 
-    private squares[][] board;
+    //private squares[][] board;
     private Player player1;
     private Player player2;
+    private List<Row> board;
 
-    public GameBoard(Player player1, Player player2) {
-        this.board = new squares[8][8];
+
+    public GameView(Player player1, Player player2) {
+        //this.board = new squares[8][8];
         this.player1 = player1;
         this.player2 = player2;
+        this.board = new LinkedList<>();
+        initBoard();
+    }
+
+
+    public List<Row> getBoard() {
+        return board;
     }
 
     public void initBoard(){
-        for(int x = 0; x < 8; x++){
-            for(int y = 0; y < 8; y++){
-                if(x % 2 == 0 && y % 2 == 0){
-                    this.board[x][y] = squares.INVALID;
-                }
-                if(x % 2 == 1 && y % 2 == 1){
-                    this.board[x][y] = squares.INVALID;
-                }
-                if((x == 0 || x == 2) && (y % 2 == 1)){
-                    this.board[x][y] = squares.PLAYER2;
-                }
-                if(x == 1 && y % 2 == 0){
-                    this.board[x][y] = squares.PLAYER2;
-                }
-                if(x == 3 && y % 2 == 0){
-                    this.board[x][y] = squares.EMPTY;
-                }
-                if(x == 4 && y % 2 == 1){
-                    this.board[x][y] = squares.EMPTY;
-                }
-                if((x == 5 || x == 7) && (y % 2 == 0)){
-                    this.board[x][y] = squares.PLAYER1;
-                }
-                if(x == 6 && y % 2 == 1){
-                    this.board[x][y] = squares.PLAYER1;
-                }
-            }
+        boolean valid = true;
+
+        for(int i =0; i<8;i++){
+            board.add( new Row(i, valid));
+            valid = !valid;
         }
     }
 
-    public squares[][] getBoardPlayer1(){
+  /*  public squares[][] getBoardPlayer1(){
         return this.board;
     }
 
@@ -92,5 +85,5 @@ public class GameBoard {
                 this.board[x2][y2] = squares.PLAYER2;
             }
         }
-    }
+    }*/
 }

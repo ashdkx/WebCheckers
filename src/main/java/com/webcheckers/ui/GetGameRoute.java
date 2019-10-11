@@ -1,7 +1,8 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.GameBoard;
 import com.webcheckers.appl.GameCenter;
-import com.webcheckers.model.GameBoard;
+import com.webcheckers.model.GameView;
 import com.webcheckers.model.Player;
 import com.webcheckers.util.Message;
 import spark.*;
@@ -58,7 +59,6 @@ public class GetGameRoute implements Route {
     //
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Checkers");
-
     vm.put("gameID","test");
     vm.put("currentUser",player);
     vm.put("redPlayer",player);
