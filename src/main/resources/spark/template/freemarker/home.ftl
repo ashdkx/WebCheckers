@@ -31,9 +31,10 @@
       <#list activePlayers?keys as key>
         <#if activePlayers[key].name != currentUser>
             <#if activePlayers[key].getIfPlaying() == false>
-                <a href="/signin">${activePlayers[key].name}</a>
+                <form action="/game" method="GET">
+                    <input type="submit" name=${activePlayers[key].name} value=${activePlayers[key].name}>
+                </form>
                 <br>
-
             </#if>
         </#if>
       </#list>

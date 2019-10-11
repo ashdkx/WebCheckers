@@ -16,6 +16,7 @@ import static spark.Spark.halt;
 
 /**
  * @author Nicholas Curl
+ * @author Ash Nguyen
  */
 public class PostSignInRoute implements Route {
 
@@ -49,17 +50,30 @@ public class PostSignInRoute implements Route {
         Map<String, Object> vm = new HashMap<>();
 
         vm.put("title", "Sign In");
+
         if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER)== null) {
             String username = request.queryParams(USERNAME_PARAM);
             Pattern p = Pattern.compile("[^a-zA-Z0-9]");
 
             ModelAndView mv;
+
+            // keyword to bypass and create add some players to the list
+            if (username.equals("admin")) {
+                gameCenter.addPlayer("legend69");
+                gameCenter.addPlayer("nikki3413");
+                gameCenter.addPlayer("hillary239");
+            } else
+            //check if username input exists or not
             if (gameCenter.getPlayers().containsKey(username)) {
                 mv = error(vm, "Username exists");
                 return templateEngine.render(mv);
             } else if (username.isEmpty() || p.matcher(username).find()) {
                 mv = error(vm, "Please enter a valid username");
+            // check if username input is not empty
+            } else if (username.isEmpty()) {
+                mv = error(vm, "Please enter a valid character");
                 return templateEngine.render(mv);
+            // add new user to the list if it's valid
             } else {
                 gameCenter.addPlayer(username);
                 vm.put("currentUser", gameCenter.getPlayer(username));
@@ -81,6 +95,7 @@ public class PostSignInRoute implements Route {
             return null;
         }
     }
+
 
     private ModelAndView error(final Map<String, Object> vm, final String message) {
         vm.put(MESSAGE_ATTR, message);
