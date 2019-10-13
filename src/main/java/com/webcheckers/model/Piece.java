@@ -6,7 +6,7 @@ package com.webcheckers.model;
 public class Piece {
 
 
-   /* private enum type{
+    public enum type{
         SINGLE,
         KING
     }
@@ -14,25 +14,22 @@ public class Piece {
     public enum color{
         RED,
         WHITE
-    }*/
+    }
 
-   private String type;
-   private String color;
+   private Piece.type type;
+   private Piece.color color;
 
-    public Piece(String type, String color){
+    public Piece(Piece.type type, Piece.color color){
         this.type = type;
         this.color = color;
 
     }
 
-    public String getType() {
+    public Piece.type getType(){
         return type;
     }
 
-    public String getColor() {
+    public Piece.color getColor() {
         return color;
     }
-    /* public Piece.type getType(){
-        return ;
-    }*/
 }

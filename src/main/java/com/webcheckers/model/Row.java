@@ -19,7 +19,7 @@ public class Row implements Iterable<Space>{
         this.space = new ArrayList<>();
         boolean valid = startValid;
         for(int i = 0; i<8;i++){
-            space.add(new Space(i,new Piece("standard","red"),valid));
+            space.add(new Space(i,new Piece(Piece.type.SINGLE, Piece.color.RED),valid));
             valid = !valid;
         }
 
