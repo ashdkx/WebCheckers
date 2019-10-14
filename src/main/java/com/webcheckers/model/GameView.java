@@ -31,10 +31,7 @@ public class GameView {
     public void initBoard(){
         boolean valid = true;
 
-        for(int i =0; i<8;i++){
-            board.add( new Row(i, valid));
-            valid = !valid;
-        }
+        board.add(new Row(0,true));
     }
 
   /*  public squares[][] getBoardPlayer1(){
