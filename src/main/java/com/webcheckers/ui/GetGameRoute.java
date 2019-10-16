@@ -68,7 +68,8 @@ public class GetGameRoute implements Route {
     LOG.finer("GetGameRoute is invoked.");
     final Session httpSession = request.session();
 
-
+    Map<String,Object> modeOptions = new HashMap<>();
+    modeOptions.put(null,null);
 
     Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
     Map<String, Object> vm = new HashMap<>();
@@ -90,16 +91,19 @@ public class GetGameRoute implements Route {
     }
 
     vm.put("title", "Checkers");
-    vm.put("gameID", "test");
     vm.put("currentUser", player);
-    vm.put("activeColor", color.RED);
     vm.put("viewMode", mode.PLAY);
+    //vm.put("modeOptions", modeOptions);
+
+
 
     if(player.isPlayer1()) {
       //
       gameCenter.getGame(player).setPlayer2Board(false);
       vm.put("redPlayer", player);
       vm.put("whitePlayer", gameCenter.getGame(player).getPlayer2());
+      System.out.println("Player2: "+gameCenter.getGame(player).getPlayer2().getName());
+      vm.put("activeColor", color.RED);
       vm.put("board", gameCenter.getGame(player));
     }
 
@@ -107,6 +111,7 @@ public class GetGameRoute implements Route {
       gameCenter.getGame(player).setPlayer2Board(true);
       vm.put("redPlayer",gameCenter.getGame(player).getPlayer1());
       vm.put("whitePlayer", player);
+      vm.put("activeColor", color.RED);
       vm.put("board", gameCenter.getGame(player));
     }
 
