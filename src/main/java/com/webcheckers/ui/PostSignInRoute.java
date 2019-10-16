@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import static spark.Spark.halt;
 
@@ -48,11 +49,12 @@ public class PostSignInRoute implements Route {
         final Session httpSession = request.session();
         LOG.finer("GetHomeRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
-
+        Pattern p = Pattern.compile("[^a-zA-Z0-9]");
         vm.put("title", "Sign In");
 
         if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER)== null) {
             String username = request.queryParams(USERNAME_PARAM);
+
 
 
             ModelAndView mv;
@@ -68,7 +70,7 @@ public class PostSignInRoute implements Route {
                 mv = error(vm, "Username exists");
                 return templateEngine.render(mv);
             // check if username input is not empty
-            } else if (username.isEmpty()) {
+            } else if (username.isEmpty() || p.matcher(username).find()) {
                 mv = error(vm, "Please enter a valid character");
                 return templateEngine.render(mv);
             // add new user to the list if it's valid
