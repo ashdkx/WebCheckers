@@ -70,22 +70,28 @@ public class GetHomeRoute implements Route {
     if(httpSession.attribute(CURRENT_PLAYER) != null){
       final Player player = httpSession.attribute(CURRENT_PLAYER);
 
-      vm.remove("message",WELCOME_MSG);
-      vm.put("message",OTHER_PLAYERS_MSG);
-      // print out the list of players
-      vm.put(ACTIVE_PLAYERS, gameCenter.getPlayers());
-      // remove current user from the list
-      vm.put("currentUser", player);
+      if (player.isPlaying()){
+        response.redirect(WebServer.GAME_URL);
+        halt();
+        return null;
+      }
+      else {
+        vm.remove("message", WELCOME_MSG);
+        vm.put("message", OTHER_PLAYERS_MSG);
+        // print out the list of players
+        vm.put(ACTIVE_PLAYERS, gameCenter.getPlayers());
+        // remove current user from the list
+        vm.put("currentUser", player);
 
-      for(String name : gameCenter.getPlayers().keySet()){
-          if(request.params(name) != null){
-              System.out.println(name);
+        for (String name : gameCenter.getPlayers().keySet()) {
+          if (request.params(name) != null) {
+            System.out.println(name);
           }
+        }
       }
     }
     else{
       vm.put("message", WELCOME_MSG);
-
     }
 
 

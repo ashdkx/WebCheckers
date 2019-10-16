@@ -55,22 +55,43 @@ public class GetGameRoute implements Route {
   public Object handle(Request request, Response response) {
     LOG.finer("GetGameRoute is invoked.");
     final Session httpSession = request.session();
-    Player player1 = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
-    Player player2 = gameCenter.getPlayer(request.queryParams(PLAYER_PARAM));
-    System.out.println(player2.getName());
 
-    //
+
+
+    Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
+
+
+    if(!player.isPlaying()) {
+      Player player2 = gameCenter.getPlayer(request.queryParams(PLAYER_PARAM));
+      gameCenter.setPlayer1(player, true);
+      gameCenter.setPlaying(player, true);
+      gameCenter.setPlaying(player2, true);
+      GameBoard board = new GameBoard(player, player2);
+      gameCenter.setGame(player, board);
+      gameCenter.setGame(player2, board);
+    }
+
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Checkers");
-    vm.put("gameID","test");
-    vm.put("currentUser",player1);
-    vm.put("redPlayer",player1);
-    vm.put("whitePlayer",player2);
-    vm.put("activeColor","red");
-    vm.put("viewMode","PLAY");
-    GameBoard board = new GameBoard(player1,player2);
-    vm.put("board",board);
+    vm.put("gameID", "test");
+    vm.put("currentUser", player);
+    vm.put("activeColor", "red");
+    vm.put("viewMode", "PLAY");
 
+    if(player.isPlayer1()) {
+      //
+      gameCenter.getGame(player).setPlayer2Board(false);
+      vm.put("redPlayer", player);
+      vm.put("whitePlayer", gameCenter.getGame(player).getPlayer2());
+      vm.put("board", gameCenter.getGame(player));
+    }
+
+    else {
+      gameCenter.getGame(player).setPlayer2Board(true);
+      vm.put("redPlayer",gameCenter.getGame(player).getPlayer1());
+      vm.put("whitePlayer", player);
+      vm.put("board", gameCenter.getGame(player));
+    }
 
 
 

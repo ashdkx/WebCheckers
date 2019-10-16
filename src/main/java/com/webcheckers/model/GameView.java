@@ -15,12 +15,14 @@ public class GameView {
     private Player player1;
     private Player player2;
     private List<Row> board;
+    private List<Row> player2Board = new ArrayList<>();
+    private List<Row> player1Board =  new ArrayList<>();
 
 
     public GameView(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
-        this.board = new ArrayList<>();
+
         initBoard();
     }
 
@@ -34,36 +36,29 @@ public class GameView {
 
         for(int i = 0; i < 8; i++){
             if (i<=2){
-                board.add(new Row(i,Piece.whiteSingle,valid));
+                player1Board.add(new Row(i,Piece.whiteSingle,valid));
             }
             else if (i>=5){
-                board.add(new Row(i,Piece.redSingle,valid));
+                player1Board.add(new Row(i,Piece.redSingle,valid));
             }
             else{
-                board.add(new Row(i,null,valid));
+                player1Board.add(new Row(i,null,valid));
             }
             valid = !valid;
         }
-
-    }
-
-
-  /*  public squares[][] getBoardPlayer1(){
-        return this.board;
-    }
-
-    public squares[][] getBoardPlayer2(){
-        int x2 = 0;
-        int y2 = 0;
-        squares[][] p2Board = new squares[8][8];
-        for(int x1 = 0; x1 < 8; x1++){
-            for(int y1 = 0; y1 < 8; y1++){
-                x2 = 7 - x1;
-                y2 = 7 - y1;
-                p2Board[x2][y2] = this.board[x1][y1];
-            }
+        for(int i = 0; i<8;i++){
+            player2Board.add(player1Board.get(7-i));
         }
-        return p2Board;
+    }
+
+
+    public void setPlayer2Board(boolean playerBoard){
+        if(playerBoard){
+            this.board = player2Board;
+        }
+        else {
+            this.board = player1Board;
+        }
     }
 
     public Player getPlayer1() {
@@ -73,7 +68,7 @@ public class GameView {
     public Player getPlayer2() {
         return player2;
     }
-
+/*
     public squares getValueOnBoard(int x, int y){
         return this.board[x][y];
     }

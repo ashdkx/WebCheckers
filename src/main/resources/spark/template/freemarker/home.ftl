@@ -30,7 +30,7 @@
     <#if activePlayers??>
       <#list activePlayers?keys as key>
         <#if activePlayers[key].name != currentUser>
-            <#if activePlayers[key].getIfPlaying() == false>
+            <#if activePlayers[key].isPlaying() == false>
                 <form action="/game" method="GET">
                     <input type="submit" name="player" value=${activePlayers[key].name}>
                 </form>

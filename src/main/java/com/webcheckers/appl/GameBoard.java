@@ -19,6 +19,23 @@ public class GameBoard implements Iterable<Row> {
     }
 
 
+    public GameView getGame() {
+        return game;
+    }
+
+    public Player getPlayer1(){
+        return game.getPlayer1();
+    }
+
+    public Player getPlayer2(){
+        return game.getPlayer2();
+    }
+
+    public void setPlayer2Board(boolean playerBoard){
+        game.setPlayer2Board(playerBoard);
+
+    }
+
     @Override
     public Iterator<Row> iterator(){
         return game.getBoard().iterator();
