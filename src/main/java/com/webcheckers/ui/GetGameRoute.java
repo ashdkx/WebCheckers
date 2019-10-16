@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import static spark.Spark.halt;
+
 /**
  * The UI Controller to GET the Game page.
  *
@@ -24,7 +26,16 @@ public class GetGameRoute implements Route {
   private static final Message OTHER_PLAYERS_MSG = Message.info("Click on one of these players to begin a game of checkers.");
   static final String PLAYER_PARAM = "player";
   private final GameCenter gameCenter;
+  private enum color{
+    RED,
+    WHITE
+  }
 
+  private enum mode {
+    PLAY,
+    SPECTATOR,
+    REPLAY
+  }
   private final TemplateEngine templateEngine;
 
   /**
@@ -59,10 +70,16 @@ public class GetGameRoute implements Route {
 
 
     Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
+    Map<String, Object> vm = new HashMap<>();
 
 
     if(!player.isPlaying()) {
       Player player2 = gameCenter.getPlayer(request.queryParams(PLAYER_PARAM));
+      if (player2.isPlaying()){
+        httpSession.attribute(GetHomeRoute.MESSAGE,"Player already in game. Click a different player to begin a game of checkers.");
+        response.redirect(WebServer.HOME_URL);
+        return null;
+      }
       gameCenter.setPlayer1(player, true);
       gameCenter.setPlaying(player, true);
       gameCenter.setPlaying(player2, true);
@@ -71,12 +88,11 @@ public class GetGameRoute implements Route {
       gameCenter.setGame(player2, board);
     }
 
-    Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Checkers");
     vm.put("gameID", "test");
     vm.put("currentUser", player);
-    vm.put("activeColor", "red");
-    vm.put("viewMode", "PLAY");
+    vm.put("activeColor", color.RED);
+    vm.put("viewMode", mode.PLAY);
 
     if(player.isPlayer1()) {
       //
@@ -98,5 +114,6 @@ public class GetGameRoute implements Route {
     // render the View
     return templateEngine.render(new ModelAndView(vm , "game.ftl"));
   }
+
 }
 

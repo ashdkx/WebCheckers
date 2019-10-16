@@ -25,9 +25,7 @@ public class PostSignInRoute implements Route {
     private final TemplateEngine templateEngine;
     private final GameCenter gameCenter;
 
-    static final String MESSAGE_ATTR = "message";
-    static final String MESSAGE_TYPE_ATTR = "messageType";
-    static final String ERROR_TYPE = "error";
+
     static final String USERNAME_PARAM = "username";
 
 
@@ -69,6 +67,7 @@ public class PostSignInRoute implements Route {
                 return templateEngine.render(mv);
             } else if (username.isEmpty() || p.matcher(username).find()) {
                 mv = error(vm, "Please enter a valid username");
+                return templateEngine.render(mv);
             // check if username input is not empty
             } else if (username.isEmpty()) {
                 mv = error(vm, "Please enter a valid character");
@@ -98,8 +97,8 @@ public class PostSignInRoute implements Route {
 
 
     private ModelAndView error(final Map<String, Object> vm, final String message) {
-        vm.put(MESSAGE_ATTR, message);
-        vm.put(MESSAGE_TYPE_ATTR, ERROR_TYPE);
+        vm.put(GetHomeRoute.MESSAGE_ATTR, message);
+        vm.put(GetHomeRoute.MESSAGE_TYPE_ATTR, GetHomeRoute.ERROR_TYPE);
         return new ModelAndView(vm, "signin.ftl");
     }
 }

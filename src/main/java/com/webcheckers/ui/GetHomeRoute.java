@@ -24,6 +24,10 @@ public class GetHomeRoute implements Route {
 
   private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
   private static final Message OTHER_PLAYERS_MSG = Message.info("Click on one of these players to begin a game of checkers.");
+  static final String MESSAGE_ATTR = "message";
+  static final String MESSAGE_TYPE_ATTR = "messageType";
+  static final String ERROR_TYPE = "error";
+  static final String MESSAGE = "messageValue";
   private final GameCenter gameCenter;
 
   private final String ACTIVE_PLAYERS = "activePlayers";
@@ -77,7 +81,16 @@ public class GetHomeRoute implements Route {
       }
       else {
         vm.remove("message", WELCOME_MSG);
-        vm.put("message", OTHER_PLAYERS_MSG);
+        if(httpSession.attribute(MESSAGE)!=null){
+          final String message = httpSession.attribute(MESSAGE);
+          System.out.println(message);
+          vm.put(MESSAGE_ATTR,Message.error(message));
+        }
+        else{
+          vm.put("message", OTHER_PLAYERS_MSG);
+        }
+
+
         // print out the list of players
         vm.put(ACTIVE_PLAYERS, gameCenter.getPlayers());
         // remove current user from the list
@@ -91,7 +104,7 @@ public class GetHomeRoute implements Route {
       }
     }
     else{
-      vm.put("message", WELCOME_MSG);
+        vm.put(MESSAGE_ATTR, WELCOME_MSG);
     }
 
 
