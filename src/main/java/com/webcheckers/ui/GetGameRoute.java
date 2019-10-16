@@ -22,6 +22,7 @@ public class GetGameRoute implements Route {
 
   private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
   private static final Message OTHER_PLAYERS_MSG = Message.info("Click on one of these players to begin a game of checkers.");
+  static final String PLAYER_PARAM = "player";
   private final GameCenter gameCenter;
 
   private final TemplateEngine templateEngine;
@@ -54,18 +55,20 @@ public class GetGameRoute implements Route {
   public Object handle(Request request, Response response) {
     LOG.finer("GetGameRoute is invoked.");
     final Session httpSession = request.session();
-    Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
+    Player player1 = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
+    Player player2 = gameCenter.getPlayer(request.queryParams(PLAYER_PARAM));
+    System.out.println(player2.getName());
 
     //
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Checkers");
     vm.put("gameID","test");
-    vm.put("currentUser",player);
-    vm.put("redPlayer",player);
-    vm.put("whitePlayer",player);
+    vm.put("currentUser",player1);
+    vm.put("redPlayer",player1);
+    vm.put("whitePlayer",player2);
     vm.put("activeColor","red");
-    vm.put("viewMode","player");
-    GameBoard board = new GameBoard(player,player);
+    vm.put("viewMode","PLAY");
+    GameBoard board = new GameBoard(player1,player2);
     vm.put("board",board);
 
 

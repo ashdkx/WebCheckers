@@ -11,7 +11,7 @@ public class Space {
     private Piece piece;
     private boolean valid;
 
-    public Space(int cellIdx,Piece piece, boolean valid){
+    public Space(int cellIdx, Piece piece, boolean valid){
 
         this.cellIdx = cellIdx;
         this.piece = piece;
@@ -20,7 +20,7 @@ public class Space {
 
 
     public boolean isValid(){
-        return valid&&(getPiece()==null);
+        return valid&&piece==null;
     }
 
 
@@ -30,5 +30,11 @@ public class Space {
 
     public Piece getPiece() {
         return piece;
+    }
+
+    public void setPiece(Piece piece){
+
+        this.piece = piece;
+
     }
 }

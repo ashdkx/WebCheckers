@@ -14,18 +14,19 @@ public class Row implements Iterable<Space>{
     private int index;
     private List<Space> space;
 
-    public Row(int index, boolean startValid){
+    public Row(int index, Piece piece, boolean startValid){
         this.index = index;
         this.space = new ArrayList<>();
         boolean valid = startValid;
+
         for(int i = 0; i<8;i++){
-            space.add(new Space(i,new Piece(Piece.type.SINGLE, Piece.color.RED),valid));
-            if(valid){
-                valid = false;
+            if (valid){
+                space.add(new Space(i,piece,true));
             }
             else{
-                valid = true;
+                space.add(new Space(i,null,false));
             }
+            valid = !valid;
         }
 
     }

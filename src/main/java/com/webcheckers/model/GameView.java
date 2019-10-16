@@ -1,6 +1,7 @@
 package com.webcheckers.model;
 
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class GameView {
     public GameView(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
-        this.board = new LinkedList<>();
+        this.board = new ArrayList<>();
         initBoard();
     }
 
@@ -28,11 +29,24 @@ public class GameView {
         return board;
     }
 
-    public void initBoard(){
-        boolean valid = true;
+    private void initBoard(){
+        boolean valid = false;
 
-        board.add(new Row(0,true));
+        for(int i = 0; i < 8; i++){
+            if (i<=2){
+                board.add(new Row(i,Piece.whiteSingle,valid));
+            }
+            else if (i>=5){
+                board.add(new Row(i,Piece.redSingle,valid));
+            }
+            else{
+                board.add(new Row(i,null,valid));
+            }
+            valid = !valid;
+        }
+
     }
+
 
   /*  public squares[][] getBoardPlayer1(){
         return this.board;

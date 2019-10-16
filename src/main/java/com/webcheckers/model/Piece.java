@@ -6,30 +6,37 @@ package com.webcheckers.model;
 public class Piece {
 
 
-    public enum type{
+    private enum type{
         SINGLE,
         KING
     }
 
-    public enum color{
+    private enum color{
         RED,
         WHITE
     }
 
-   private Piece.type type;
-   private Piece.color color;
+   private Piece.type pieceType;
+   private Piece.color pieceColor;
 
-    public Piece(Piece.type type, Piece.color color){
-        this.type = type;
-        this.color = color;
+
+   public static final Piece whiteSingle = new Piece(type.SINGLE, color.WHITE);
+   public static final Piece whiteKing = new Piece(type.KING,color.WHITE);
+   public static final Piece redSingle = new Piece(type.SINGLE,color.RED);
+   public static final Piece redKing = new Piece(type.KING,color.RED);
+
+
+    private Piece(Piece.type type, Piece.color color){
+        this.pieceType = type;
+        this.pieceColor = color;
 
     }
 
     public Piece.type getType(){
-        return type;
+        return pieceType;
     }
 
     public Piece.color getColor() {
-        return color;
+        return pieceColor;
     }
 }
