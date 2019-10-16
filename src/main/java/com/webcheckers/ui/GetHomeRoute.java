@@ -18,6 +18,7 @@ import static spark.Spark.halt;
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  * @author Ash Nguyen
+ * @author Nicholas Curl
  */
 public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());

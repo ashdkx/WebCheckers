@@ -18,6 +18,7 @@ import static spark.Spark.halt;
  * The UI Controller to GET the Game page.
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author Nicholas Curl
  */
 public class GetGameRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());

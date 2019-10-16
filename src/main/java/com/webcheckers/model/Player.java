@@ -2,6 +2,10 @@ package com.webcheckers.model;
 
 import com.webcheckers.appl.GameBoard;
 
+
+/**
+ * @author Nicholas Curl
+ */
 public class Player{
     private String name;
     private String sessionID;
