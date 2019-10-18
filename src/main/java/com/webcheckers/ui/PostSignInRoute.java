@@ -46,7 +46,6 @@ public class PostSignInRoute implements Route {
         final Session httpSession = request.session();
         LOG.finer("GetHomeRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
-        Pattern p = Pattern.compile("[^a-zA-Z0-9]");
         vm.put("title", "Sign In");
 
         if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER)== null) {
