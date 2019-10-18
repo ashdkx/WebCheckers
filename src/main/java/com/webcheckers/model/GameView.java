@@ -15,7 +15,6 @@ public class GameView {
     private Player player1;
     private Player player2;
     private List<Row> board;
-    private List<Row> player2Board = new ArrayList<>();
     private List<Row> player1Board =  new ArrayList<>();
 
 
@@ -46,27 +45,12 @@ public class GameView {
             }
             valid = !valid;
         }
-
-        valid = false;
-
-        for(int i = 0; i<8;i++){
-            if (i<=2){
-                player2Board.add(new Row(i,Piece.redSingle,valid));
-            }
-            else if (i>=5){
-                player2Board.add(new Row(i,Piece.whiteSingle,valid));
-            }
-            else{
-                player2Board.add(new Row(i,null,valid));
-            }
-            valid = !valid;
-        }
     }
 
 
     public void setPlayer2Board(boolean playerBoard){
         if(playerBoard){
-            this.board = player2Board;
+            reverseBoard();
         }
         else {
             this.board = player1Board;
@@ -98,6 +82,7 @@ public class GameView {
     }*/
 
    public void reverseBoard(){
+       this.board = player1Board;
        for(Row r : board){
            r.reverseRow();
        }

@@ -68,8 +68,6 @@ public class GetGameRoute implements Route {
     LOG.finer("GetGameRoute is invoked.");
     final Session httpSession = request.session();
 
-    Map<String,Object> modeOptions = new HashMap<>();
-    modeOptions.put(null,null);
 
     Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
     Map<String, Object> vm = new HashMap<>();
