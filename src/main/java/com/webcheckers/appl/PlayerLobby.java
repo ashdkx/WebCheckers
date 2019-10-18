@@ -2,8 +2,13 @@ package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
 
+import com.webcheckers.appl.GameBoard;
+
 import java.util.HashMap;
 
+/**
+ * @author Nicholas Curl
+ */
 public class PlayerLobby{
     // list of all players signed in
     private HashMap<String, Player> players;
@@ -35,4 +40,29 @@ public class PlayerLobby{
         this.players.put(username, newPlayer);
         playerNum++;
     }
+
+    public synchronized void setPlayer1(Player player, boolean status){
+        player.setPlayer1(status);
+    }
+
+    public synchronized boolean isPlayer1(Player player){
+        return player.isPlayer1();
+    }
+
+    public synchronized void setPlaying(Player player, boolean status){
+        player.setPlaying(status);
+    }
+
+    public synchronized boolean isPlaying(Player player){
+        return player.isPlaying();
+    }
+
+    public synchronized void setGame(Player player, GameBoard game){
+        player.setGame(game);
+    }
+
+    public synchronized GameBoard getGame(Player player){
+        return player.getGame();
+    }
+
 }

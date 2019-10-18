@@ -107,8 +107,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven.compiler.version}</version>
         <configuration>
-          <source>11</source>
-          <target>11</target>
+          <source>10</source>
+          <target>10</target>
         </configuration>
       </plugin>
 
