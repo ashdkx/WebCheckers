@@ -93,7 +93,6 @@ public class GetGameRoute implements Route {
     vm.put("title", "Checkers");
     vm.put("currentUser", player);
     vm.put("viewMode", mode.PLAY);
-    //vm.put("modeOptions", modeOptions);
 
 
 
@@ -102,7 +101,6 @@ public class GetGameRoute implements Route {
       gameCenter.getGame(player).setPlayer2Board(false);
       vm.put("redPlayer", player);
       vm.put("whitePlayer", gameCenter.getGame(player).getPlayer2());
-      System.out.println("Player2: "+gameCenter.getGame(player).getPlayer2().getName());
       vm.put("activeColor", color.RED);
       vm.put("board", gameCenter.getGame(player));
     }
