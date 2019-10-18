@@ -20,7 +20,7 @@ import static spark.Spark.halt;
  */
 public class PostSignInRoute implements Route {
 
-    private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
+    private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());
 
     private final TemplateEngine templateEngine;
     private final GameCenter gameCenter;
@@ -44,7 +44,7 @@ public class PostSignInRoute implements Route {
     @Override
     public Object handle(Request request, Response response){
         final Session httpSession = request.session();
-        LOG.finer("GetHomeRoute is invoked.");
+        LOG.finer("PostSignInRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Sign In");
 

@@ -45,6 +45,18 @@ public class GameView {
             }
             valid = !valid;
         }
+        player1Board.get(4).getSpace(1).setPiece(Piece.whiteSingle);
+    }
+
+    public boolean isValid(int row, int col){
+
+        return board.get(row).getSpace(col).isValid();
+
+    }
+
+
+    public Piece getPiece(int row, int col){
+        return board.get(row).getSpace(col).getPiece();
     }
 
 

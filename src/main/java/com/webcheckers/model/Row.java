@@ -45,4 +45,8 @@ public class Row implements Iterable<Space>{
         Collections.reverse(space);
     }
 
+    public Space getSpace(int col){
+        return space.get(col);
+    }
+
 }

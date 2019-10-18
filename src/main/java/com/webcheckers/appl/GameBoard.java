@@ -1,6 +1,7 @@
 package com.webcheckers.appl;
 
 import com.webcheckers.model.GameView;
+import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.Row;
 
@@ -35,6 +36,15 @@ public class GameBoard implements Iterable<Row> {
         game.setPlayer2Board(playerBoard);
 
     }
+
+    public boolean isValid(int row, int col){
+        return game.isValid(row,col);
+    }
+
+    public Piece getPiece(int row, int col){
+        return game.getPiece(row, col);
+    }
+
 
     @Override
     public Iterator<Row> iterator(){

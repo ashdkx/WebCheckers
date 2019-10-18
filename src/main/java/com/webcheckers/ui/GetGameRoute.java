@@ -27,12 +27,12 @@ public class GetGameRoute implements Route {
   private static final Message OTHER_PLAYERS_MSG = Message.info("Click on one of these players to begin a game of checkers.");
   static final String PLAYER_PARAM = "player";
   private final GameCenter gameCenter;
-  private enum color{
+  public enum color{
     RED,
     WHITE
   }
 
-  private enum mode {
+  public enum mode {
     PLAY,
     SPECTATOR,
     REPLAY
@@ -94,19 +94,20 @@ public class GetGameRoute implements Route {
 
 
 
-    if(player.isPlayer1()) {
+    if(!player.isPlayer1()) {
       //
-      gameCenter.getGame(player).setPlayer2Board(false);
-      vm.put("redPlayer", player);
-      vm.put("whitePlayer", gameCenter.getGame(player).getPlayer2());
-      vm.put("activeColor", color.RED);
-      vm.put("board", gameCenter.getGame(player));
-    }
-
-    else {
       gameCenter.getGame(player).setPlayer2Board(true);
       vm.put("redPlayer",gameCenter.getGame(player).getPlayer1());
       vm.put("whitePlayer", player);
+      vm.put("activeColor", color.RED);
+      vm.put("board", gameCenter.getGame(player));
+
+    }
+
+    else {
+      gameCenter.getGame(player).setPlayer2Board(false);
+      vm.put("redPlayer", player);
+      vm.put("whitePlayer", gameCenter.getGame(player).getPlayer2());
       vm.put("activeColor", color.RED);
       vm.put("board", gameCenter.getGame(player));
     }
