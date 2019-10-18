@@ -3,6 +3,7 @@ package com.webcheckers.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 
 /**
@@ -95,4 +96,12 @@ public class GameView {
             }
         }
     }*/
+
+   public void reverseBoard(){
+       for(Row r : board){
+           r.reverseRow();
+       }
+
+       Collections.reverse(board);
+   }
 }

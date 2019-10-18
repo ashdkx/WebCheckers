@@ -1,6 +1,7 @@
 package com.webcheckers.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,6 +39,10 @@ public class Row implements Iterable<Space>{
 
     public int getIndex(){
         return index;
+    }
+
+    public void reverseRow(){
+        Collections.reverse(space);
     }
 
 }
