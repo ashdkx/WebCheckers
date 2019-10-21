@@ -37,17 +37,11 @@ public class GameCenter{
         lobby.setPlayer1(player,status);
     }
 
-    public boolean isPlayer1(Player player){
-        return lobby.isPlayer1(player);
-    }
 
     public void setPlaying(Player player, boolean status){
         lobby.setPlaying(player,status);
     }
 
-    public boolean isPlaying(Player player){
-        return lobby.isPlaying(player);
-    }
 
     public void setGame(Player player, GameBoard game){
         lobby.setGame(player,game);
