@@ -6,9 +6,11 @@ import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
+import com.webcheckers.model.Row;
 import com.webcheckers.util.Message;
 import spark.*;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -20,14 +22,9 @@ public class PostValidateMoveRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
 
-    private final TemplateEngine templateEngine;
-    private final GameCenter gameCenter;
 
 
-    public PostValidateMoveRoute(GameCenter gameCenter, final TemplateEngine templateEngine){
-        this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
-
-        this.gameCenter = gameCenter;
+    public PostValidateMoveRoute(){
 
         LOG.config("PostValidateMoveRoute is initialized.");
     }
@@ -44,58 +41,34 @@ public class PostValidateMoveRoute implements Route {
         Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
 
         GameBoard board = player.getGame();
-
+        List<Row> playerBoard;
+        if(player.isPlayer1()){
+            playerBoard = player.getGame().getPlayer1Board();
+        }
+        else{
+            playerBoard = player.getGame().getPlayer2Board();
+        }
         String json = request.queryParams("actionData");
         System.out.println(json);
         Move move = gson.fromJson(json,Move.class);
         boolean valid = false;
         String message = "";
-        if(board.getPiece(move.getStart().getRow(),move.getStart().getCell()).getType() == Piece.type.SINGLE){
-            Piece piece1 = board.getPiece(move.getStart().getRow(),move.getStart().getCell());
-            if(move.getEnd().getRow()>=move.getStart().getRow()){
+        if (board.getActivePiece() == null){
+            board.setActivePiece(board.getPiece(move.getStart().getRow(),move.getStart().getCell()));
+            board.setActivePieceStart(move.getStart());
+        }
+
+        if(board.getActivePiece().getType() == Piece.type.SINGLE){
+            if(move.getEnd().getRow()>move.getStart().getRow()){
                 valid = false;
                 message = "Can't move backwards.";
             }
-            else if(board.isValid(move.getEnd().getRow(),move.getEnd().getCell())){
+            else if(board.isValid(playerBoard,move.getEnd().getRow(),move.getEnd().getCell())){
                 switch (move.getEnd().getCell()-move.getStart().getCell()){
                     case -1:
-
-                        valid = true;
-                        message = "Valid move.";
-                        break;
                     case 1:
                         valid = true;
                         message = "Valid move.";
-                        break;
-                    case -2:
-                        if(board.getPiece(move.getStart().getRow()-1,move.getEnd().getCell()+1)!=null){
-                            Piece piece = board.getPiece(move.getStart().getRow()-1,move.getEnd().getCell()+1);
-                            switch (piece.getColor()){
-                                case RED:
-                                    valid = false;
-                                    message = "Can't jump over own piece.";
-                                    break;
-                                case WHITE:
-                                    valid = true;
-                                    message = "Valid move.";
-                                    break;
-                            }
-                        }
-                        break;
-                    case 2:
-                        if(board.getPiece(move.getStart().getRow()-1,move.getEnd().getCell()-1)!=null){
-                            Piece piece = board.getPiece(move.getStart().getRow()-1,move.getEnd().getCell()-1);
-                            switch (piece.getColor()){
-                                case RED:
-                                    valid = false;
-                                    message = "Can't jump over own piece.";
-                                    break;
-                                case WHITE:
-                                    valid = true;
-                                    message = "Valid move.";
-                                    break;
-                            }
-                        }
                         break;
                     default:
                         valid = false;
@@ -104,6 +77,7 @@ public class PostValidateMoveRoute implements Route {
 
                 }
             }
+            board.setActivePieceEnd(move.getEnd());
 
         }
         String json2 = "";

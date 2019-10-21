@@ -65,4 +65,20 @@ public class PlayerLobby{
         return player.getGame();
     }
 
+    public synchronized void setPlayerColor(Player player, GameBoard.color color){
+        player.setColor(color);
+    }
+
+    public synchronized GameBoard.color getPlayerColor(Player player){
+        return player.getColor();
+    }
+
+    public synchronized void setPlayerTurn(Player player, boolean playerTurn){
+        player.setMyTurn(playerTurn);
+    }
+
+    public synchronized boolean isPlayerTurn(Player player){
+        return player.isMyTurn();
+    }
+
 }
