@@ -1,7 +1,8 @@
 package com.webcheckers.model;
 
-import com.google.gson.Gson;
-
+/**
+ * @author Nicholas Curl
+ */
 public class Move {
 
     private Position start;
@@ -19,10 +20,5 @@ public class Move {
         return end;
     }
 
-    @Override
-
-    public String toString(){
-        return "Move:{\"start\"={\"row\"="+this.getStart().getRow()+",\"cell\"="+this.getStart().getCell()+"}, \"end\"={\"row\"="+this.getEnd().getRow()+",\"cell\"="+this.getEnd().getCell()+"}}";
-    }
 
 }

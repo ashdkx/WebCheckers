@@ -21,7 +21,7 @@ public class GameView {
     public GameView(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
-
+        this.board = new ArrayList<>();
         initBoard();
     }
 
@@ -35,17 +35,17 @@ public class GameView {
 
         for(int i = 0; i < 8; i++){
             if (i<=2){
-                player1Board.add(new Row(i,Piece.whiteSingle,valid));
+                board.add(new Row(i,Piece.whiteSingle,valid));
             }
             else if (i>=5){
-                player1Board.add(new Row(i,Piece.redSingle,valid));
+                board.add(new Row(i,Piece.redSingle,valid));
             }
             else{
-                player1Board.add(new Row(i,null,valid));
+                board.add(new Row(i,null,valid));
             }
             valid = !valid;
         }
-        player1Board.get(4).getSpace(1).setPiece(Piece.whiteSingle);
+        board.get(4).getSpace(1).setPiece(Piece.whiteSingle);
     }
 
     public boolean isValid(int row, int col){
@@ -64,9 +64,10 @@ public class GameView {
         if(playerBoard){
             reverseBoard();
         }
-        else {
-            this.board = player1Board;
-        }
+    }
+
+    public void setBoard(List<Row> board){
+        this.board = board;
     }
 
     public Player getPlayer1() {
@@ -94,7 +95,6 @@ public class GameView {
     }*/
 
    public void reverseBoard(){
-       this.board = player1Board;
        for(Row r : board){
            r.reverseRow();
        }
