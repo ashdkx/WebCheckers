@@ -17,7 +17,8 @@ public class GetSignInRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
 
     private final TemplateEngine templateEngine;
-
+    static final String TITLE = "Sign In";
+    static final String VIEW_NAME = "signin.ftl";
 
     public GetSignInRoute(final TemplateEngine templateEngine){
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
@@ -31,10 +32,10 @@ public class GetSignInRoute implements Route {
         final Session httpSession = request.session();
         LOG.finer("GetHomeRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Sign In");
+        vm.put(GetHomeRoute.TITLE_ATTR, TITLE);
 
         if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER)== null) {
-            return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
+            return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
         else{
             response.redirect(WebServer.HOME_URL);

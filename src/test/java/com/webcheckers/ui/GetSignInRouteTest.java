@@ -5,11 +5,9 @@ package com.webcheckers.ui;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import spark.Request;
-import spark.Response;
-import spark.Session;
-import spark.TemplateEngine;
+import spark.*;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +34,23 @@ public class GetSignInRouteTest {
 
     @Test
     public void renderSignIn() {
+        when(session.attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(null);
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
+        CuT.handle(request, response);
+
+        testHelper.assertViewModelExists();
+        testHelper.assertViewModelIsaMap();
+
+        testHelper.assertViewModelAttribute(GetHomeRoute.TITLE_ATTR, GetSignInRoute.TITLE);
+
+        testHelper.assertViewName(GetSignInRoute.VIEW_NAME);
+    }
+
+    @Test
+    public void faultyLogIn() {
+        when(session.attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(null);
     }
 
 }
