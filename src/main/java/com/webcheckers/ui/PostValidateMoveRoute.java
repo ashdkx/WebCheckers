@@ -46,27 +46,43 @@ public class PostValidateMoveRoute implements Route {
         else{
             playerBoard = player.getGame().getPlayer2Board();
         }
+
         String json = request.queryParams("actionData");
         System.out.println(json);
         Move move = gson.fromJson(json,Move.class);
         boolean valid = false;
         String message = "";
+
+        int moveStartRow = move.getStart().getRow();
+        int moveStartCell = move.getStart().getCell();
+        int moveEndRow = move.getEnd().getRow();
+        int moveEndCell = move.getEnd().getCell();
+
         if (board.getActivePiece() == null){
-            board.setActivePiece(board.getPiece(move.getStart().getRow(),move.getStart().getCell()));
+            board.setActivePiece(board.getPiece(moveStartRow,moveStartCell));
             board.setActivePieceStart(move.getStart());
         }
 
         if(board.getActivePiece().getType() == Piece.type.SINGLE){
-            if(move.getEnd().getRow()>move.getStart().getRow()){
+            if(moveEndRow>moveStartRow){
                 valid = false;
                 message = "Can't move backwards.";
             }
-            else if(board.isValid(playerBoard,move.getEnd().getRow(),move.getEnd().getCell())){
-                switch (move.getEnd().getCell()-move.getStart().getCell()){
+            else if(board.isValid(playerBoard,moveEndRow,moveEndCell)){
+                switch (moveEndCell-moveStartCell){
                     case -1:
                     case 1:
-                        valid = true;
-                        message = "Valid move.";
+                        board.incrementActivePieceMoves();
+                        if(board.getActivePieceMoves()>1){
+                            valid = false;
+                            message = "Can only move diagonally once.";
+                            board.decrementActivePieceMoves();
+                        }
+                        else{
+                            valid = true;
+                            message = "Valid move.";
+                            board.setActivePieceEnd(move.getEnd());
+                        }
                         break;
                     default:
                         valid = false;
@@ -75,17 +91,16 @@ public class PostValidateMoveRoute implements Route {
 
                 }
             }
-            board.setActivePieceEnd(move.getEnd());
+
 
         }
-        String json2 = "";
         if(valid){
-            json2 = gson.toJson(Message.info(message));
+            json = gson.toJson(Message.info(message));
         }
         else {
-            json2 = gson.toJson(Message.error(message));
+            json = gson.toJson(Message.error(message));
         }
 
-        return json2;
+        return json;
     }
 }

@@ -91,6 +91,21 @@ public class GameBoard implements Iterable<Row> {
         game.updatePlayer2();
     }
 
+    public int getActivePieceMoves(){
+        return game.getActivePieceMoves();
+    }
+
+    public void resetActivePieceMoves(){
+        game.setActivePieceMoves(0);
+    }
+
+    public void incrementActivePieceMoves(){
+        game.incrementActivePieceMoves();
+    }
+
+    public void decrementActivePieceMoves(){
+        game.decrementActivePieceMoves();
+    }
 
     @Override
     public Iterator<Row> iterator(){

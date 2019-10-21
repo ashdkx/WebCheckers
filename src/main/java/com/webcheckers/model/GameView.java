@@ -20,6 +20,7 @@ public class GameView {
     private Piece activePiece = null;
     private Position activePieceStart;
     private Position activePieceEnd;
+    private int activePieceMoves = 0;
 
 
     public GameView(Player player1, Player player2) {
@@ -110,21 +111,21 @@ public class GameView {
         }
     }
 
-    /*
-    public void move(int x1, int y1, int x2, int y2){
-        if(this.board[x1][y1] == squares.PLAYER1){
-            if(this.board[x2][y2] == squares.EMPTY){
-                this.board[x1][y1] = squares.EMPTY;
-                this.board[x2][y2] = squares.PLAYER1;
-            }
-        }
-        if(this.board[x1][y1] == squares.PLAYER2){
-            if(this.board[x2][y2] == squares.EMPTY){
-                this.board[x1][y1] = squares.EMPTY;
-                this.board[x2][y2] = squares.PLAYER2;
-            }
-        }
-    }*/
+    public int getActivePieceMoves() {
+        return activePieceMoves;
+    }
+
+    public void setActivePieceMoves(int activePieceMoves) {
+        this.activePieceMoves = activePieceMoves;
+    }
+
+    public void incrementActivePieceMoves(){
+        this.activePieceMoves++;
+    }
+
+    public void decrementActivePieceMoves(){
+        this.activePieceMoves--;
+    }
 
     private void initPlayer1(){
         boolean valid1 = false;

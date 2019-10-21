@@ -52,6 +52,7 @@ public class PostSubmitTurnRoute implements Route {
         playerBoard.get(moveStart.getRow()).getSpace(moveStart.getCell()).setPiece(null);
         playerBoard.get(moveEnd.getRow()).getSpace(moveEnd.getCell()).setPiece(board.getActivePiece());
         board.setActivePiece(null);
+        board.resetActivePieceMoves();
 
         String json= "";
         json = gson.toJson(Message.info("Valid Move"));
