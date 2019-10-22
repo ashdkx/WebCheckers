@@ -47,7 +47,7 @@ public class GameView {
     }
 
 
-    public Piece getPiece(int row, int col){
+    public Piece getPiece(List<Row> board, int row, int col){
         return board.get(row).getSpace(col).getPiece();
     }
 

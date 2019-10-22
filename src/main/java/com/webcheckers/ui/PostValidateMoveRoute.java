@@ -46,7 +46,7 @@ public class PostValidateMoveRoute implements Route {
         else{
             playerBoard = player.getGame().getPlayer2Board();
         }
-
+        System.out.println("Playerboard: "+playerBoard);
         String json = request.queryParams("actionData");
         System.out.println(json);
         Move move = gson.fromJson(json,Move.class);
@@ -59,7 +59,8 @@ public class PostValidateMoveRoute implements Route {
         int moveEndCell = move.getEnd().getCell();
 
         if (board.getActivePiece() == null){
-            board.setActivePiece(board.getPiece(moveStartRow,moveStartCell));
+            board.setActivePiece(board.getPiece(playerBoard,moveStartRow,moveStartCell));
+            System.out.println(board.getActivePiece().getColor());
             board.setActivePieceStart(move.getStart());
         }
 

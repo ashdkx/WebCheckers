@@ -50,8 +50,8 @@ public class GameBoard implements Iterable<Row> {
         return game.isValid(board, row,col);
     }
 
-    public Piece getPiece(int row, int col){
-        return game.getPiece(row, col);
+    public Piece getPiece(List<Row> board, int row, int col){
+        return game.getPiece(board, row, col);
     }
 
     public void setActivePiece(Piece piece){
