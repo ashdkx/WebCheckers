@@ -16,15 +16,16 @@ import static spark.Spark.halt;
 /**
  * The UI Controller to GET the Home page.
  *
+ *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  * @author Ash Nguyen
  * @author Nicholas Curl
  */
 public class GetHomeRoute implements Route {
-  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
+   static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
-  private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
-  private static final Message OTHER_PLAYERS_MSG = Message.info("Click on one of these players to begin a game of checkers.");
+   static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+   static final Message OTHER_PLAYERS_MSG = Message.info("Click on one of these players to begin a game of checkers.");
   static final String MESSAGE_ATTR = "message";
   static final String MESSAGE_TYPE_ATTR = "messageType";
   static final String ERROR_TYPE = "error";
