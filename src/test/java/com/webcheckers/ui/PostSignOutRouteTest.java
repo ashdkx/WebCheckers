@@ -18,13 +18,11 @@ class PostSignOutRouteTest {
     private PostSignOutRoute Cut;
 
     private GameCenter gameCenter;
-    private GameBoard gameBoard;
 
     private Request request;
     private Session session;
     private Response response;
     private TemplateEngine templateEngine;
-    private PlayerLobby playerLobby;
 
     @BeforeEach
     public void setup() {
@@ -34,8 +32,7 @@ class PostSignOutRouteTest {
         templateEngine = mock(TemplateEngine.class);
         response = mock(Response.class);
 
-        gameCenter = mock(GameCenter.class);
-        playerLobby= new PlayerLobby();
+        gameCenter = new GameCenter();
 
         Cut = new PostSignOutRoute(gameCenter, templateEngine);
 
@@ -45,17 +42,16 @@ class PostSignOutRouteTest {
     @Test
     void signedOut() {
         String name = "player";
-        playerLobby.addPlayer(name);
+        gameCenter.addPlayer(name);
 
-        Player player = playerLobby.getPlayer(name);
+        Player player = gameCenter.getPlayer(name);
 
         when(session.attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player);
 
         Cut.handle(request, response);
 
-        verify(gameCenter).removePlayer(name);
-        //assertNull(playerLobby.getPlayer(name));
-        //assertTrue(session.attributes().isEmpty());
+        assertNull(gameCenter.getPlayer(name));
+        assertTrue(session.attributes().isEmpty());
 
 
     }
