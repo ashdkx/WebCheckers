@@ -50,4 +50,14 @@ public class GameCenter{
     public GameBoard getGame(Player player){
         return lobby.getGame(player);
     }
+
+    public void setPlayerColor(Player player, GameBoard.color color){
+        lobby.setPlayerColor(player, color);
+    }
+
+    public void setPlayerTurn(Player player, boolean playerTurn){
+        lobby.setPlayerTurn(player, playerTurn);
+    }
+
+
 }

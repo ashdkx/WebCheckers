@@ -19,7 +19,6 @@ public class Row implements Iterable<Space>{
         this.index = index;
         this.space = new ArrayList<>();
         boolean valid = startValid;
-
         for(int i = 0; i<8;i++){
             if (valid){
                 space.add(new Space(i,piece,true));
@@ -41,8 +40,9 @@ public class Row implements Iterable<Space>{
         return index;
     }
 
-    public void reverseRow(){
-        Collections.reverse(space);
+
+    public Space getSpace(int col){
+        return space.get(col);
     }
 
 }

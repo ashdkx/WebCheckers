@@ -27,12 +27,9 @@ public class GetGameRoute implements Route {
   private static final Message OTHER_PLAYERS_MSG = Message.info("Click on one of these players to begin a game of checkers.");
   static final String PLAYER_PARAM = "player";
   private final GameCenter gameCenter;
-  private enum color{
-    RED,
-    WHITE
-  }
 
-  private enum mode {
+
+  public enum mode {
     PLAY,
     SPECTATOR,
     REPLAY
@@ -83,9 +80,13 @@ public class GetGameRoute implements Route {
       gameCenter.setPlayer1(player, true);
       gameCenter.setPlaying(player, true);
       gameCenter.setPlaying(player2, true);
+      gameCenter.setPlayerColor(player, GameBoard.color.RED);
+      gameCenter.setPlayerColor(player2, GameBoard.color.WHITE);
+      gameCenter.setPlayerTurn(player, true);
       GameBoard board = new GameBoard(player, player2);
       gameCenter.setGame(player, board);
       gameCenter.setGame(player2, board);
+      vm.put("activeColor", GameBoard.color.RED);
     }
 
     vm.put("title", "Checkers");
@@ -93,25 +94,32 @@ public class GetGameRoute implements Route {
     vm.put("viewMode", mode.PLAY);
 
 
-
+    Player player2 = null;
     if(player.isPlayer1()) {
       //
-      gameCenter.getGame(player).setPlayer2Board(false);
+      gameCenter.getGame(player).isPlayer2Board(false);
       vm.put("redPlayer", player);
       vm.put("whitePlayer", gameCenter.getGame(player).getPlayer2());
-      vm.put("activeColor", color.RED);
       vm.put("board", gameCenter.getGame(player));
+      player2 = gameCenter.getGame(player).getPlayer2();
+
+
     }
 
-    else {
-      gameCenter.getGame(player).setPlayer2Board(true);
+   else{
+      gameCenter.getGame(player).isPlayer2Board(true);
       vm.put("redPlayer",gameCenter.getGame(player).getPlayer1());
       vm.put("whitePlayer", player);
-      vm.put("activeColor", color.RED);
       vm.put("board", gameCenter.getGame(player));
+      player2 = gameCenter.getGame(player).getPlayer1();
     }
 
-
+    if(player.isMyTurn()){
+      vm.put("activeColor",player.getColor());
+    }
+    else{
+      vm.put("activeColor",player2.getColor());
+    }
 
     // render the View
     return templateEngine.render(new ModelAndView(vm , "game.ftl"));
