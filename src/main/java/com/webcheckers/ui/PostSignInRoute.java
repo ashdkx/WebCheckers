@@ -20,14 +20,11 @@ import static spark.Spark.halt;
  */
 public class PostSignInRoute implements Route {
 
-    private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
+    private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());
 
     private final TemplateEngine templateEngine;
     private final GameCenter gameCenter;
 
-    static final String MESSAGE_ATTR = "message";
-    static final String MESSAGE_TYPE_ATTR = "messageType";
-    static final String ERROR_TYPE = "error";
 
     static final String USERNAME_PARAM = "username";
 
@@ -47,14 +44,13 @@ public class PostSignInRoute implements Route {
     @Override
     public Object handle(Request request, Response response){
         final Session httpSession = request.session();
-        LOG.finer("GetHomeRoute is invoked.");
+        LOG.finer("PostSignInRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
-        Pattern p = Pattern.compile("[^a-zA-Z0-9]");
         vm.put("title", "Sign In");
 
         if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER)== null) {
             String username = request.queryParams(USERNAME_PARAM);
-
+            Pattern p = Pattern.compile("[^a-zA-Z0-9]");
 
 
             ModelAndView mv;
@@ -68,6 +64,9 @@ public class PostSignInRoute implements Route {
             //check if username input exists or not
             if (gameCenter.getPlayers().containsKey(username)) {
                 mv = error(vm, "Username exists");
+                return templateEngine.render(mv);
+            } else if (username.isEmpty() || p.matcher(username).find()) {
+                mv = error(vm, "Please enter a valid username");
                 return templateEngine.render(mv);
             // check if username input is not empty
             } else if (username.isEmpty() || p.matcher(username).find()) {
@@ -98,8 +97,8 @@ public class PostSignInRoute implements Route {
 
 
     private ModelAndView error(final Map<String, Object> vm, final String message) {
-        vm.put(MESSAGE_ATTR, message);
-        vm.put(MESSAGE_TYPE_ATTR, ERROR_TYPE);
+        vm.put(GetHomeRoute.MESSAGE_ATTR, message);
+        vm.put(GetHomeRoute.MESSAGE_TYPE_ATTR, GetHomeRoute.ERROR_TYPE);
         return new ModelAndView(vm, "signin.ftl");
     }
 }

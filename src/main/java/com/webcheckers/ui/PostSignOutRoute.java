@@ -11,9 +11,12 @@ import java.util.logging.Logger;
 
 import static spark.Spark.halt;
 
+/**
+ * @author Nicholas Curl
+ */
 public class PostSignOutRoute implements Route {
 
-    private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
+    private static final Logger LOG = Logger.getLogger(PostSignOutRoute.class.getName());
 
     private final TemplateEngine templateEngine;
     private final GameCenter gameCenter;
@@ -37,7 +40,7 @@ public class PostSignOutRoute implements Route {
 
         final Session httpSession = request.session();
 
-        LOG.finer("GetHomeRoute is invoked.");
+        LOG.finer("PostSignOutRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
 
         vm.put("title", "Sign Out");
@@ -49,7 +52,6 @@ public class PostSignOutRoute implements Route {
 
 
         response.redirect(WebServer.HOME_URL);
-        halt();
         return null;
 
     }
