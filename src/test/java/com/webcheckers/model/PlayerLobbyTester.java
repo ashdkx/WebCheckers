@@ -3,7 +3,7 @@ package com.webcheckers.model;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/*
+/**
  * unit test for PlayerLobby class
  * @author - Alec Jackson
  */

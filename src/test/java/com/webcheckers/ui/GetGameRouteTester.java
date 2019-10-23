@@ -12,7 +12,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/*
+/**
  * unit test for PlayerLobby class
  * @author - Alec Jackson
  */
