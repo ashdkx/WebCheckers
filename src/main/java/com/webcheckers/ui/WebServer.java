@@ -55,6 +55,12 @@ public class WebServer {
    */
   public static final String HOME_URL = "/";
   public static final String SIGNIN_URL = "/signin";
+  public static final String SIGNOUT_URL = "/signout";
+  public static final String GAME_URL = "/game";
+  public static final String VALIDATEMOVE_URL = "/validateMove";
+  public static final String BACKUPMOVE_URL = "/backupMove";
+  public static final String CHECKTURN_URL = "/checkTurn";
+  public static final String SUBMITTURN_URL = "/submitTurn";
   //
   // Attributes
   //
@@ -146,8 +152,14 @@ public class WebServer {
     //Show the Checkers sign in page.
     get(SIGNIN_URL, new GetSignInRoute(templateEngine));
 
-    post(SIGNIN_URL, new PostSignInRoute(gameCenter,templateEngine));
+    get(GAME_URL, new GetGameRoute(gameCenter,templateEngine));
 
+    post(SIGNIN_URL, new PostSignInRoute(gameCenter,templateEngine));
+    post(SIGNOUT_URL, new PostSignOutRoute(gameCenter,templateEngine));
+    post(VALIDATEMOVE_URL, new PostValidateMoveRoute());
+    post(BACKUPMOVE_URL, new PostBackupMoveRoute());
+    post(CHECKTURN_URL, new PostCheckTurnRoute());
+    post(SUBMITTURN_URL, new PostSubmitTurnRoute());
     //
     LOG.config("WebServer is initialized.");
   }

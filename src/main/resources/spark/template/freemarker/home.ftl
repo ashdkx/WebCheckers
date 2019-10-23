@@ -17,8 +17,30 @@
 
   <div class="body">
 
+
+
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
+
+    <#if numPlayers??>
+        Active Players: ${numPlayers}
+        <br>
+    </#if>
+
+    <#if activePlayers??>
+      <#list activePlayers?keys as key>
+        <#if activePlayers[key].name != currentUser>
+                <form action="/game" method="GET">
+                    <input type="submit" name="player" value=${activePlayers[key].name}>
+                </form>
+                <br>
+        </#if>
+      </#list>
+    </#if>
+
+
+
+
 
 
 

@@ -5,9 +5,12 @@ import com.webcheckers.model.PlayerLobby;
 
 import java.util.HashMap;
 
+/**
+ * @author Nicholas Curl
+ */
 public class GameCenter{
     private PlayerLobby lobby;
-    private Player currentUser;
+    private Player currentUser = null;
 
     public GameCenter(){
         this.lobby = new PlayerLobby();
@@ -21,15 +24,40 @@ public class GameCenter{
         return lobby.getPlayers();
     }
 
+    public void removePlayer(String name ){
+        lobby.removePlayer(name);
+    }
+
     public Player getPlayer(String username){
         return lobby.getPlayer(username);
     }
 
-    public void setCurrentUser(Player player){
-        this.currentUser = player;
+
+    public void setPlayer1(Player player, boolean status){
+        lobby.setPlayer1(player,status);
     }
 
-    public Player getCurrentUser() {
-        return currentUser;
+
+    public void setPlaying(Player player, boolean status){
+        lobby.setPlaying(player,status);
     }
+
+
+    public void setGame(Player player, GameBoard game){
+        lobby.setGame(player,game);
+    }
+
+    public GameBoard getGame(Player player){
+        return lobby.getGame(player);
+    }
+
+    public void setPlayerColor(Player player, GameBoard.color color){
+        lobby.setPlayerColor(player, color);
+    }
+
+    public void setPlayerTurn(Player player, boolean playerTurn){
+        lobby.setPlayerTurn(player, playerTurn);
+    }
+
+
 }
