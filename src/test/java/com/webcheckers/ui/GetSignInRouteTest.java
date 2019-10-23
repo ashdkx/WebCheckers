@@ -2,15 +2,20 @@ package com.webcheckers.ui;
 
 
 
+import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+
+/**
+ * @author Nicholas Curl
+ */
 @Tag("UI-Tier")
 public class GetSignInRouteTest {
 
@@ -50,7 +55,20 @@ public class GetSignInRouteTest {
 
     @Test
     public void faultyLogIn() {
-        when(session.attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(null);
+        Player player = new Player("test","1");
+        when(session.attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player);
+
+        try {
+            CuT.handle(request, response);
+            fail("Redirects invoke halt exceptions.");
+        } catch (HaltException e) {
+            // expected
+        }
+
+        // Analyze the results:
+        //   * redirect to the Game view
+        verify(response).redirect(WebServer.HOME_URL);
+
     }
 
 }
