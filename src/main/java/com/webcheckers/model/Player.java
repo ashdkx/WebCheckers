@@ -14,6 +14,8 @@ public class Player{
     private boolean playing = false;
     private boolean player1 = false;
     private GameBoard game;
+    private GameBoard.color color;
+    private boolean myTurn = false;
 
     public Player(String name, String sessionID) {
         this.name = name;
@@ -66,5 +68,21 @@ public class Player{
      */
     public String toString() {
         return this.name;
+    }
+
+    public void setColor(GameBoard.color color){
+        this.color = color;
+    }
+
+    public GameBoard.color getColor() {
+        return color;
+    }
+
+    public void setMyTurn(boolean myTurn){
+        this.myTurn = myTurn;
+    }
+
+    public boolean isMyTurn() {
+        return myTurn;
     }
 }

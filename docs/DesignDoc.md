@@ -9,20 +9,24 @@ geometry: margin=1in
 > and appear in the generated PDF in italics._
 
 ## Team Information
-* Team name: TEAMNAME
+* Team name: A Team
 * Team members
-  * MEMBER1
-  * MEMBER2
-  * MEMBER3
-  * MEMBER4
+  * Alan Chen
+  * Alec Jackson
+  * Ash Nguyen
+  * Eric Brockman
+  * Nicholas Curl
 
 ## Executive Summary
 
-This is a summary of the project.
+Webcheckers allow users to play a game of American checkers against other users.
 
 ### Purpose
 > _Provide a very brief statement about the project and the most
 > important user group and user goals._
+
+The project follows the rules of American checkers. Players should be able to play 
+a game until someone wins/loses.
 
 ### Glossary and Acronyms
 > _Provide a table of terms and acronyms._
@@ -40,15 +44,26 @@ This section describes the features of the application.
 > story.  Focus on top-level features from the Vision document and
 > maybe Epics and critical Stories._
 
+Players are able to create and sign in with an unique username. After they are signed in, they 
+will be able to challenge other signed-in players to a match. When players
+are in a match, they will be able to move the pieces by drag-and-drop, and also receive 
+assistance through the help menu if they are confused.
 ### Definition of MVP
 > _Provide a simple description of the Minimum Viable Product._
+
+Our MVP is when users are able to sign in and start a match.
 
 ### MVP Features
 > _Provide a list of top-level Epics and/or Stories of the MVP._
 
+* Sign in
+* Sign out
+* Start a match
+
 ### Roadmap of Enhancements
 > _Provide a list of top-level features in the order you plan to consider them._
-
+* Help menu
+* Crowning
 
 ## Application Domain
 
@@ -60,6 +75,12 @@ This section describes the application domain.
 > can discuss the more important domain entities and their relationship
 > to each other._
 
+* Player signs in on the home page.
+* Player can join a match with other signed in players.
+* The two players play a match of American checkers until one side loses/wins.
+* The players make moves by moving the pieces.
+* There are different types of moves that can be made, and a player can lose by having no moves/pieces left, or 
+when he/she resigns from the match.
 
 ## Architecture and Design
 
@@ -117,10 +138,14 @@ with the WebCheckers application.
 > you describe the design of the three tiers._
 
 
+
 ### Application Tier
 > _Provide a summary of the Application tier of your architecture. This
 > section will follow the same instructions that are given for the UI
 > Tier above._
+
+* GameBoard displays a board with checkers pieces. The GameCenter connects the game 
+board with the player lobby. The PlayerLobby is where it shows all of the signed in players.
 
 
 ### Model Tier
@@ -128,19 +153,27 @@ with the WebCheckers application.
 > section will follow the same instructions that are given for the UI
 > Tier above._
 
+* GameView shows the game board based on the player. The pieces, player, and rows all interact with each other in 
+order to make moves.
+
 ### Design Improvements
 > _Discuss design improvements that you would make if the project were
 > to continue. These improvement should be based on your direct
 > analysis of where there are problems in the code base which could be
 > addressed with design changes, and describe those suggested design
 > improvements. After completion of the Code metrics exercise, you
-> will also discuss the resutling metric measurements.  Indicate the
+> will also discuss the resulting metric measurements.  Indicate the
 > hot spots the metrics identified in your code base, and your
 > suggested design improvements to address those hot spots._
+
+* If the project were to continue, we could add a spectator mode or additional features 
+in order to make the gameplay smoother.
 
 ## Testing
 > _This section will provide information about the testing performed
 > and the results of the testing._
+
+* Unit test classes have been made for classes of different tiers. 
 
 ### Acceptance Testing
 > _Report on the number of user stories that have passed all their
@@ -148,6 +181,8 @@ with the WebCheckers application.
 > criteria tests failing, and the number of user stories that
 > have not had any testing yet. Highlight the issues found during
 > acceptance testing and if there are any concerns._
+
+* 5 user stories have passed all of their acceptance criteria tests. 
 
 ### Unit Testing and Code Coverage
 > _Discuss your unit testing strategy. Report on the code coverage
