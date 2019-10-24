@@ -2,6 +2,8 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameBoard;
+import com.webcheckers.appl.GameCenter;
+import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.Position;
 import com.webcheckers.model.Row;
@@ -12,6 +14,7 @@ import spark.Route;
 import spark.Session;
 
 import java.util.List;
+
 import java.util.logging.Logger;
 
 /**
@@ -21,6 +24,8 @@ import java.util.logging.Logger;
 public class PostSubmitTurnRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostSubmitTurnRoute.class.getName());
+    private Gson gson = new Gson();
+
 
 
     public PostSubmitTurnRoute(){
@@ -32,30 +37,77 @@ public class PostSubmitTurnRoute implements Route {
 
 
         LOG.finer("PostSubmitTurnRoute is invoked.");
-        Gson gson = new Gson();
+
         final Session httpSession = request.session();
 
         Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
-
+        Player player2;
+        String json;
+        Message message;
         GameBoard board = player.getGame();
         List<Row> playerBoard;
         if(player.isPlayer1()){
-            playerBoard = player.getGame().getPlayer1Board();
+            playerBoard = board.getPlayer1Board();
+            player2 = board.getPlayer2();
         }
         else{
-            playerBoard = player.getGame().getPlayer2Board();
+            playerBoard = board.getPlayer2Board();
+            player2 = board.getPlayer1();
         }
 
         Position moveEnd = board.getActiveEnd();
         Position moveStart = board.getActiveStart();
 
-        playerBoard.get(moveStart.getRow()).getSpace(moveStart.getCell()).setPiece(null);
-        playerBoard.get(moveEnd.getRow()).getSpace(moveEnd.getCell()).setPiece(board.getActivePiece());
-        board.setActivePiece(null);
-        board.resetActivePieceMoves();
 
-        String json= "";
-        json = gson.toJson(Message.info("Valid Move"));
+
+        if (player.isSingleMove()) {
+            json = submit(board,playerBoard,player,moveStart, moveEnd);
+        }
+        else{
+            if(canStillJump(board,player,playerBoard,moveEnd.getRow(),moveEnd.getCell())){
+                json = gson.toJson(Message.error("Still able to jump."));
+            }
+            else {
+                while (!board.getPieceRemove().isEmpty()) {
+                    Integer[] position = board.removePieceRemove();
+                    if (board.getPiece(playerBoard, position[0], position[1]).getType() == Piece.type.KING) {
+                        player2.removeTotalPieces(2);
+                    } else {
+                        player2.removeTotalPieces(1);
+                    }
+                    playerBoard.get(position[0]).getSpace(position[1]).setPiece(null);
+                }
+                json = submit(board,playerBoard,player,moveStart, moveEnd);
+            }
+        }
+        return json;
+    }
+
+    private boolean canStillJump(GameBoard board, Player player, List<Row> playerBoard, int moveEndRow, int moveEndCell) {
+        boolean validPos1 = false;
+        boolean validPos2 = false;
+        if (board.getActivePiece().getType() == Piece.type.SINGLE) {
+            if (board.getPiece(playerBoard, moveEndRow - 1, moveEndCell + 1) != null) {
+                Piece piece = board.getPiece(playerBoard, moveEndRow - 1, moveEndCell + 1);
+                boolean isCorrectColor = player.isActiveColor(piece);
+                boolean isValidSpace = board.isValid(playerBoard,moveEndRow-2,moveEndCell+2);
+                validPos1 = isValidSpace&&isCorrectColor;
+            }
+            if (board.getPiece(playerBoard, moveEndRow - 1, moveEndCell - 1) != null) {
+                Piece piece = board.getPiece(playerBoard, moveEndRow - 1, moveEndCell - 1);
+                boolean isCorrectColor = player.isActiveColor(piece);
+                boolean isValidSpace = board.isValid(playerBoard,moveEndRow-2,moveEndCell-2);
+                validPos2 = isCorrectColor&&isValidSpace;
+            }
+        }
+        return validPos1&&validPos2;
+    }
+
+    private String submit(GameBoard board, List<Row> playerBoard, Player player, Position moveStart, Position moveEnd){
+        board.setPiece(playerBoard, moveStart.getRow(), moveStart.getCell(), null);
+        board.setPiece(playerBoard, moveEnd.getRow(), moveEnd.getCell(), board.getActivePiece());
+        board.setActivePiece(null);
+        board.setActivePieceMoves(0);
 
         if(player.isPlayer1()){
             board.updatePlayer2();
@@ -67,6 +119,8 @@ public class PostSubmitTurnRoute implements Route {
             player.setMyTurn(false);
             board.getPlayer1().setMyTurn(true);
         }
-        return json;
+        player.setSingleMove(false);
+        return gson.toJson(Message.info("Valid Move."));
     }
+
 }
