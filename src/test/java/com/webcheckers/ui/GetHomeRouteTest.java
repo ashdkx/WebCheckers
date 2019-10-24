@@ -43,9 +43,9 @@ class GetHomeRouteTest {
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
         //   * model contains all necessary View-Model data
-        testHelper.assertViewModelAttribute(GetHomeRoute.TITLE_ATTR, GetHomeRoute.WELCOME_MSG);
+        testHelper.assertViewModelAttribute(GetHomeRoute.MESSAGE_ATTR, GetHomeRoute.WELCOME_MSG);
         //testHelper.assertViewModelAttribute(GetHomeRoute.MESSAGE_ATTR, GameCenter.NO_GAMES_MESSAGE);
-        testHelper.assertViewModelAttribute(GetHomeRoute.CURRENT_PLAYER, Boolean.TRUE);
+        testHelper.assertViewModelAttribute(GetHomeRoute.CURRENT_PLAYER, null);
         //   * test view name
         String viewName = "home.ftl";
         testHelper.assertViewName(viewName);
