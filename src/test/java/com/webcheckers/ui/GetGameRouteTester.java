@@ -95,8 +95,8 @@ public class GetGameRouteTester {
 
         CuT.handle(request, response);
         testHelper.assertViewModelAttribute("redPlayer", player);
-        testHelper.assertViewModelAttribute("whitePlayer", center.getGame(player).getPlayer2());
-        testHelper.assertViewModelAttribute("board", center.getGame(player));
+        testHelper.assertViewModelAttribute("whitePlayer", player.getGame().getPlayer2());
+        testHelper.assertViewModelAttribute("board", player.getGame());
 
     }
 

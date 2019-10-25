@@ -14,7 +14,7 @@ public class GameBoard implements Iterable<Row> {
     private Position activePieceStart;
     private Position activePieceEnd;
     private int activePieceMoves = 0;
-    private Stack<int[]> pieceRemove = new Stack<>();
+    private ArrayList<int[]> pieceRemove = new ArrayList<>();
     private Map<int[], List<int[]>> requiredMovePieces = new HashMap<>();
     private List<int[]> jumpPositions = new ArrayList<>();
 
@@ -130,14 +130,14 @@ public class GameBoard implements Iterable<Row> {
     }
 
     public void addPieceRemove(int[] position){
-        pieceRemove.push(position);
+        pieceRemove.add(position);
     }
 
     public int[] removePieceRemove(){
-        return pieceRemove.pop();
+        return pieceRemove.remove(pieceRemove.size()-1);
     }
 
-    public Stack<int[]> getPieceRemove(){
+    public ArrayList<int[]> getPieceRemove(){
         return pieceRemove;
     }
 
@@ -155,6 +155,7 @@ public class GameBoard implements Iterable<Row> {
             }
         }
         return valid;
+
     }
 
     public void addRequiredMovePieces(int[] position, List<int[]> jumps){
@@ -196,15 +197,15 @@ public class GameBoard implements Iterable<Row> {
         jumpPositions.clear();
     }
 
-    public boolean hasJumped(int[] endPosition){
-        boolean jumped = false;
-        for(int[] jump: jumpPositions){
-            if(endPosition[0] == jump[0]&&endPosition[1]==jump[1]){
-                jumped = true;
+
+    public void setPieceKing(Player player, List<Row> playerBoard, int row, int col){
+        switch (player.getColor()){
+            case RED:
+                setPiece(playerBoard,row,col,Piece.redKing);
                 break;
-            }
+            case WHITE:
+                setPiece(playerBoard,row,col,Piece.whiteKing);
         }
-        return jumped;
     }
 
     @Override

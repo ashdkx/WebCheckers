@@ -31,6 +31,7 @@ public class GetHomeRoute implements Route {
   static final String ERROR_TYPE = "error";
   static final String MESSAGE = "messageValue";
   static final String TITLE_ATTR = "title";
+  static final String TITLE = "Home";
   private final GameCenter gameCenter;
 
   private final String ACTIVE_PLAYERS = "activePlayers";
@@ -68,7 +69,7 @@ public class GetHomeRoute implements Route {
     LOG.finer("GetHomeRoute is invoked.");
     //
     Map<String, Object> vm = new HashMap<>();
-
+    vm.put(TITLE_ATTR, TITLE);
     // display a user message in the Home page
 
     // show active players

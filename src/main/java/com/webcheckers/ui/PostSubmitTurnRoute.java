@@ -130,10 +130,10 @@ public class PostSubmitTurnRoute implements Route {
 
         }
         
-       /* if(piece.getType() == Piece.type.KING){
+        if(piece.getType() == Piece.type.KING){
             if(!board.getPieceRemove().isEmpty()){
-                int previousPieceRow = board.getPieceRemove().peek()[0];
-                int previousPieceCell = board.getPieceRemove().peek()[1];
+                int previousPieceRow = board.getPieceRemove().get(board.getPieceRemove().size()-1)[0];
+                int previousPieceCell = board.getPieceRemove().get(board.getPieceRemove().size()-1)[1];
                 if (board.getPiece(playerBoard, row - 1, col + 1) != null) {
                     Piece pieceJump = board.getPiece(playerBoard, row - 1, col + 1);
                     boolean isCorrectColor = player.isNotActiveColor(pieceJump);
@@ -197,13 +197,20 @@ public class PostSubmitTurnRoute implements Route {
                     }
                 }
             }
-        }*/
+        }
         return validPos1||validPos2||validPos3||validPos4;
     }
 
     private String submit(GameBoard board, List<Row> playerBoard, Player player, Position moveStart, Position moveEnd){
         board.setPiece(playerBoard, moveStart.getRow(), moveStart.getCell(), null);
-        board.setPiece(playerBoard, moveEnd.getRow(), moveEnd.getCell(), board.getActivePiece());
+
+        if(moveEnd.getRow()==0){
+            board.setPieceKing(player,playerBoard,moveEnd.getRow(),moveEnd.getCell());
+            player.addTotalPieces();
+        }
+        else{
+            board.setPiece(playerBoard, moveEnd.getRow(), moveEnd.getCell(), board.getActivePiece());
+        }
         board.setActivePiece(null);
         board.setActivePieceMoves(0);
 
@@ -218,6 +225,7 @@ public class PostSubmitTurnRoute implements Route {
             board.getPlayer1().setMyTurn(true);
         }
         player.setSingleMove(false);
+        board.clearRequiredMovePieces();
         return gson.toJson(Message.info("Valid Move."));
     }
 
