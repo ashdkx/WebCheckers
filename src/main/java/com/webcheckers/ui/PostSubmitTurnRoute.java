@@ -61,7 +61,7 @@ public class PostSubmitTurnRoute implements Route {
             json = move(board,player, player2, playerBoard,moveStart, moveEnd);
         }
         else {
-            if(board.isRequiredMovePiece(position)&&hasJumped(board,position,moveEnd)) {
+            if(board.isRequiredMovePiece(position)&&hasJumped(board,position)) {
                 json = move(board,player,player2,playerBoard,moveStart,moveEnd);
             }
             else {
@@ -74,11 +74,11 @@ public class PostSubmitTurnRoute implements Route {
     }
 
 
-    private boolean hasJumped(GameBoard board, int[] position, Position moveEnd){
+    private boolean hasJumped(GameBoard board, int[] position){
         boolean jumped = false;
         for (int[] jumpPositions : board.getRequiredMoveJumps(position)){
-
-            if(moveEnd.getRow()==jumpPositions[0]&&moveEnd.getCell()==jumpPositions[1]){
+            for (int[] jumps : board.getPieceRemove())
+            if(jumps[0]==jumpPositions[0]&&jumps[1]==jumpPositions[1]){
                 jumped = true;
                 break;
             }
@@ -115,7 +115,7 @@ public class PostSubmitTurnRoute implements Route {
             boolean isValidSpace = board.isValid(playerBoard,row-2,col+2);
             validPos1 = isValidSpace&&isCorrectColor;
             if(validPos1){
-                board.addJumpPosition(new int[]{row-2,col+2});
+                board.addJumpPosition(new int[]{row-1,col+1});
             }
         }
         if (board.getPiece(playerBoard, row - 1, col - 1) != null) {
@@ -125,7 +125,7 @@ public class PostSubmitTurnRoute implements Route {
             validPos2 = isCorrectColor&&isValidSpace;
 
             if (validPos2){
-                board.addJumpPosition(new int[]{row-2,col-2});
+                board.addJumpPosition(new int[]{row-1,col-1});
             }
 
         }
@@ -149,6 +149,7 @@ public class PostSubmitTurnRoute implements Route {
             board.getPlayer1().setMyTurn(true);
         }
         player.setSingleMove(false);
+        board.clearRequiredMovePieces();
         return gson.toJson(Message.info("Valid Move."));
     }
 
