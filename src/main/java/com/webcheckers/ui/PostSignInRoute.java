@@ -77,12 +77,6 @@ public class PostSignInRoute implements Route {
                 gameCenter.addPlayer(username);
                 vm.put("currentUser", gameCenter.getPlayer(username));
                 httpSession.attribute(GetHomeRoute.CURRENT_PLAYER, gameCenter.getPlayer(username));
-                Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
-                if (player == null) {
-                    response.redirect(WebServer.HOME_URL);
-                    halt();
-                    return null;
-                }
             }
 
 

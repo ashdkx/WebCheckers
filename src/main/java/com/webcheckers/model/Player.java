@@ -16,6 +16,8 @@ public class Player{
     private GameBoard game;
     private GameBoard.color color;
     private boolean myTurn = false;
+    private int totalPieces = 12;
+    private boolean singleMove = false;
 
     public Player(String name, String sessionID) {
         this.name = name;
@@ -84,5 +86,44 @@ public class Player{
 
     public boolean isMyTurn() {
         return myTurn;
+    }
+
+    public int getTotalPieces() {
+        return totalPieces;
+    }
+
+    public void addTotalPieces(){
+        totalPieces++;
+    }
+
+    public void removeTotalPieces(int amount){
+        totalPieces-=amount;
+    }
+
+    public boolean isNotActiveColor(Piece piece){
+        boolean valid = false;
+        if(piece != null) {
+            switch (piece.getColor()) {
+                case RED:
+                    if (color != GameBoard.color.RED) {
+                        valid = true;
+                    }
+                    break;
+                case WHITE:
+                    if (color != GameBoard.color.WHITE) {
+                        valid = true;
+                    }
+                    break;
+            }
+        }
+        return valid;
+    }
+
+    public boolean isSingleMove() {
+        return singleMove;
+    }
+
+    public void setSingleMove(boolean move){
+        singleMove = move;
     }
 }

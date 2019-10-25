@@ -33,17 +33,27 @@ public class PostBackupMoveRoute implements Route {
         LOG.finer("PostBackupMoveRoute is invoked.");
         Gson gson = new Gson();
         final Session httpSession = request.session();
+        String json = "";
         Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
         GameBoard board = player.getGame();
         board.decrementActivePieceMoves();
-        if(board.getActivePieceMoves()<=0){
-            board.resetActivePieceMoves();
-            board.setActivePiece(null);
+        if(!board.getPieceRemove().isEmpty()){
+            board.removePieceRemove();
         }
-
-        String json = "";
-        player.getGame().setActivePiece(null);
-        json = gson.toJson(Message.info("Backup Successful."));
+        if (player.isSingleMove()){
+            player.setSingleMove(false);
+        }
+        if(board.getActivePieceMoves()==0){
+            board.setActivePiece(null);
+            json = gson.toJson(Message.info("Backup Successful."));
+        }
+        else if (board.getActivePieceMoves() < 0||board.getActivePiece()==null) {
+            board.setActivePieceMoves(0);
+            json = gson.toJson(Message.error("Cannot Backup."));
+        }
+        else {
+            json = gson.toJson(Message.info("Backup Successful."));
+        }
 
         return json;
     }

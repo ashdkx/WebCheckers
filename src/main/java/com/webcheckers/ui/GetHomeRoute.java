@@ -96,12 +96,6 @@ public class GetHomeRoute implements Route {
         vm.put(ACTIVE_PLAYERS, gameCenter.getPlayers());
         // remove current user from the list
         vm.put("currentUser", player);
-
-        for (String name : gameCenter.getPlayers().keySet()) {
-          if (request.params(name) != null) {
-            System.out.println(name);
-          }
-        }
       }
     }
     else{

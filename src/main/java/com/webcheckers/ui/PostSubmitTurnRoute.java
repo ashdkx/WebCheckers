@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameBoard;
+import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.Position;
 import com.webcheckers.model.Row;
@@ -11,7 +12,9 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import java.util.logging.Logger;
 
 /**
@@ -21,6 +24,8 @@ import java.util.logging.Logger;
 public class PostSubmitTurnRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostSubmitTurnRoute.class.getName());
+    private Gson gson = new Gson();
+
 
 
     public PostSubmitTurnRoute(){
@@ -32,30 +37,175 @@ public class PostSubmitTurnRoute implements Route {
 
 
         LOG.finer("PostSubmitTurnRoute is invoked.");
-        Gson gson = new Gson();
+
         final Session httpSession = request.session();
 
         Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
-
+        Player player2;
+        String json;
         GameBoard board = player.getGame();
-        List<Row> playerBoard;
+        List<Row> playerBoard = board.getPlayerBoard(player);
         if(player.isPlayer1()){
-            playerBoard = player.getGame().getPlayer1Board();
+            player2 = board.getPlayer2();
         }
         else{
-            playerBoard = player.getGame().getPlayer2Board();
+            player2 = board.getPlayer1();
         }
 
         Position moveEnd = board.getActiveEnd();
         Position moveStart = board.getActiveStart();
+        int[] position = new int[]{moveStart.getRow(), moveStart.getCell()};
 
-        playerBoard.get(moveStart.getRow()).getSpace(moveStart.getCell()).setPiece(null);
-        playerBoard.get(moveEnd.getRow()).getSpace(moveEnd.getCell()).setPiece(board.getActivePiece());
+        checkRequiredMoves(board, player, playerBoard);
+        if(board.getRequiredMovePieces().isEmpty()){
+            json = move(board,player, player2, playerBoard,moveStart, moveEnd);
+        }
+        else {
+            if(board.isRequiredMovePiece(position)&&hasJumped(board,position,moveEnd)) {
+                json = move(board,player,player2,playerBoard,moveStart,moveEnd);
+            }
+            else {
+                json = gson.toJson(Message.error("There are pieces that have to jump."));
+                board.clearRequiredMovePieces();
+            }
+        }
+
+        return json;
+    }
+
+
+    private boolean hasJumped(GameBoard board, int[] position, Position moveEnd){
+        boolean jumped = false;
+        for (int[] jumpPositions : board.getRequiredMoveJumps(position)){
+
+            if(moveEnd.getRow()==jumpPositions[0]&&moveEnd.getCell()==jumpPositions[1]){
+                jumped = true;
+                break;
+            }
+
+        }
+        return jumped;
+    }
+
+    private void checkRequiredMoves(GameBoard board, Player player, List<Row> playerBoard){
+        for(int i = 7; i>-1;i--){
+            for(int j = 0; j<8;j++){
+                Piece piece = board.getPiece(playerBoard,i,j);
+                if(player.isNotActiveColor(piece)||piece==null) {
+                    continue;
+                }
+                if (canJump(board,player,playerBoard,i,j,piece)){
+                    int[] position = new int [] {i,j};
+                    List<int[]> jumpPositions = new ArrayList<>(board.getJumpPositions());
+                    board.addRequiredMovePieces(position,jumpPositions);
+                    board.clearJumpPositions();
+                }
+            }
+        }
+    }
+
+    private boolean canJump(GameBoard board, Player player, List<Row> playerBoard, int row, int col, Piece piece){
+        boolean validPos1 = false;
+        boolean validPos2 = false;
+        boolean validPos3 = false;
+        boolean validPos4 = false;
+        if (board.getPiece(playerBoard, row - 1, col + 1) != null) {
+            Piece pieceJump = board.getPiece(playerBoard, row - 1, col + 1);
+            boolean isCorrectColor = player.isNotActiveColor(pieceJump);
+            boolean isValidSpace = board.isValid(playerBoard,row-2,col+2);
+            validPos1 = isValidSpace&&isCorrectColor;
+            if(validPos1){
+                board.addJumpPosition(new int[]{row-2,col+2});
+            }
+        }
+        if (board.getPiece(playerBoard, row - 1, col - 1) != null) {
+            Piece pieceJump = board.getPiece(playerBoard, row - 1, col - 1);
+            boolean isCorrectColor = player.isNotActiveColor(pieceJump);
+            boolean isValidSpace = board.isValid(playerBoard,row-2,col-2);
+            validPos2 = isCorrectColor&&isValidSpace;
+
+            if (validPos2){
+                board.addJumpPosition(new int[]{row-2,col-2});
+            }
+
+        }
+        
+       /* if(piece.getType() == Piece.type.KING){
+            if(!board.getPieceRemove().isEmpty()){
+                int previousPieceRow = board.getPieceRemove().peek()[0];
+                int previousPieceCell = board.getPieceRemove().peek()[1];
+                if (board.getPiece(playerBoard, row - 1, col + 1) != null) {
+                    Piece pieceJump = board.getPiece(playerBoard, row - 1, col + 1);
+                    boolean isCorrectColor = player.isNotActiveColor(pieceJump);
+                    boolean isValidSpace = board.isValid(playerBoard,row-2,col+2);
+                    boolean isPreviousPiece = row-1 == previousPieceRow&& col+1 == previousPieceCell;
+                    validPos1 = isValidSpace&&isCorrectColor&&!isPreviousPiece;
+
+                    if(validPos1){
+                        board.addJumpPosition(new int[]{row-2,col+2});
+                    }
+
+                }
+                if (board.getPiece(playerBoard, row - 1, col - 1) != null) {
+                    Piece pieceJump = board.getPiece(playerBoard, row - 1, col - 1);
+                    boolean isCorrectColor = player.isNotActiveColor(pieceJump);
+                    boolean isValidSpace = board.isValid(playerBoard,row-2,col-2);
+                    boolean isPreviousPiece = row-1 == previousPieceRow&& col+1 == previousPieceCell;
+                    validPos2 = isValidSpace&&isCorrectColor&&!isPreviousPiece;
+                    if (validPos2){
+                        board.addJumpPosition(new int[]{row-2,col-2});
+                    }
+                }
+                if (board.getPiece(playerBoard, row+1, col+1) != null){
+                    Piece pieceJump = board.getPiece(playerBoard, row + 1, col + 1);
+                    boolean isCorrectColor = player.isNotActiveColor(pieceJump);
+                    boolean isValidSpace = board.isValid(playerBoard,row+2,col+2);
+                    boolean isPreviousPiece = row+1 == previousPieceRow&& col+1 == previousPieceCell;
+                    validPos3 = isValidSpace&&isCorrectColor&&!isPreviousPiece;
+                    if (validPos3){
+                        board.addJumpPosition(new int[]{row+2,col+2});
+                    }
+                }
+                if (board.getPiece(playerBoard, row+1, col-1) != null){
+                    Piece pieceJump = board.getPiece(playerBoard, row + 1, col - 1);
+                    boolean isCorrectColor = player.isNotActiveColor(pieceJump);
+                    boolean isValidSpace = board.isValid(playerBoard,row+2,col-2);
+                    boolean isPreviousPiece = row+1 == previousPieceRow&& col-1 == previousPieceCell;
+                    validPos4 = isValidSpace&&isCorrectColor&&!isPreviousPiece;
+                    if (validPos4){
+                        board.addJumpPosition(new int[]{row+2,col-2});
+                    }
+                }
+            }
+            else {
+                if (board.getPiece(playerBoard, row+1, col+1) != null){
+                    Piece pieceJump = board.getPiece(playerBoard, row + 1, col + 1);
+                    boolean isCorrectColor = player.isNotActiveColor(pieceJump);
+                    boolean isValidSpace = board.isValid(playerBoard,row+2,col+2);
+                    validPos3 = isValidSpace&&isCorrectColor;
+                    if (validPos3){
+                        board.addJumpPosition(new int[]{row+2,col+2});
+                    }
+                }
+                if (board.getPiece(playerBoard, row+1, col-1) != null){
+                    Piece pieceJump = board.getPiece(playerBoard, row + 1, col - 1);
+                    boolean isCorrectColor = player.isNotActiveColor(pieceJump);
+                    boolean isValidSpace = board.isValid(playerBoard,row+2,col-2);
+                    validPos4 = isValidSpace&&isCorrectColor;
+                    if (validPos4){
+                        board.addJumpPosition(new int[]{row+2,col-2});
+                    }
+                }
+            }
+        }*/
+        return validPos1||validPos2||validPos3||validPos4;
+    }
+
+    private String submit(GameBoard board, List<Row> playerBoard, Player player, Position moveStart, Position moveEnd){
+        board.setPiece(playerBoard, moveStart.getRow(), moveStart.getCell(), null);
+        board.setPiece(playerBoard, moveEnd.getRow(), moveEnd.getCell(), board.getActivePiece());
         board.setActivePiece(null);
-        board.resetActivePieceMoves();
-
-        String json= "";
-        json = gson.toJson(Message.info("Valid Move"));
+        board.setActivePieceMoves(0);
 
         if(player.isPlayer1()){
             board.updatePlayer2();
@@ -66,6 +216,31 @@ public class PostSubmitTurnRoute implements Route {
             board.updatePlayer1();
             player.setMyTurn(false);
             board.getPlayer1().setMyTurn(true);
+        }
+        player.setSingleMove(false);
+        return gson.toJson(Message.info("Valid Move."));
+    }
+
+
+    private String move(GameBoard board, Player player, Player player2, List<Row> playerBoard, Position moveStart, Position moveEnd){
+        String json;
+        if (player.isSingleMove()) {
+            json = submit(board, playerBoard, player, moveStart, moveEnd);
+        } else {
+            if (canJump(board, player, playerBoard, moveEnd.getRow(), moveEnd.getCell(), board.getActivePiece())) {
+                json = gson.toJson(Message.error("Piece is still able to jump."));
+            } else {
+                while (!board.getPieceRemove().isEmpty()) {
+                    int[] positionRemove = board.removePieceRemove();
+                    if (board.getPiece(playerBoard, positionRemove[0], positionRemove[1]).getType() == Piece.type.KING) {
+                        player2.removeTotalPieces(2);
+                    } else {
+                        player2.removeTotalPieces(1);
+                    }
+                    playerBoard.get(positionRemove[0]).getSpace(positionRemove[1]).setPiece(null);
+                }
+                json = submit(board, playerBoard, player, moveStart, moveEnd);
+            }
         }
         return json;
     }

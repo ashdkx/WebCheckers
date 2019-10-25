@@ -2,8 +2,7 @@ package com.webcheckers.appl;
 
 import com.webcheckers.model.*;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Nicholas Curl
@@ -11,6 +10,13 @@ import java.util.List;
 public class GameBoard implements Iterable<Row> {
 
     private GameView game;
+    private Piece activePiece = null;
+    private Position activePieceStart;
+    private Position activePieceEnd;
+    private int activePieceMoves = 0;
+    private Stack<int[]> pieceRemove = new Stack<>();
+    private Map<int[], List<int[]>> requiredMovePieces = new HashMap<>();
+    private List<int[]> jumpPositions = new ArrayList<>();
 
     public enum color{
         RED,
@@ -20,7 +26,6 @@ public class GameBoard implements Iterable<Row> {
     public GameBoard(Player player1, Player player2){
         this.game = new GameView(player1,player2);
     }
-
 
     public GameView getGame() {
         return game;
@@ -46,43 +51,6 @@ public class GameBoard implements Iterable<Row> {
         game.isPlayer2Board(board2);
     }
 
-    public boolean isValid(List<Row> board, int row, int col){
-        return game.isValid(board, row,col);
-    }
-
-    public Piece getPiece(List<Row> board, int row, int col){
-        return game.getPiece(board, row, col);
-    }
-
-    public void setActivePiece(Piece piece){
-        game.setActivePiece(piece);
-    }
-
-    public Piece getActivePiece(){
-        return game.getActivePiece();
-    }
-
-    public List<Row> getBoard(){
-        return game.getBoard();
-    }
-
-
-    public Position getActiveStart(){
-        return game.getActiveStart();
-    }
-
-    public void setActivePieceEnd(Position end){
-        game.setActivePieceEnd(end);
-    }
-
-    public void setActivePieceStart(Position start){
-        game.setActivePieceStart(start);
-    }
-
-    public Position getActiveEnd(){
-        return game.getActiveEnd();
-    }
-
     public void updatePlayer1(){
         game.updatePlayer1();
     }
@@ -91,20 +59,152 @@ public class GameBoard implements Iterable<Row> {
         game.updatePlayer2();
     }
 
-    public int getActivePieceMoves(){
-        return game.getActivePieceMoves();
+    public List<Row> getBoard(){
+        return game.getBoard();
     }
 
-    public void resetActivePieceMoves(){
-        game.setActivePieceMoves(0);
+    public boolean isValid(List<Row> board, int row, int col){
+        if(row>7||row<0||col>7||col<0){
+            return false;
+        }
+        else {
+            return board.get(row).getSpace(col).isValid();
+        }
+    }
+
+    public Piece getPiece(List<Row> board, int row, int col){
+        if(row>7||row<0||col>7||col<0){
+            return null;
+        }
+        else {
+            return board.get(row).getSpace(col).getPiece();
+        }
+    }
+
+    public void setPiece(List<Row> board, int row, int col, Piece piece){
+        if(!(row>7||row<0||col>7||col<0)) {
+            board.get(row).getSpace(col).setPiece(piece);
+        }
+    }
+
+    public void setActivePiece(Piece piece) {
+        this.activePiece = piece;
+
+    }
+
+    public void setActivePieceStart(Position activePieceStart) {
+        this.activePieceStart = activePieceStart;
+    }
+
+    public Piece getActivePiece() {
+        return activePiece;
+    }
+
+    public Position getActiveStart(){
+        return this.activePieceStart;
+    }
+
+    public void setActivePieceEnd(Position activePieceEnd) {
+        this.activePieceEnd = activePieceEnd;
+    }
+
+    public Position getActiveEnd(){
+        return this.activePieceEnd;
+    }
+
+
+    public int getActivePieceMoves() {
+        return activePieceMoves;
+    }
+
+    public void setActivePieceMoves(int activePieceMoves) {
+        this.activePieceMoves = activePieceMoves;
     }
 
     public void incrementActivePieceMoves(){
-        game.incrementActivePieceMoves();
+        this.activePieceMoves++;
     }
 
     public void decrementActivePieceMoves(){
-        game.decrementActivePieceMoves();
+        this.activePieceMoves--;
+    }
+
+    public void addPieceRemove(int[] position){
+        pieceRemove.push(position);
+    }
+
+    public int[] removePieceRemove(){
+        return pieceRemove.pop();
+    }
+
+    public Stack<int[]> getPieceRemove(){
+        return pieceRemove;
+    }
+
+
+    public Map<int[], List<int[]>> getRequiredMovePieces() {
+        return requiredMovePieces;
+    }
+
+    public boolean isRequiredMovePiece(int[] position){
+        boolean valid = false;
+        for(int[] requiredPosition:requiredMovePieces.keySet()){
+            if(position[0]==requiredPosition[0]&&position[1]==requiredPosition[1]){
+                valid = true;
+                break;
+            }
+        }
+        return valid;
+    }
+
+    public void addRequiredMovePieces(int[] position, List<int[]> jumps){
+        requiredMovePieces.put(position, jumps);
+    }
+
+    public void clearRequiredMovePieces(){
+        requiredMovePieces.clear();
+    }
+
+    public List<int[]> getRequiredMoveJumps(int[] position){
+        List<int[]> jumpPositions = new ArrayList<>();
+        for(int[] requiredPosition: requiredMovePieces.keySet()){
+            if(position[0]==requiredPosition[0]&&position[1]==requiredPosition[1]){
+                jumpPositions = requiredMovePieces.get(requiredPosition);
+            }
+        }
+        return jumpPositions;
+    }
+
+    public List<Row> getPlayerBoard(Player player){
+        if(player.isPlayer1()){
+            return this.getPlayer1Board();
+        }
+        else{
+            return this.getPlayer2Board();
+        }
+    }
+
+    public List<int[]> getJumpPositions() {
+        return jumpPositions;
+    }
+
+    public void addJumpPosition(int[] jump){
+        jumpPositions.add(jump);
+    }
+
+    public void clearJumpPositions(){
+        jumpPositions.clear();
+    }
+
+    public boolean hasJumped(int[] endPosition){
+        boolean jumped = false;
+        for(int[] jump: jumpPositions){
+            if(endPosition[0] == jump[0]&&endPosition[1]==jump[1]){
+                jumped = true;
+                break;
+            }
+        }
+        return jumped;
     }
 
     @Override
