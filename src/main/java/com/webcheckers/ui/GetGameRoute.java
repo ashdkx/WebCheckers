@@ -78,7 +78,6 @@ public class GetGameRoute implements Route {
           return null;
         }
         GameBoard board = new GameBoard(player, player2);
-        System.out.println(board);
         player.setPlayer1(true);
         player.setPlaying(true);
         player.setColor(GameBoard.color.RED);

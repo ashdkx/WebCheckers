@@ -22,6 +22,7 @@ public class PostValidateMoveRoute implements Route {
     private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
 
     private GameCenter gameCenter;
+    private Gson gson = new Gson();
 
     public PostValidateMoveRoute(){
         LOG.config("PostValidateMoveRoute is initialized.");
@@ -32,170 +33,123 @@ public class PostValidateMoveRoute implements Route {
 
 
         LOG.finer("PostValidateMoveRoute is invoked.");
-        Gson gson = new Gson();
+
         final Session httpSession = request.session();
 
 
         Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
 
         GameBoard board = player.getGame();
-        List<Row> playerBoard;
-        if(player.isPlayer1()){
-            playerBoard = player.getGame().getPlayer1Board();
-        }
-        else{
-            playerBoard = player.getGame().getPlayer2Board();
-        }
+        List<Row> playerBoard = board.getPlayerBoard(player);
         String json = request.queryParams("actionData");
         Move move = gson.fromJson(json,Move.class);
-        boolean valid = false;
-        String message = "";
-        Integer[] pieceRemovePosition = new Integer[2];
 
         int moveStartRow = move.getStart().getRow();
         int moveStartCell = move.getStart().getCell();
-        int moveEndRow = move.getEnd().getRow();
-        int moveEndCell = move.getEnd().getCell();
 
         if (board.getActivePiece() == null){
             board.setActivePiece(board.getPiece(playerBoard,moveStartRow,moveStartCell));
             board.setActivePieceStart(move.getStart());
         }
 
-        if(board.getActivePiece().getType() == Piece.type.SINGLE){
-            if(moveEndRow>moveStartRow){
-                message = "Can't move backwards.";
-            }
-            else if(board.isValid(playerBoard,moveEndRow,moveEndCell)){
-                switch (moveEndCell-moveStartCell){
+        return move(board,player,playerBoard,move);
+    }
+
+
+    private String move(GameBoard board, Player player, List<Row> playerBoard, Move move){
+        int moveStartRow = move.getStart().getRow();
+        int moveStartCell = move.getStart().getCell();
+        int moveEndRow = move.getEnd().getRow();
+        int moveEndCell = move.getEnd().getCell();
+        String json;
+        if(board.isValid(playerBoard,moveEndRow,moveEndCell)) {
+            if (board.getActivePiece().getType() == Piece.type.SINGLE && moveEndRow > moveStartRow) {
+                json = gson.toJson(Message.error("Can't move backwards."));
+            } else {
+                switch (moveEndCell - moveStartCell) {
                     case -1:
                     case 1:
-                        if(player.isSingleMove()){
-                            valid = false;
-                            message = "Can only move diagonally once.";
-                        }
-                        else if(board.getActivePieceMoves()>1){
-                            valid = false;
-                            message = "Cannot move after jump.";
-                        }
-                        else{
-                            valid = true;
-                            message = "Valid move.";
+                        if (player.isSingleMove()) {
+                            json = gson.toJson(Message.error("Can only move diagonally once."));
+                        } else if (board.getActivePieceMoves() > 1) {
+                            json = gson.toJson(Message.error("Cannot move after jump."));
+                        } else {
                             board.setActivePieceEnd(move.getEnd());
                             board.incrementActivePieceMoves();
                             player.setSingleMove(true);
+                            json = gson.toJson(Message.info("Valid move."));
                         }
                         break;
                     case -2:
-                        if(!player.isSingleMove()) {
-                            if (board.getPiece(playerBoard, moveStartRow - 1, moveEndCell + 1) != null) {
-                                Piece piece = board.getPiece(playerBoard, moveStartRow - 1, moveEndCell + 1);
-
-
-                                switch (piece.getColor()) {
-                                    case RED:
-                                        if (player.getColor() != GameBoard.color.RED) {
-                                            valid = true;
-                                            message = "Valid move.";
-                                            pieceRemovePosition[0] = moveStartRow - 1;
-                                            pieceRemovePosition[1] = moveEndCell + 1;
-                                            board.addPieceRemove(pieceRemovePosition);
-                                            board.incrementActivePieceMoves();
-                                            board.setActivePieceEnd(move.getEnd());
-                                        } else {
-                                            valid = false;
-                                            message = "Can't jump over own piece.";
-                                        }
-                                        break;
-                                    case WHITE:
-                                        if (player.getColor() != GameBoard.color.WHITE) {
-                                            valid = true;
-                                            message = "Valid move.";
-                                            pieceRemovePosition[0] = moveStartRow - 1;
-                                            pieceRemovePosition[1] = moveEndCell + 1;
-                                            board.addPieceRemove(pieceRemovePosition);
-                                            board.incrementActivePieceMoves();
-                                            board.setActivePieceEnd(move.getEnd());
-                                        } else {
-                                            valid = false;
-                                            message = "Can't jump over own piece.";
-                                        }
-                                        break;
-                                }
-                            } else {
-                                valid = false;
-                                message = "No piece to Jump.";
+                        if (board.getActivePiece().getType() == Piece.type.SINGLE) {
+                            json = jump(board, player, playerBoard, moveEndRow + 1, moveEndCell + 1, move);
+                        } else {
+                            switch (moveEndRow - moveStartRow) {
+                                case 2:
+                                    json = jump(board, player, playerBoard, moveEndRow-1,moveEndCell+1,move);
+                                    break;
+                                case -2:
+                                    json = jump(board, player, playerBoard, moveEndRow+1, moveEndCell+1,move);
+                                    break;
+                                default:
+                                    json = gson.toJson(Message.error("Invalid move."));
                             }
-                        }
-                        else {
-                            valid = false;
-                            message = "Cannot jump after single move.";
                         }
                         break;
                     case 2:
-                        if(!player.isSingleMove()) {
-                            if (board.getPiece(playerBoard, moveStartRow - 1, moveEndCell - 1) != null) {
-                                Piece piece = board.getPiece(playerBoard, moveStartRow - 1, moveEndCell - 1);
-                                switch (piece.getColor()) {
-                                    case RED:
-                                        if (player.getColor() != GameBoard.color.RED) {
-                                            valid = true;
-                                            message = "Valid move.";
-                                            pieceRemovePosition[0] = moveStartRow - 1;
-                                            pieceRemovePosition[1] = moveEndCell - 1;
-                                            board.addPieceRemove(pieceRemovePosition);
-                                            board.incrementActivePieceMoves();
-                                            board.setActivePieceEnd(move.getEnd());
-                                        } else {
-                                            valid = false;
-                                            message = "Can't jump over own piece.";
-                                        }
-                                        break;
-                                    case WHITE:
-                                        if (player.getColor() != GameBoard.color.WHITE) {
-                                            valid = true;
-                                            message = "Valid move.";
-                                            pieceRemovePosition[0] = moveStartRow - 1;
-                                            pieceRemovePosition[1] = moveEndCell - 1;
-                                            board.addPieceRemove(pieceRemovePosition);
-                                            board.incrementActivePieceMoves();
-                                            board.setActivePieceEnd(move.getEnd());
-                                        } else {
-                                            valid = false;
-                                            message = "Can't jump over own piece.";
-                                        }
-                                        break;
-                                }
-                            } else {
-                                valid = false;
-                                message = "No piece to Jump.";
+                        if (board.getActivePiece().getType() == Piece.type.SINGLE) {
+                            json = jump(board, player, playerBoard, moveEndRow + 1, moveEndCell - 1, move);
+                        } else {
+                            switch (moveEndRow - moveStartRow) {
+                                case 2:
+                                    json = jump(board, player, playerBoard, moveEndRow-1,moveEndCell-1,move);
+                                    break;
+                                case -2:
+                                    json = jump(board, player, playerBoard, moveEndRow+1, moveEndCell-1,move);
+                                    break;
+                                default:
+                                    json = gson.toJson(Message.error("Invalid move."));
                             }
-                        }
-                        else{
-                            valid = false;
-                            message = "Cannot jump after single move.";
                         }
                         break;
                     default:
-                        valid = false;
-                        message = "Invalid move";
-                        break;
+                        json = gson.toJson(Message.error("Invalid move."));
 
                 }
             }
-            else{
-                message = "Invalid Move.";
-            }
-
-
-        }
-        if(valid){
-            json = gson.toJson(Message.info(message));
         }
         else {
-            json = gson.toJson(Message.error(message));
+            json = gson.toJson(Message.error("Invalid move."));
         }
-
         return json;
     }
+
+
+    private String jump(GameBoard board, Player player, List<Row> playerBoard, int pieceJumpedRow, int pieceJumpedCol, Move move){
+        int[] position = new int[2];
+        if(!player.isSingleMove()) {
+            if (board.getPiece(playerBoard, pieceJumpedRow, pieceJumpedCol) != null) {
+                Piece piece = board.getPiece(playerBoard, pieceJumpedRow, pieceJumpedCol);
+
+                if (player.isNotActiveColor(piece)){
+                    position[0] = pieceJumpedRow;
+                    position[1] = pieceJumpedCol;
+                    board.addPieceRemove(position);
+                    board.incrementActivePieceMoves();
+                    board.setActivePieceEnd(move.getEnd());
+                    return gson.toJson(Message.info("Valid Move."));
+
+                }
+                else {
+                    return gson.toJson(Message.error("Can't jump over own piece."));
+                }
+            } else {
+                return gson.toJson(Message.error("No piece to Jump."));
+            }
+        }
+        else{
+            return gson.toJson(Message.error("Cannot jump after single move."));
+        }
+    }
+
 }

@@ -35,7 +35,6 @@ public class PostCheckTurnRoute implements Route {
         String json;
         if (player.isMyTurn()){
             json = gson.toJson(Message.info("true"));
-            System.out.println(player+": "+player.getTotalPieces());
         }
         else {
             json = gson.toJson(Message.info("false"));

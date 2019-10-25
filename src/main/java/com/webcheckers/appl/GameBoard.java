@@ -2,10 +2,7 @@ package com.webcheckers.appl;
 
 import com.webcheckers.model.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * @author Nicholas Curl
@@ -17,7 +14,9 @@ public class GameBoard implements Iterable<Row> {
     private Position activePieceStart;
     private Position activePieceEnd;
     private int activePieceMoves = 0;
-    private Stack<Integer[]> pieceRemove = new Stack<>();
+    private Stack<int[]> pieceRemove = new Stack<>();
+    private Map<int[], List<int[]>> requiredMovePieces = new HashMap<>();
+    private List<int[]> jumpPositions = new ArrayList<>();
 
     public enum color{
         RED,
@@ -27,7 +26,6 @@ public class GameBoard implements Iterable<Row> {
     public GameBoard(Player player1, Player player2){
         this.game = new GameView(player1,player2);
     }
-
 
     public GameView getGame() {
         return game;
@@ -131,16 +129,82 @@ public class GameBoard implements Iterable<Row> {
         this.activePieceMoves--;
     }
 
-    public void addPieceRemove(Integer[] position){
+    public void addPieceRemove(int[] position){
         pieceRemove.push(position);
     }
 
-    public Integer[] removePieceRemove(){
+    public int[] removePieceRemove(){
         return pieceRemove.pop();
     }
 
-    public Stack<Integer[]> getPieceRemove(){
+    public Stack<int[]> getPieceRemove(){
         return pieceRemove;
+    }
+
+
+    public Map<int[], List<int[]>> getRequiredMovePieces() {
+        return requiredMovePieces;
+    }
+
+    public boolean isRequiredMovePiece(int[] position){
+        boolean valid = false;
+        for(int[] requiredPosition:requiredMovePieces.keySet()){
+            if(position[0]==requiredPosition[0]&&position[1]==requiredPosition[1]){
+                valid = true;
+                break;
+            }
+        }
+        return valid;
+    }
+
+    public void addRequiredMovePieces(int[] position, List<int[]> jumps){
+        requiredMovePieces.put(position, jumps);
+    }
+
+    public void clearRequiredMovePieces(){
+        requiredMovePieces.clear();
+    }
+
+    public List<int[]> getRequiredMoveJumps(int[] position){
+        List<int[]> jumpPositions = new ArrayList<>();
+        for(int[] requiredPosition: requiredMovePieces.keySet()){
+            if(position[0]==requiredPosition[0]&&position[1]==requiredPosition[1]){
+                jumpPositions = requiredMovePieces.get(requiredPosition);
+            }
+        }
+        return jumpPositions;
+    }
+
+    public List<Row> getPlayerBoard(Player player){
+        if(player.isPlayer1()){
+            return this.getPlayer1Board();
+        }
+        else{
+            return this.getPlayer2Board();
+        }
+    }
+
+    public List<int[]> getJumpPositions() {
+        return jumpPositions;
+    }
+
+    public void addJumpPosition(int[] jump){
+        jumpPositions.add(jump);
+    }
+
+    public void clearJumpPositions(){
+        jumpPositions.clear();
+    }
+
+    public boolean hasJumped(int[] endPosition){
+        boolean jumped = false;
+        for(int[] jump: jumpPositions){
+            if(endPosition[0] == jump[0]&&endPosition[1]==jump[1]){
+                jumped = true;
+                break;
+            }
+        }
+        return jumped;
     }
 
     @Override

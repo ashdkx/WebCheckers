@@ -100,19 +100,21 @@ public class Player{
         totalPieces-=amount;
     }
 
-    public boolean isActiveColor(Piece piece){
+    public boolean isNotActiveColor(Piece piece){
         boolean valid = false;
-        switch (piece.getColor()) {
-            case RED:
-                if (color != GameBoard.color.RED) {
-                    valid = true;
-                }
-                break;
-            case WHITE:
-                if (color != GameBoard.color.WHITE) {
-                    valid = true;
-                }
-                break;
+        if(piece != null) {
+            switch (piece.getColor()) {
+                case RED:
+                    if (color != GameBoard.color.RED) {
+                        valid = true;
+                    }
+                    break;
+                case WHITE:
+                    if (color != GameBoard.color.WHITE) {
+                        valid = true;
+                    }
+                    break;
+            }
         }
         return valid;
     }
