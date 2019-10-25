@@ -130,7 +130,7 @@ public class PostSubmitTurnRoute implements Route {
 
         }
         
-        if(piece.getType() == Piece.type.KING){
+       /* if(piece.getType() == Piece.type.KING){
             if(!board.getPieceRemove().isEmpty()){
                 int previousPieceRow = board.getPieceRemove().peek()[0];
                 int previousPieceCell = board.getPieceRemove().peek()[1];
@@ -197,7 +197,7 @@ public class PostSubmitTurnRoute implements Route {
                     }
                 }
             }
-        }
+        }*/
         return validPos1||validPos2||validPos3||validPos4;
     }
 

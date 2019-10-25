@@ -83,7 +83,9 @@ public class PostValidateMoveRoute implements Route {
                     case -2:
                         if (board.getActivePiece().getType() == Piece.type.SINGLE) {
                             json = jump(board, player, playerBoard, moveEndRow + 1, moveEndCell + 1, move);
-                        } else {
+                        }
+                        else {json = gson.toJson(Message.error("Invalid move."));}
+                            /*else {
                             switch (moveEndRow - moveStartRow) {
                                 case 2:
                                     json = jump(board, player, playerBoard, moveEndRow-1,moveEndCell+1,move);
@@ -94,12 +96,12 @@ public class PostValidateMoveRoute implements Route {
                                 default:
                                     json = gson.toJson(Message.error("Invalid move."));
                             }
-                        }
+                        }*/
                         break;
                     case 2:
                         if (board.getActivePiece().getType() == Piece.type.SINGLE) {
                             json = jump(board, player, playerBoard, moveEndRow + 1, moveEndCell - 1, move);
-                        } else {
+                        }else{json = gson.toJson(Message.error("Invalid move."));} /*else {
                             switch (moveEndRow - moveStartRow) {
                                 case 2:
                                     json = jump(board, player, playerBoard, moveEndRow-1,moveEndCell-1,move);
@@ -110,7 +112,7 @@ public class PostValidateMoveRoute implements Route {
                                 default:
                                     json = gson.toJson(Message.error("Invalid move."));
                             }
-                        }
+                        }*/
                         break;
                     default:
                         json = gson.toJson(Message.error("Invalid move."));
