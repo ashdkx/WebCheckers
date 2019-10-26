@@ -77,12 +77,12 @@ public class PostSubmitTurnRoute implements Route {
     private boolean hasJumped(GameBoard board, int[] position){
         boolean jumped = false;
         for (int[] jumpPositions : board.getRequiredMoveJumps(position)){
-            for (int[] jumps : board.getPieceRemove())
-            if(jumps[0]==jumpPositions[0]&&jumps[1]==jumpPositions[1]){
-                jumped = true;
-                break;
+            for (int[] jumps : board.getPieceRemove()) {
+                if (jumps[0] == jumpPositions[0] && jumps[1] == jumpPositions[1]) {
+                    jumped = true;
+                    break;
+                }
             }
-
         }
         return jumped;
     }
