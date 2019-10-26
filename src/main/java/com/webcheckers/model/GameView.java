@@ -41,6 +41,7 @@ public class GameView {
     private void initBoard(){
         initPlayer1();
         initPlayer2();
+        updatePlayer2();
     }
 
     private void initPlayer1(){
@@ -58,6 +59,22 @@ public class GameView {
             }
             valid1 = !valid1;
         }
+        for (int i = 0; i<8;i++){
+            for(int j = 0; j<8;j++){
+                player1Board.get(i).getSpace(j).setPiece(null);
+            }
+        }
+        player1Board.get(0).getSpace(7).setPiece(Piece.redKing);
+        player1Board.get(1).getSpace(0).setPiece(Piece.redKing);
+        player1Board.get(1).getSpace(6).setPiece(Piece.whiteSingle);
+        player1Board.get(3).getSpace(4).setPiece(Piece.whiteSingle);
+        player1Board.get(4).getSpace(3).setPiece(Piece.redSingle);
+        player1Board.get(5).getSpace(2).setPiece(Piece.redSingle);
+        player1Board.get(6).getSpace(1).setPiece(Piece.redSingle);
+        player1Board.get(7).getSpace(6).setPiece(Piece.redSingle);
+        player1Board.get(7).getSpace(4).setPiece(Piece.redSingle);
+        player1Board.get(7).getSpace(2).setPiece(Piece.redSingle);
+        player1Board.get(7).getSpace(0).setPiece(Piece.redSingle);
     }
 
     private void initPlayer2(){
