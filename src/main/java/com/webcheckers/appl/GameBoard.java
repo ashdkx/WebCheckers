@@ -23,40 +23,40 @@ public class GameBoard implements Iterable<Row> {
         WHITE
     }
 
-    public GameBoard(Player player1, Player player2){
-        this.game = new GameView(player1,player2);
+    public GameBoard(Player redPlayer, Player whitePlayer){
+        this.game = new GameView(redPlayer,whitePlayer);
     }
 
     public GameView getGame() {
         return game;
     }
 
-    public Player getPlayer1(){
-        return game.getPlayer1();
+    public Player getRedPlayer(){
+        return game.getRedPlayer();
     }
 
-    public Player getPlayer2(){
-        return game.getPlayer2();
+    public Player getWhitePlayer(){
+        return game.getWhitePlayer();
     }
 
-    public List<Row> getPlayer1Board(){
-        return game.getPlayer1Board();
+    public List<Row> getRedPlayerBoard(){
+        return game.getRedPlayerBoard();
     }
 
-    public List<Row> getPlayer2Board(){
-        return game.getPlayer2Board();
+    public List<Row> getWhitePlayerBoard(){
+        return game.getWhitePlayerBoard();
     }
 
-    public void isPlayer2Board(boolean board2){
-        game.isPlayer2Board(board2);
+    public void isWhitePlayerBoard(boolean board2){
+        game.isWhitePlayerBoard(board2);
     }
 
-    public void updatePlayer1(){
-        game.updatePlayer1();
+    public void updateRedPlayer(){
+        game.updateRedPlayer();
     }
 
-    public void updatePlayer2(){
-        game.updatePlayer2();
+    public void updateWhitePlayer(){
+        game.updateWhitePlayer();
     }
 
     public List<Row> getBoard(){
@@ -112,7 +112,6 @@ public class GameBoard implements Iterable<Row> {
         return this.activePieceEnd;
     }
 
-
     public int getActivePieceMoves() {
         return activePieceMoves;
     }
@@ -140,7 +139,6 @@ public class GameBoard implements Iterable<Row> {
     public ArrayList<int[]> getPieceRemove(){
         return pieceRemove;
     }
-
 
     public Map<int[], List<int[]>> getRequiredMovePieces() {
         return requiredMovePieces;
@@ -177,11 +175,11 @@ public class GameBoard implements Iterable<Row> {
     }
 
     public List<Row> getPlayerBoard(Player player){
-        if(player.isPlayer1()){
-            return this.getPlayer1Board();
+        if(player.isRedPlayer()){
+            return this.getRedPlayerBoard();
         }
         else{
-            return this.getPlayer2Board();
+            return this.getWhitePlayerBoard();
         }
     }
 
@@ -196,7 +194,6 @@ public class GameBoard implements Iterable<Row> {
     public void clearJumpPositions(){
         jumpPositions.clear();
     }
-
 
     public void setPieceKing(Player player, List<Row> playerBoard, int row, int col){
         switch (player.getColor()){

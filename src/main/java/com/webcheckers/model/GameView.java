@@ -3,8 +3,6 @@ package com.webcheckers.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collections;
-import java.util.Stack;
 
 
 /**
@@ -13,18 +11,18 @@ import java.util.Stack;
 public class GameView {
 
 
-    private Player player1;
-    private Player player2;
+    private Player redPlayer;
+    private Player whitePlayer;
     private List<Row> board;
-    private List<Row> player1Board = new ArrayList<>();
-    private List<Row> player2Board = new ArrayList<>();
+    private List<Row> redPlayerBoard = new ArrayList<>();
+    private List<Row> whitePlayerBoard = new ArrayList<>();
 
 
 
 
     public GameView(Player player1, Player player2) {
-        this.player1 = player1;
-        this.player2 = player2;
+        this.redPlayer = player1;
+        this.whitePlayer = player2;
         this.board = new ArrayList<>();
         initBoard();
     }
@@ -39,99 +37,82 @@ public class GameView {
     }
 
     private void initBoard(){
-        initPlayer1();
-        initPlayer2();
-        updatePlayer2();
+        initRedPlayer();
+        initWhitePlayer();
     }
 
-    private void initPlayer1(){
+    private void initRedPlayer(){
         boolean valid1 = false;
 
         for(int i = 0; i < 8; i++){
             if (i<=2){
-                player1Board.add(i,new Row(i,Piece.whiteSingle,valid1));
+                redPlayerBoard.add(i,new Row(i,Piece.whiteSingle,valid1));
             }
             else if (i>=5){
-                player1Board.add(i, new Row(i,Piece.redSingle,valid1));
+                redPlayerBoard.add(i, new Row(i,Piece.redSingle,valid1));
             }
             else{
-                player1Board.add(i, new Row(i,null,valid1));
+                redPlayerBoard.add(i, new Row(i,null,valid1));
             }
             valid1 = !valid1;
         }
-        for (int i = 0; i<8;i++){
-            for(int j = 0; j<8;j++){
-                player1Board.get(i).getSpace(j).setPiece(null);
-            }
-        }
-        player1Board.get(0).getSpace(7).setPiece(Piece.redKing);
-        player1Board.get(1).getSpace(0).setPiece(Piece.redKing);
-        player1Board.get(1).getSpace(6).setPiece(Piece.whiteSingle);
-        player1Board.get(3).getSpace(4).setPiece(Piece.whiteSingle);
-        player1Board.get(4).getSpace(3).setPiece(Piece.redSingle);
-        player1Board.get(5).getSpace(2).setPiece(Piece.redSingle);
-        player1Board.get(6).getSpace(1).setPiece(Piece.redSingle);
-        player1Board.get(7).getSpace(6).setPiece(Piece.redSingle);
-        player1Board.get(7).getSpace(4).setPiece(Piece.redSingle);
-        player1Board.get(7).getSpace(2).setPiece(Piece.redSingle);
-        player1Board.get(7).getSpace(0).setPiece(Piece.redSingle);
     }
 
-    private void initPlayer2(){
+    private void initWhitePlayer(){
         boolean valid2 = false;
 
         for(int i = 0; i < 8; i++){
             if (i<=2){
-                player2Board.add(i,new Row(i,Piece.redSingle,valid2));
+                whitePlayerBoard.add(i,new Row(i,Piece.redSingle,valid2));
             }
             else if (i>=5){
-                player2Board.add(i, new Row(i,Piece.whiteSingle,valid2));
+                whitePlayerBoard.add(i, new Row(i,Piece.whiteSingle,valid2));
             }
             else{
-                player2Board.add(i, new Row(i,null,valid2));
+                whitePlayerBoard.add(i, new Row(i,null,valid2));
             }
             valid2 = !valid2;
         }
     }
-    public void isPlayer2Board(boolean board2){
-        if(board2){
+    public void isWhitePlayerBoard(boolean whiteBoard){
+        if(whiteBoard){
 
-            this.board = player2Board;
+            this.board = whitePlayerBoard;
         }
         else {
-            this.board = player1Board;
+            this.board = redPlayerBoard;
         }
     }
 
-    public void updatePlayer2(){
+    public void updateWhitePlayer(){
         for(int i = 0; i<8;i++){
             for (int j = 0; j<8;j++){
-                player2Board.get(i).getSpace(7-j).setPiece(player1Board.get(7-i).getSpace(j).getPiece());
+                whitePlayerBoard.get(i).getSpace(7-j).setPiece(redPlayerBoard.get(7-i).getSpace(j).getPiece());
             }
         }
     }
-    public void updatePlayer1(){
+    public void updateRedPlayer(){
         for(int i = 0; i<8;i++){
             for (int j = 0; j<8;j++){
-                player1Board.get(i).getSpace(7-j).setPiece(player2Board.get(7-i).getSpace(j).getPiece());
+                redPlayerBoard.get(i).getSpace(7-j).setPiece(whitePlayerBoard.get(7-i).getSpace(j).getPiece());
             }
         }
     }
 
-    public List<Row> getPlayer1Board(){
-        return player1Board;
+    public List<Row> getRedPlayerBoard(){
+        return redPlayerBoard;
     }
 
-    public List<Row> getPlayer2Board() {
-        return player2Board;
+    public List<Row> getWhitePlayerBoard() {
+        return whitePlayerBoard;
     }
 
-    public Player getPlayer1() {
-        return player1;
+    public Player getRedPlayer() {
+        return redPlayer;
     }
 
-    public Player getPlayer2() {
-        return player2;
+    public Player getWhitePlayer() {
+        return whitePlayer;
     }
 
 

@@ -12,7 +12,7 @@ public class Player{
 
     // if the player is in a game
     private boolean playing = false;
-    private boolean player1 = false;
+    private boolean redPlayer = false;
     private GameBoard game;
     private GameBoard.color color;
     private boolean myTurn = false;
@@ -37,12 +37,12 @@ public class Player{
         playing = status;
     }
 
-    public void setPlayer1(boolean status){
-        player1 = status;
+    public void setRedPlayer(boolean status){
+        redPlayer = status;
     }
 
-    public boolean isPlayer1() {
-        return player1;
+    public boolean isRedPlayer() {
+        return redPlayer;
     }
 
     public boolean isPlaying(){

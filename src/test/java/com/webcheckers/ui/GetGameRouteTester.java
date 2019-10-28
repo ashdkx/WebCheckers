@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import spark.*;
 
 import static com.webcheckers.ui.GetGameRoute.PLAYER_PARAM;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -86,7 +85,7 @@ public class GetGameRouteTester {
         center.addPlayer(SAMPLE_NAME);
         center.addPlayer(SAMPLE_NAME_2);
         Player player = center.getPlayer(SAMPLE_NAME);
-        player.setPlayer1(true);
+        player.setRedPlayer(true);
 
         when(session.attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(center.getPlayer(SAMPLE_NAME));
         when(request.queryParams(PLAYER_PARAM)).thenReturn(SAMPLE_NAME_2);
@@ -95,7 +94,7 @@ public class GetGameRouteTester {
 
         CuT.handle(request, response);
         testHelper.assertViewModelAttribute("redPlayer", player);
-        testHelper.assertViewModelAttribute("whitePlayer", player.getGame().getPlayer2());
+        testHelper.assertViewModelAttribute("whitePlayer", player.getGame().getWhitePlayer());
         testHelper.assertViewModelAttribute("board", player.getGame());
 
     }

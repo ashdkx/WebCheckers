@@ -45,11 +45,11 @@ public class PostSubmitTurnRoute implements Route {
         String json;
         GameBoard board = player.getGame();
         List<Row> playerBoard = board.getPlayerBoard(player);
-        if(player.isPlayer1()){
-            player2 = board.getPlayer2();
+        if(player.isRedPlayer()){
+            player2 = board.getWhitePlayer();
         }
         else{
-            player2 = board.getPlayer1();
+            player2 = board.getRedPlayer();
         }
 
         Position moveEnd = board.getActiveEnd();
@@ -166,15 +166,15 @@ public class PostSubmitTurnRoute implements Route {
         board.setActivePiece(null);
         board.setActivePieceMoves(0);
 
-        if(player.isPlayer1()){
-            board.updatePlayer2();
+        if(player.isRedPlayer()){
+            board.updateWhitePlayer();
             player.setMyTurn(false);
-            board.getPlayer2().setMyTurn(true);
+            board.getWhitePlayer().setMyTurn(true);
         }
         else{
-            board.updatePlayer1();
+            board.updateRedPlayer();
             player.setMyTurn(false);
-            board.getPlayer1().setMyTurn(true);
+            board.getRedPlayer().setMyTurn(true);
         }
         player.setSingleMove(false);
         board.clearRequiredMovePieces();

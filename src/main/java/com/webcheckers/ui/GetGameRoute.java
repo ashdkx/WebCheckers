@@ -2,7 +2,6 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameBoard;
 import com.webcheckers.appl.GameCenter;
-import com.webcheckers.model.GameView;
 import com.webcheckers.model.Player;
 import com.webcheckers.util.Message;
 import spark.*;
@@ -78,7 +77,7 @@ public class GetGameRoute implements Route {
           return null;
         }
         GameBoard board = new GameBoard(player, player2);
-        player.setPlayer1(true);
+        player.setRedPlayer(true);
         player.setPlaying(true);
         player.setColor(GameBoard.color.RED);
         player.setMyTurn(true);
@@ -95,22 +94,22 @@ public class GetGameRoute implements Route {
 
 
       Player player2 = null;
-      if (player.isPlayer1()) {
+      if (player.isRedPlayer()) {
         GameBoard board = player.getGame();
-        board.isPlayer2Board(false);
+        board.isWhitePlayerBoard(false);
         vm.put("redPlayer", player);
-        vm.put("whitePlayer", board.getPlayer2());
+        vm.put("whitePlayer", board.getWhitePlayer());
         vm.put("board", board);
-        player2 = board.getPlayer2();
+        player2 = board.getWhitePlayer();
 
 
       } else {
         GameBoard board = player.getGame();
-        board.isPlayer2Board(true);
-        vm.put("redPlayer", board.getPlayer1());
+        board.isWhitePlayerBoard(true);
+        vm.put("redPlayer", board.getRedPlayer());
         vm.put("whitePlayer", player);
         vm.put("board", board);
-        player2 = board.getPlayer1();
+        player2 = board.getRedPlayer();
       }
 
       if (player.isMyTurn()) {
