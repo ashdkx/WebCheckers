@@ -3,10 +3,7 @@ package com.webcheckers.ui;
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameBoard;
 import com.webcheckers.appl.GameCenter;
-import com.webcheckers.model.GameView;
-import com.webcheckers.model.Move;
-import com.webcheckers.model.Player;
-import com.webcheckers.model.Row;
+import com.webcheckers.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.configuration.IMockitoConfiguration;
@@ -56,11 +53,6 @@ class PostValidateMoveRouteTest {
 
         gameBoard = new GameBoard(gameCenter.getPlayer(p1), gameCenter.getPlayer(p2));
 
-        Cut = new PostValidateMoveRoute();
-    }
-
-    @Test
-    public void move() {
         player1 = gameCenter.getPlayer(p1);
         player1.setPlayer1(true);
         player1.setPlaying(true);
@@ -76,6 +68,11 @@ class PostValidateMoveRouteTest {
         gameView = new GameView(player1, player2);
         playerBoard = gameBoard.getPlayer1Board();
 
+        Cut = new PostValidateMoveRoute();
+    }
+
+    @Test
+    public void move() {
         String json;
         json = "{\"start\":{\"row\":5,\"cell\":2},\"end\":{\"row\":4, \"cell\":3}}";
 
@@ -83,9 +80,27 @@ class PostValidateMoveRouteTest {
         when(request.queryParams("actionData")).thenReturn(json);
 
         Cut.handle(request, response);
-
-
     }
 
+    @Test
+    public void jump() {
+        gameBoard.setPiece(playerBoard, 5, 2, null);
+        gameBoard.setPiece(playerBoard, 4, 3, new Piece(Piece.type.SINGLE, Piece.color.RED));
+
+        gameBoard.setPiece(playerBoard, 2, 5, null);
+        gameBoard.setPiece(playerBoard, 3, 4, new Piece(Piece.type.SINGLE, Piece.color.WHITE));
+
+
+        gameBoard.updatePlayer2();
+
+
+        String json;
+        json = "{\"start\":{\"row\":4,\"cell\":3},\"end\":{\"row\":2, \"cell\":5}}";
+
+        when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
+        when(request.queryParams("actionData")).thenReturn(json);
+
+        Cut.handle(request, response);
+    }
 
 }
