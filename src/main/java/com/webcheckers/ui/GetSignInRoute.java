@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.model.Player;
 import spark.*;
 
 import java.util.HashMap;
@@ -31,10 +32,11 @@ public class GetSignInRoute implements Route {
     public Object handle(Request request, Response response){
         final Session httpSession = request.session();
         LOG.finer("GetSignInRoute is invoked.");
-        Map<String, Object> vm = new HashMap<>();
-        vm.put(GetHomeRoute.TITLE_ATTR, TITLE);
 
-        if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER)== null) {
+        final Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
+        if(player == null) {
+            final Map<String, Object> vm = new HashMap<>();
+            vm.put(GetHomeRoute.TITLE_ATTR, TITLE);
             return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
         else{
