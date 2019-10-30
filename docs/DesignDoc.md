@@ -14,7 +14,7 @@ geometry: margin=1in
   * Alan Chen
   * Alec Jackson
   * Ash Nguyen
-  * Eric Brockman
+  * Eri
   * Nicholas Curl
 
 ## Executive Summary
@@ -69,7 +69,7 @@ Our MVP is when users are able to sign in and start a match.
 
 This section describes the application domain.
 
-![The WebCheckers Domain Model](domain-model-placeholder.png)
+![The WebCheckers Domain Model](Alec_Jackson_-_Domain_Model-page-001-1.png)
 
 > _Provide a high-level overview of the domain for this application. You
 > can discuss the more important domain entities and their relationship
