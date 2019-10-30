@@ -31,20 +31,16 @@ class PostValidateMoveRouteTest {
     private Player player1;
     private Player player2;
     private List<Row> playerBoard;
-    private Move move;
 
     private Request request;
     private Session session;
     private Response response;
-    private Gson gson = new Gson();
-    private TemplateEngine templateEngine;
 
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
         session = mock(Session.class);
         when(request.session()).thenReturn(session);
-        templateEngine = mock(TemplateEngine.class);
         response = mock(Response.class);
 
         gameCenter = new GameCenter();
@@ -83,6 +79,7 @@ class PostValidateMoveRouteTest {
 
         //move twice error
         json = "{\"start\":{\"row\":4,\"cell\":3},\"end\":{\"row\":3, \"cell\":4}}";
+        when(request.queryParams("actionData")).thenReturn(json);
         Cut.handle(request, response);
     }
 
