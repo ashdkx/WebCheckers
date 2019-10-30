@@ -117,4 +117,18 @@ public class GameView {
         return player2;
     }
 
+    private void testDoubleJumpSingle(){
+        for(int i = 0; i<8; i++){
+            for(int j=0; j<8; j++){
+                player1Board.get(i).getSpace(j).setPiece(null);
+            }
+        }
+        player1Board.get(5).getSpace(2).setPiece(Piece.redSingle);
+        player1Board.get(4).getSpace(3).setPiece(Piece.whiteSingle);
+        player1Board.get(2).getSpace(3).setPiece(Piece.whiteSingle);
+        player1Board.get(2).getSpace(5).setPiece(Piece.whiteSingle);
+        updatePlayer2();
+
+    }
+
 }

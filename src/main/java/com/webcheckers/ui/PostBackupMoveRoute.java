@@ -18,11 +18,7 @@ public class PostBackupMoveRoute implements Route {
     private static final Logger LOG = Logger.getLogger(PostBackupMoveRoute.class.getName());
 
 
-
-
     public PostBackupMoveRoute(){
-
-
         LOG.config("PostBackupMoveRoute is initialized.");
     }
 
