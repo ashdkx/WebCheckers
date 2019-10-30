@@ -87,8 +87,8 @@ public class GetGameRoute implements Route {
         vm.put("activeColor", GameBoard.color.RED);
       }
 
-      vm.put("title", "Checkers");
-      vm.put("currentUser", player);
+      vm.put(GetHomeRoute.TITLE_ATTR, "Checkers");
+      vm.put(GetHomeRoute.CURRENT_USER_ATTR, player);
       vm.put("viewMode", mode.PLAY);
 
 

@@ -17,23 +17,17 @@ public class PostBackupMoveRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostBackupMoveRoute.class.getName());
 
-
-
-
     public PostBackupMoveRoute(){
-
-
         LOG.config("PostBackupMoveRoute is initialized.");
     }
 
     @Override
     public Object handle(Request request, Response response) {
 
-
         LOG.finer("PostBackupMoveRoute is invoked.");
         Gson gson = new Gson();
         final Session httpSession = request.session();
-        String json = "";
+        String json;
         Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
         GameBoard board = player.getGame();
         board.decrementActivePieceMoves();
