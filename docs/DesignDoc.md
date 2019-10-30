@@ -33,6 +33,7 @@ a game until someone wins/loses.
 | Term | Definition |
 |------|------------|
 | VO | Value Object |
+MVP - Minimum Value Object|
 
 
 ## Requirements
@@ -58,11 +59,12 @@ Our MVP is when users are able to sign in and start a match.
 * Sign in
 * Sign out
 * Start a match
+* Crowning
 
 ### Roadmap of Enhancements
 > _Provide a list of top-level features in the order you plan to consider them._
-* Help menu
-* Crowning
+* Replay Match
+* Spectator Mode
 
 ## Application Domain
 
