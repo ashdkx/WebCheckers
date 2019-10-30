@@ -1,24 +1,24 @@
 package com.webcheckers.ui;
 
-import com.google.gson.Gson;
 import com.webcheckers.appl.GameBoard;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.mockito.configuration.IMockitoConfiguration;
 import spark.Request;
 import spark.Response;
 import spark.Session;
-import spark.TemplateEngine;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * @author Ash Nguyen
+ */
+@Tag("UI-tier")
 class PostValidateMoveRouteTest {
 
     private PostValidateMoveRoute Cut;
@@ -68,7 +68,7 @@ class PostValidateMoveRouteTest {
     }
 
     @Test
-    public void move() {
+    public void moveSingle() {
         String json;
         json = "{\"start\":{\"row\":5,\"cell\":2},\"end\":{\"row\":4, \"cell\":3}}";
 
@@ -77,14 +77,15 @@ class PostValidateMoveRouteTest {
 
         Cut.handle(request, response);
 
-        //move twice error
+        // move twice error
+        // to be changed
         json = "{\"start\":{\"row\":4,\"cell\":3},\"end\":{\"row\":3, \"cell\":4}}";
         when(request.queryParams("actionData")).thenReturn(json);
         Cut.handle(request, response);
     }
 
     @Test
-    public void jump() {
+    public void jumpSingle() {
         gameBoard.setPiece(playerBoard, 5, 2, null);
         gameBoard.setPiece(playerBoard, 4, 3, new Piece(Piece.type.SINGLE, Piece.color.RED));
 
