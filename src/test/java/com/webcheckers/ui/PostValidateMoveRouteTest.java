@@ -80,6 +80,10 @@ class PostValidateMoveRouteTest {
         when(request.queryParams("actionData")).thenReturn(json);
 
         Cut.handle(request, response);
+
+        //move twice error
+        json = "{\"start\":{\"row\":4,\"cell\":3},\"end\":{\"row\":3, \"cell\":4}}";
+        Cut.handle(request, response);
     }
 
     @Test
@@ -90,9 +94,7 @@ class PostValidateMoveRouteTest {
         gameBoard.setPiece(playerBoard, 2, 5, null);
         gameBoard.setPiece(playerBoard, 3, 4, new Piece(Piece.type.SINGLE, Piece.color.WHITE));
 
-
         gameBoard.updatePlayer2();
-
 
         String json;
         json = "{\"start\":{\"row\":4,\"cell\":3},\"end\":{\"row\":2, \"cell\":5}}";
@@ -101,6 +103,7 @@ class PostValidateMoveRouteTest {
         when(request.queryParams("actionData")).thenReturn(json);
 
         Cut.handle(request, response);
+
     }
 
 }
