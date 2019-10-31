@@ -198,17 +198,6 @@ public class GameBoard implements Iterable<Row> {
         jumpPositions.clear();
     }
 
-    public boolean hasJumped(int[] endPosition){
-        boolean jumped = false;
-        for(int[] jump: jumpPositions){
-            if(endPosition[0] == jump[0]&&endPosition[1]==jump[1]){
-                jumped = true;
-                break;
-            }
-        }
-        return jumped;
-    }
-
     @Override
     public Iterator<Row> iterator(){
         return game.getBoard().iterator();
