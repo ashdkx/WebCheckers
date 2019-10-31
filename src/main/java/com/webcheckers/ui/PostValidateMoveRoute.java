@@ -2,7 +2,6 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameBoard;
-import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
@@ -21,7 +20,6 @@ public class PostValidateMoveRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
 
-    private GameCenter gameCenter;
     private Gson gson = new Gson();
 
     public PostValidateMoveRoute(){
@@ -62,7 +60,7 @@ public class PostValidateMoveRoute implements Route {
         int moveEndRow = move.getEnd().getRow();
         int moveEndCell = move.getEnd().getCell();
         String json;
-        if(board.isValid(playerBoard,moveEndRow,moveEndCell)) {
+        if(board.isValidSpace(playerBoard,moveEndRow,moveEndCell)) {
             if (board.getActivePiece().getType() == Piece.type.SINGLE && moveEndRow > moveStartRow) {
                 json = gson.toJson(Message.error("Can't move backwards."));
             } else {
@@ -74,7 +72,7 @@ public class PostValidateMoveRoute implements Route {
                         } else if (board.getActivePieceMoves() > 1) {
                             json = gson.toJson(Message.error("Cannot move after jump."));
                         } else {
-                            board.setActivePieceEnd(move.getEnd());
+                            board.addActivePieceEnd(move.getEnd());
                             board.incrementActivePieceMoves();
                             player.setSingleMove(true);
                             json = gson.toJson(Message.info("Valid move."));
@@ -137,7 +135,7 @@ public class PostValidateMoveRoute implements Route {
                     position[1] = pieceJumpedCol;
                     board.addPieceRemove(position);
                     board.incrementActivePieceMoves();
-                    board.setActivePieceEnd(move.getEnd());
+                    board.addActivePieceEnd(move.getEnd());
                     return gson.toJson(Message.info("Valid Move."));
 
                 }

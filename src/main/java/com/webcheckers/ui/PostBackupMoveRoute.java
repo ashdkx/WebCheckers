@@ -39,16 +39,18 @@ public class PostBackupMoveRoute implements Route {
         }
         if(board.getActivePieceMoves()==0){
             board.setActivePiece(null);
+            board.getActivePieceEnd();
             json = gson.toJson(Message.info("Backup Successful."));
         }
         else if (board.getActivePieceMoves() < 0||board.getActivePiece()==null) {
             board.setActivePieceMoves(0);
+            board.clearActivePieceEnd();
             json = gson.toJson(Message.error("Cannot Backup."));
         }
         else {
+            board.getActivePieceEnd();
             json = gson.toJson(Message.info("Backup Successful."));
         }
-
         return json;
     }
 

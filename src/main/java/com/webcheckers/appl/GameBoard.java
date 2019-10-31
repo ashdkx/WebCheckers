@@ -12,16 +12,13 @@ public class GameBoard implements Iterable<Row> {
     private GameView game;
     private Piece activePiece = null;
     private Position activePieceStart;
-    private Position activePieceEnd;
+    private Stack<Position> activePieceEnds = new Stack<>();
     private int activePieceMoves = 0;
     private ArrayList<int[]> pieceRemove = new ArrayList<>();
     private Map<int[], List<int[]>> requiredMovePieces = new HashMap<>();
     private List<int[]> jumpPositions = new ArrayList<>();
 
-    public enum color{
-        RED,
-        WHITE
-    }
+    public enum color{RED, WHITE}
 
     public GameBoard(Player redPlayer, Player whitePlayer){
         this.game = new GameView(redPlayer,whitePlayer);
@@ -39,12 +36,21 @@ public class GameBoard implements Iterable<Row> {
         return game.getWhitePlayer();
     }
 
-    public List<Row> getRedPlayerBoard(){
+    private List<Row> getRedPlayerBoard(){
         return game.getRedPlayerBoard();
     }
 
-    public List<Row> getWhitePlayerBoard(){
+    private List<Row> getWhitePlayerBoard(){
         return game.getWhitePlayerBoard();
+    }
+
+    public List<Row> getPlayerBoard(Player player){
+        if(player.isRedPlayer()){
+            return this.getRedPlayerBoard();
+        }
+        else{
+            return this.getWhitePlayerBoard();
+        }
     }
 
     public void isWhitePlayerBoard(boolean board2){
@@ -63,7 +69,7 @@ public class GameBoard implements Iterable<Row> {
         return game.getBoard();
     }
 
-    public boolean isValid(List<Row> board, int row, int col){
+    public boolean isValidSpace(List<Row> board, int row, int col){
         if(row>7||row<0||col>7||col<0){
             return false;
         }
@@ -89,27 +95,30 @@ public class GameBoard implements Iterable<Row> {
 
     public void setActivePiece(Piece piece) {
         this.activePiece = piece;
-
-    }
-
-    public void setActivePieceStart(Position activePieceStart) {
-        this.activePieceStart = activePieceStart;
     }
 
     public Piece getActivePiece() {
         return activePiece;
     }
 
-    public Position getActiveStart(){
+    public void setActivePieceStart(Position activePieceStart) {
+        this.activePieceStart = activePieceStart;
+    }
+
+    public Position getActivePieceStart(){
         return this.activePieceStart;
     }
 
-    public void setActivePieceEnd(Position activePieceEnd) {
-        this.activePieceEnd = activePieceEnd;
+    public void addActivePieceEnd(Position activePieceEnd) {
+        this.activePieceEnds.push(activePieceEnd);
     }
 
-    public Position getActiveEnd(){
-        return this.activePieceEnd;
+    public Position getActivePieceEnd(){
+        return this.activePieceEnds.pop();
+    }
+
+    public void clearActivePieceEnd(){
+        this.activePieceEnds.clear();
     }
 
     public int getActivePieceMoves() {
@@ -153,7 +162,6 @@ public class GameBoard implements Iterable<Row> {
             }
         }
         return valid;
-
     }
 
     public void addRequiredMovePieces(int[] position, List<int[]> jumps){
@@ -172,15 +180,6 @@ public class GameBoard implements Iterable<Row> {
             }
         }
         return jumpPositions;
-    }
-
-    public List<Row> getPlayerBoard(Player player){
-        if(player.isRedPlayer()){
-            return this.getRedPlayerBoard();
-        }
-        else{
-            return this.getWhitePlayerBoard();
-        }
     }
 
     public List<int[]> getJumpPositions() {
