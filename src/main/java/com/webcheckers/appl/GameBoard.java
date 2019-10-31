@@ -12,7 +12,7 @@ public class GameBoard implements Iterable<Row> {
     private GameView game;
     private Piece activePiece = null;
     private Position activePieceStart;
-    private Position activePieceEnd;
+    private Stack<Position> activePieceEnds = new Stack<>();
     private int activePieceMoves = 0;
     private ArrayList<int[]> pieceRemove = new ArrayList<>();
     private Map<int[], List<int[]>> requiredMovePieces = new HashMap<>();
@@ -104,14 +104,17 @@ public class GameBoard implements Iterable<Row> {
         return this.activePieceStart;
     }
 
-    public void setActivePieceEnd(Position activePieceEnd) {
-        this.activePieceEnd = activePieceEnd;
+    public void addActivePieceEnd(Position activePieceEnd) {
+        this.activePieceEnds.push(activePieceEnd);
     }
 
-    public Position getActiveEnd(){
-        return this.activePieceEnd;
+    public Position getActivePieceEnd(){
+        return this.activePieceEnds.pop();
     }
 
+    public void clearActivePieceEnd(){
+        this.activePieceEnds.clear();
+    }
 
     public int getActivePieceMoves() {
         return activePieceMoves;

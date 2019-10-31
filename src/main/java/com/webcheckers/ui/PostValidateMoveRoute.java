@@ -74,7 +74,7 @@ public class PostValidateMoveRoute implements Route {
                         } else if (board.getActivePieceMoves() > 1) {
                             json = gson.toJson(Message.error("Cannot move after jump."));
                         } else {
-                            board.setActivePieceEnd(move.getEnd());
+                            board.addActivePieceEnd(move.getEnd());
                             board.incrementActivePieceMoves();
                             player.setSingleMove(true);
                             json = gson.toJson(Message.info("Valid move."));
@@ -110,12 +110,12 @@ public class PostValidateMoveRoute implements Route {
             if (board.getPiece(playerBoard, pieceJumpedRow, pieceJumpedCol) != null) {
                 Piece piece = board.getPiece(playerBoard, pieceJumpedRow, pieceJumpedCol);
 
-                if (player.isNotActiveColor(piece)){
+                if (player.isNotPlayerColor(piece)){
                     position[0] = pieceJumpedRow;
                     position[1] = pieceJumpedCol;
                     board.addPieceRemove(position);
                     board.incrementActivePieceMoves();
-                    board.setActivePieceEnd(move.getEnd());
+                    board.addActivePieceEnd(move.getEnd());
                     return gson.toJson(Message.info("Valid Move."));
 
                 }

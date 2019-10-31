@@ -69,7 +69,7 @@ class PostBackupMoveRouteTest {
         gameBoard.setActivePiece(piece);
         gameBoard.setActivePieceMoves(1);
         gameBoard.setActivePieceStart(new Position(5, 2));
-        gameBoard.setActivePieceEnd(new Position(4, 3));
+        gameBoard.addActivePieceEnd(new Position(4, 3));
 
 
         when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
@@ -82,7 +82,7 @@ class PostBackupMoveRouteTest {
         Piece piece = new Piece(Piece.type.SINGLE, Piece.color.RED);
 
         gameBoard.setActivePieceStart(new Position(5, 2));
-        gameBoard.setActivePieceEnd(new Position(6, 1));
+        gameBoard.addActivePieceEnd(new Position(6, 1));
 
 
         when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
