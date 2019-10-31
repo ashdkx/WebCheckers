@@ -62,7 +62,7 @@ public class PostValidateMoveRoute implements Route {
         int moveEndRow = move.getEnd().getRow();
         int moveEndCell = move.getEnd().getCell();
         String json;
-        if(board.isValid(playerBoard,moveEndRow,moveEndCell)) {
+        if(board.isValidSpace(playerBoard,moveEndRow,moveEndCell)) {
             if (board.getActivePiece().getType() == Piece.type.SINGLE && moveEndRow > moveStartRow) {
                 json = gson.toJson(Message.error("Can't move backwards."));
             } else {

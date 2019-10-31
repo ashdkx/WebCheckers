@@ -50,7 +50,7 @@ class PostValidateMoveRouteTest {
         gameBoard = new GameBoard(gameCenter.getPlayer(p1), gameCenter.getPlayer(p2));
 
         player1 = gameCenter.getPlayer(p1);
-        player1.setPlayer1(true);
+        player1.setRedPlayer(true);
         player1.setPlaying(true);
         player1.setColor(GameBoard.color.RED);
         player1.setMyTurn(true);
@@ -62,7 +62,7 @@ class PostValidateMoveRouteTest {
         player2.setGame(gameBoard);
 
         gameView = new GameView(player1, player2);
-        playerBoard = gameBoard.getPlayer1Board();
+        playerBoard = gameBoard.getRedPlayerBoard();
 
         Cut = new PostValidateMoveRoute();
     }
@@ -92,7 +92,7 @@ class PostValidateMoveRouteTest {
         gameBoard.setPiece(playerBoard, 2, 5, null);
         gameBoard.setPiece(playerBoard, 3, 4, new Piece(Piece.type.SINGLE, Piece.color.WHITE));
 
-        gameBoard.updatePlayer2();
+        gameBoard.updateWhitePlayer();
 
         String json;
         json = "{\"start\":{\"row\":4,\"cell\":3},\"end\":{\"row\":2, \"cell\":5}}";

@@ -46,7 +46,7 @@ class PostBackupMoveRouteTest {
         gameBoard = new GameBoard(gameCenter.getPlayer(p1), gameCenter.getPlayer(p2));
 
         player1 = gameCenter.getPlayer(p1);
-        player1.setPlayer1(true);
+        player1.setRedPlayer(true);
         player1.setPlaying(true);
         player1.setColor(GameBoard.color.RED);
         player1.setMyTurn(true);
