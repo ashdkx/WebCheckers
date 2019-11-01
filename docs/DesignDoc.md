@@ -33,7 +33,7 @@ a game until someone wins/loses.
 | Term | Definition |
 |------|------------|
 | VO | Value Object |
-MVP - Minimum Value Object|
+| MVP | Minimum Value Object|
 
 
 ## Requirements
