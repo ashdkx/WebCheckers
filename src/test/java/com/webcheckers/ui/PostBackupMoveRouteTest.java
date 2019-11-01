@@ -79,7 +79,6 @@ class PostBackupMoveRouteTest {
 
     @Test
     public void backupFailure() {
-        Piece piece = new Piece(Piece.type.SINGLE, Piece.color.RED);
 
         gameBoard.setActivePieceStart(new Position(5, 2));
         gameBoard.setActivePieceEnd(new Position(6, 1));
