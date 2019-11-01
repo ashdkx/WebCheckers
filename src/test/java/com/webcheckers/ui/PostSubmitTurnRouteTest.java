@@ -102,11 +102,14 @@ class PostSubmitTurnRouteTest {
         playerBoard = gameBoard.getRedPlayerBoard();
         player1.setMyTurn(true);
 
-        gameBoard.setPiece(playerBoard, 5, 2, null);
-        gameBoard.setPiece(playerBoard, 4, 3, new Piece(Piece.type.SINGLE, Piece.color.RED));
+        int[] remove = {3, 4};
 
-        gameBoard.setPiece(playerBoard, 2, 5, null);
-        gameBoard.setPiece(playerBoard, 3, 4, new Piece(Piece.type.SINGLE, Piece.color.WHITE));
+        gameBoard.getRedPlayerBoard().get(5).getSpace(2).setPiece(null);
+        gameBoard.getRedPlayerBoard().get(4).getSpace(3).setPiece(Piece.redSingle);
+
+        gameBoard.getRedPlayerBoard().get(2).getSpace(5).setPiece(null);
+        gameBoard.getRedPlayerBoard().get(3).getSpace(4).setPiece(Piece.whiteSingle);
+        gameBoard.addPieceRemove(remove);
 
         gameBoard.updateWhitePlayer();
 
@@ -118,7 +121,6 @@ class PostSubmitTurnRouteTest {
 
         Cut.handle(request, response);
 
-        //TODO: not handling jump
         assertNull(gameBoard.getPiece(playerBoard, 4, 3));
         assertNull(gameBoard.getPiece(playerBoard, 3, 4));
         assertNotNull(gameBoard.getPiece(playerBoard,2, 5));
