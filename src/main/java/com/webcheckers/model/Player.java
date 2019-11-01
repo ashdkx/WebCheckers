@@ -12,7 +12,7 @@ public class Player{
 
     // if the player is in a game
     private boolean playing = false;
-    private boolean player1 = false;
+    private boolean redPlayer = false;
     private GameBoard game;
     private GameBoard.color color;
     private boolean myTurn = false;
@@ -37,12 +37,12 @@ public class Player{
         playing = status;
     }
 
-    public void setPlayer1(boolean status){
-        player1 = status;
+    public void setRedPlayer(boolean status){
+        redPlayer = status;
     }
 
-    public boolean isPlayer1() {
-        return player1;
+    public boolean isRedPlayer() {
+        return redPlayer;
     }
 
     public boolean isPlaying(){
@@ -100,17 +100,17 @@ public class Player{
         totalPieces-=amount;
     }
 
-    public boolean isNotActiveColor(Piece piece){
+    public boolean isNotPlayerColor(Piece piece){
         boolean valid = false;
         if(piece != null) {
             switch (piece.getColor()) {
                 case RED:
-                    if (color != GameBoard.color.RED) {
+                    if (color != GameBoard.color.RED) { // if player's color equals white and the piece's color is red return true
                         valid = true;
                     }
                     break;
                 case WHITE:
-                    if (color != GameBoard.color.WHITE) {
+                    if (color != GameBoard.color.WHITE) { // if player's color equal red and the piece's color is white return true
                         valid = true;
                     }
                     break;

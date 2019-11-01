@@ -46,7 +46,7 @@ class PostBackupMoveRouteTest {
         gameBoard = new GameBoard(gameCenter.getPlayer(p1), gameCenter.getPlayer(p2));
 
         player1 = gameCenter.getPlayer(p1);
-        player1.setPlayer1(true);
+        player1.setRedPlayer(true);
         player1.setPlaying(true);
         player1.setColor(GameBoard.color.RED);
         player1.setMyTurn(true);
@@ -69,7 +69,7 @@ class PostBackupMoveRouteTest {
         gameBoard.setActivePiece(piece);
         gameBoard.setActivePieceMoves(1);
         gameBoard.setActivePieceStart(new Position(5, 2));
-        gameBoard.setActivePieceEnd(new Position(4, 3));
+        gameBoard.addActivePieceEnd(new Position(4, 3));
 
 
         when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
@@ -81,7 +81,7 @@ class PostBackupMoveRouteTest {
     public void backupFailure() {
 
         gameBoard.setActivePieceStart(new Position(5, 2));
-        gameBoard.setActivePieceEnd(new Position(6, 1));
+        gameBoard.addActivePieceEnd(new Position(6, 1));
 
 
         when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);

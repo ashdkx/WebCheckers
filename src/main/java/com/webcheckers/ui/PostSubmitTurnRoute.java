@@ -45,15 +45,15 @@ public class PostSubmitTurnRoute implements Route {
         String json;
         GameBoard board = player.getGame();
         List<Row> playerBoard = board.getPlayerBoard(player);
-        if(player.isPlayer1()){
-            player2 = board.getPlayer2();
+        if(player.isRedPlayer()){
+            player2 = board.getWhitePlayer();
         }
         else{
-            player2 = board.getPlayer1();
+            player2 = board.getRedPlayer();
         }
 
-        Position moveEnd = board.getActiveEnd();
-        Position moveStart = board.getActiveStart();
+        Position moveEnd = board.getActivePieceEnd();
+        Position moveStart = board.getActivePieceStart();
         int[] position = new int[]{moveStart.getRow(), moveStart.getCell()};
 
         checkRequiredMoves(board, player, playerBoard);
@@ -91,7 +91,7 @@ public class PostSubmitTurnRoute implements Route {
         for(int i = 7; i>-1;i--){
             for(int j = 0; j<8;j++){
                 Piece piece = board.getPiece(playerBoard,i,j);
-                if(player.isNotActiveColor(piece)||piece==null) {
+                if(player.isNotPlayerColor(piece)||piece==null) {
                     continue;
                 }
                 if (canJump(board,player,playerBoard,i,j,piece)){
@@ -111,8 +111,8 @@ public class PostSubmitTurnRoute implements Route {
         boolean validPos4 = false;
         if (board.getPiece(playerBoard, row - 1, col + 1) != null) {
             Piece pieceJump = board.getPiece(playerBoard, row - 1, col + 1);
-            boolean isCorrectColor = player.isNotActiveColor(pieceJump);
-            boolean isValidSpace = board.isValid(playerBoard,row-2,col+2);
+            boolean isCorrectColor = player.isNotPlayerColor(pieceJump);
+            boolean isValidSpace = board.isValidSpace(playerBoard,row-2,col+2);
             validPos1 = isValidSpace&&isCorrectColor;
             if(validPos1){
                 board.addJumpPosition(new int[]{row-1,col+1});
@@ -120,8 +120,8 @@ public class PostSubmitTurnRoute implements Route {
         }
         if (board.getPiece(playerBoard, row - 1, col - 1) != null) {
             Piece pieceJump = board.getPiece(playerBoard, row - 1, col - 1);
-            boolean isCorrectColor = player.isNotActiveColor(pieceJump);
-            boolean isValidSpace = board.isValid(playerBoard,row-2,col-2);
+            boolean isCorrectColor = player.isNotPlayerColor(pieceJump);
+            boolean isValidSpace = board.isValidSpace(playerBoard,row-2,col-2);
             validPos2 = isCorrectColor&&isValidSpace;
 
             if (validPos2){
@@ -138,18 +138,20 @@ public class PostSubmitTurnRoute implements Route {
         board.setActivePiece(null);
         board.setActivePieceMoves(0);
 
-        if(player.isPlayer1()){
-            board.updatePlayer2();
+        if(player.isRedPlayer()){
+            board.updateWhitePlayer();
             player.setMyTurn(false);
-            board.getPlayer2().setMyTurn(true);
+            board.getWhitePlayer().setMyTurn(true);
         }
         else{
-            board.updatePlayer1();
+            board.updateRedPlayer();
             player.setMyTurn(false);
-            board.getPlayer1().setMyTurn(true);
+            board.getRedPlayer().setMyTurn(true);
         }
         player.setSingleMove(false);
         board.clearRequiredMovePieces();
+        board.clearActivePieceEnd();
+        board.clearJumpPositions();
         return gson.toJson(Message.info("Valid Move."));
     }
 
