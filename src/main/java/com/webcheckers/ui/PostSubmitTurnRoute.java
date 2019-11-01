@@ -178,6 +178,8 @@ public class PostSubmitTurnRoute implements Route {
         }
         player.setSingleMove(false);
         board.clearRequiredMovePieces();
+        board.clearActivePieceEnd();
+        board.clearJumpPositions();
         return gson.toJson(Message.info("Valid Move."));
     }
 
