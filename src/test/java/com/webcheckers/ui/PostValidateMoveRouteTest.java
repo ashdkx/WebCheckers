@@ -101,7 +101,27 @@ class PostValidateMoveRouteTest {
         when(request.queryParams("actionData")).thenReturn(json);
 
         Cut.handle(request, response);
-
     }
 
+    @Test
+    public void jumpGhostError() {
+        String json;
+        json = "{\"start\":{\"row\":5,\"cell\":2},\"end\":{\"row\":3, \"cell\":4}}";
+
+        when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
+        when(request.queryParams("actionData")).thenReturn(json);
+
+        Cut.handle(request, response);
+    }
+
+    @Test
+    public void jumpOwnError() {
+        String json;
+        json = "{\"start\":{\"row\":6,\"cell\":1},\"end\":{\"row\":4, \"cell\":3}}";
+
+        when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
+        when(request.queryParams("actionData")).thenReturn(json);
+
+        Cut.handle(request, response);
+    }
 }
