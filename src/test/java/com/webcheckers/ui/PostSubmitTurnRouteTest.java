@@ -51,7 +51,7 @@ class PostSubmitTurnRouteTest {
         gameBoard = new GameBoard(gameCenter.getPlayer(p1), gameCenter.getPlayer(p2));
 
         player1 = gameCenter.getPlayer(p1);
-        player1.setPlayer1(true);
+        player1.setRedPlayer(true);
         player1.setPlaying(true);
         player1.setColor(GameBoard.color.RED);
         player1.setGame(gameBoard);
@@ -68,11 +68,11 @@ class PostSubmitTurnRouteTest {
 
     @Test
     public void moveSinglePLayer1() {
-        playerBoard = gameBoard.getPlayer1Board();
+        playerBoard = gameBoard.getRedPlayerBoard();
         player1.setMyTurn(true);
         gameBoard.setActivePiece(gameBoard.getPiece(playerBoard, 5, 2));
         gameBoard.setActivePieceStart(new Position(5, 2));
-        gameBoard.setActivePieceEnd(new Position(4,3));
+        gameBoard.addActivePieceEnd(new Position(4,3));
 
         when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
 
@@ -83,11 +83,11 @@ class PostSubmitTurnRouteTest {
 
     @Test
     public void moveSinglePlayer2() {
-        playerBoard = gameBoard.getPlayer2Board();
+        playerBoard = gameBoard.getWhitePlayerBoard();
         player2.setMyTurn(true);
         gameBoard.setActivePiece(gameBoard.getPiece(playerBoard, 2, 3));
         gameBoard.setActivePieceStart(new Position(2, 3));
-        gameBoard.setActivePieceEnd(new Position(3,4));
+        gameBoard.addActivePieceEnd(new Position(3,4));
 
         when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player2);
 
@@ -99,7 +99,7 @@ class PostSubmitTurnRouteTest {
 
     @Test
     public void jump() {
-        playerBoard = gameBoard.getPlayer1Board();
+        playerBoard = gameBoard.getRedPlayerBoard();
         player1.setMyTurn(true);
 
         gameBoard.setPiece(playerBoard, 5, 2, null);
@@ -108,16 +108,17 @@ class PostSubmitTurnRouteTest {
         gameBoard.setPiece(playerBoard, 2, 5, null);
         gameBoard.setPiece(playerBoard, 3, 4, new Piece(Piece.type.SINGLE, Piece.color.WHITE));
 
-        gameBoard.updatePlayer2();
+        gameBoard.updateWhitePlayer();
 
         gameBoard.setActivePiece(gameBoard.getPiece(playerBoard, 4, 3));
         gameBoard.setActivePieceStart(new Position(4, 3));
-        gameBoard.setActivePieceEnd(new Position(2,5));
+        gameBoard.addActivePieceEnd(new Position(2,5));
 
         when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
 
         Cut.handle(request, response);
-        //not handling jump
+
+        //TODO: not handling jump
         assertNull(gameBoard.getPiece(playerBoard, 4, 3));
         assertNull(gameBoard.getPiece(playerBoard, 3, 4));
         assertNotNull(gameBoard.getPiece(playerBoard,2, 5));
