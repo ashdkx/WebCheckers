@@ -3,11 +3,6 @@ geometry: margin=1in
 ---
 # PROJECT Design Documentation
 
-> _The following template provides the headings for your Design
-> Documentation.  As you edit each section make sure you remove these
-> commentary 'blockquotes'; the lines that start with a > character
-> and appear in the generated PDF in italics._
-
 ## Team Information
 * Team name: A Team
 * Team members
@@ -17,19 +12,13 @@ geometry: margin=1in
   * Nicholas Curl
 
 ## Executive Summary
-
 Webcheckers allow users to play a game of American checkers against other users.
 
 ### Purpose
-> _Provide a very brief statement about the project and the most
-> important user group and user goals._
-
 The project follows the rules of American checkers. Players should be able to play 
 a game until someone wins/loses.
 
 ### Glossary and Acronyms
-> _Provide a table of terms and acronyms._
-
 | Term | Definition |
 |------|------------|
 | VO | Value Object |
@@ -40,18 +29,14 @@ a game until someone wins/loses.
 
 This section describes the features of the application.
 
-> _In this section you do not need to be exhaustive and list every
-> story.  Focus on top-level features from the Vision document and
-> maybe Epics and critical Stories._
-
 Players are able to create and sign in with an unique username. After they are signed in, they 
 will be able to challenge other signed-in players to a match. When players
 are in a match, they will be able to move the pieces by drag-and-drop, and also receive 
 assistance through the help menu if they are confused.
 ### Definition of MVP
-> _Provide a simple description of the Minimum Viable Product._
 
-Our MVP is when users are able to sign in and start a match.
+Our MVP is when users are able to sign in, start a game, and are able to play a game of checkers based on 
+the American Checkers rules. Obviously, this involves all types of movement and crowning pieces.
 
 ### MVP Features
 > _Provide a list of top-level Epics and/or Stories of the MVP._
@@ -60,11 +45,18 @@ Our MVP is when users are able to sign in and start a match.
 * Sign out
 * Start a match
 * Crowning
+* Single move
+* Single move jump
+* Multiple jump move
+* Required move
+* All direction move
+* Resignation
 
 ### Roadmap of Enhancements
 > _Provide a list of top-level features in the order you plan to consider them._
-* Replay Match
-* Spectator Mode
+* Replay match
+* Spectator mode
+* Help menu
 
 ## Application Domain
 
@@ -138,6 +130,12 @@ with the WebCheckers application.
 > separate section for describing significant features. Place this after
 > you describe the design of the three tiers._
 
+* First, players can get to the website by using "localhost:4567" as the link. Then, they are directed
+to the home page, where they sign in. After they sign in with an unique username, their home page now lists
+all of the other signed in players. Then, they are able to click on one of the other available users, which starts up a 
+game. In the game, player moves are checked by the PostValidateMoveRoute. Each move they make before they submit it can 
+be cancelled by the backup feature, or, if they do not wish to backup, they can simply submit their moves. After they are
+finished with their game, players can then sign out. 
 
 
 ### Application Tier
@@ -174,7 +172,8 @@ in order to make the gameplay smoother.
 > _This section will provide information about the testing performed
 > and the results of the testing._
 
-* Unit test classes have been made for classes of different tiers. 
+* Unit test classes have been made for classes of different tiers. We encountered a bug 
+where a move was backed up incorrectly.
 
 ### Acceptance Testing
 > _Report on the number of user stories that have passed all their
@@ -183,7 +182,8 @@ in order to make the gameplay smoother.
 > have not had any testing yet. Highlight the issues found during
 > acceptance testing and if there are any concerns._
 
-* 5 user stories have passed all of their acceptance criteria tests. 
+* 11 user stories have passed all of their acceptance criteria tests. No user stories
+have any acceptance criteria tests failing. 
 
 ### Unit Testing and Code Coverage
 > _Discuss your unit testing strategy. Report on the code coverage
@@ -191,3 +191,7 @@ in order to make the gameplay smoother.
 > coverage targets, why you selected those values, and how well your
 > code coverage met your targets. If there are any anomalies, discuss
 > those._
+* Our unit testing strategy starts from the simple, smaller classes and then make our
+way up to the more complex classes. By starting with the simpler ones, we can quickly cover
+a portion of the classes we need to test, which then makes testing the complex classes 
+a lot easier.
