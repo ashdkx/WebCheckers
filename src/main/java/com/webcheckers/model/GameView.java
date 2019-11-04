@@ -25,7 +25,6 @@ public class GameView {
         this.whitePlayer = player2;
         this.board = new ArrayList<>();
         initBoard();
-        testDoubleJumpSingle();
     }
 
 
