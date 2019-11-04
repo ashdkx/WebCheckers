@@ -1,5 +1,5 @@
 
-# PROJECT Design Documentation
+# WebCheckers Design Documentation
 
 ## Team Information
 * Team name: A Team
