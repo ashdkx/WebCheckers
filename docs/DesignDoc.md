@@ -10,7 +10,7 @@
   * Nicholas Curl
 
 ## Executive Summary
-Webcheckers allow users to play a game of American checkers against other users.
+WebCheckers allow users to play a game of American checkers against other users.
 
 ### Purpose
 The project follows the rules of American checkers. Players should be able to play 
@@ -20,7 +20,7 @@ a game until someone wins/loses.
 | Term | Definition |
 |------|------------|
 | VO | Value Object |
-| MVP | Minimum Value Object|
+| MVP | Minimum Value Product|
 
 
 ## Requirements
