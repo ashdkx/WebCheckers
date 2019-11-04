@@ -39,6 +39,7 @@ public class GameView {
     private void initBoard(){
         initRedPlayer();
         initWhitePlayer();
+        testDoubleJumpSingle();
     }
 
     private void initRedPlayer(){

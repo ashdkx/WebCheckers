@@ -12,6 +12,7 @@ import spark.Session;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -99,6 +100,33 @@ class PostValidateMoveRouteTest {
 
         when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
         when(request.queryParams("actionData")).thenReturn(json);
+
+        Cut.handle(request, response);
+
+    }
+
+    public void requiredMove() {
+
+    }
+
+
+    @Test
+    //TODO: not working
+    public void jumpMultiple() {
+        gameBoard.getRedPlayerBoard().get(1).getSpace(6).setPiece(null);
+        gameBoard.getRedPlayerBoard().get(4).getSpace(3).setPiece(Piece.whiteSingle);
+
+        gameBoard.updateWhitePlayer();
+
+        String json;
+        json = "{\"start\":{\"row\":5,\"cell\":2},\"end\":{\"row\":3, \"cell\":4}}";
+
+        when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
+        when(request.queryParams("actionData")).thenReturn(json);
+
+        Cut.handle(request, response);
+
+        json = "{\"start\":{\"row\":3,\"cell\":4},\"end\":{\"row\":1, \"cell\":6}}";
 
         Cut.handle(request, response);
     }
