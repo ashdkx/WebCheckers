@@ -87,7 +87,7 @@ Details of the components within these tiers are supplied below.
 This section describes the web interface flow; this is how the user views and interacts
 with the WebCheckers application.
 
-![The WebCheckers Web Interface Statechart](Checkers Statechart.png)
+![The WebCheckers Web Interface Statechart](Statechart.png)
 
 ### UI Tier
 * First, players can get to the website by using "localhost:4567" as the link. Then, they are directed
