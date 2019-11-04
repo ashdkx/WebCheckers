@@ -18,8 +18,6 @@ public class GameView {
     private List<Row> whitePlayerBoard = new ArrayList<>();
 
 
-
-
     public GameView(Player player1, Player player2) {
         this.redPlayer = player1;
         this.whitePlayer = player2;
