@@ -64,12 +64,17 @@ class PostValidateMoveRouteTest {
 
         gameView = new GameView(player1, player2);
         playerBoard = gameBoard.getRedPlayerBoard();
-
+        for(int i = 0; i<8; i++){
+            for(int j=0; j<8; j++){
+                playerBoard.get(i).getSpace(j).setPiece(null);
+            }
+        }
         Cut = new PostValidateMoveRoute();
     }
 
     @Test
     public void moveSingle() {
+        gameBoard.setPiece(playerBoard, 5, 2, Piece.redSingle);
         String json;
         json = "{\"start\":{\"row\":5,\"cell\":2},\"end\":{\"row\":4, \"cell\":3}}";
 
@@ -105,28 +110,23 @@ class PostValidateMoveRouteTest {
 
     }
 
-    public void requiredMove() {
-
-    }
-
-
     @Test
-    //TODO: not working
     public void jumpMultiple() {
-        gameBoard.getRedPlayerBoard().get(1).getSpace(6).setPiece(null);
-        gameBoard.getRedPlayerBoard().get(4).getSpace(3).setPiece(Piece.whiteSingle);
-
+        playerBoard.get(4).getSpace(3).setPiece(Piece.redSingle);
+        playerBoard.get(3).getSpace(4).setPiece(Piece.whiteSingle);
+        playerBoard.get(1).getSpace(4).setPiece(Piece.whiteSingle);
+        playerBoard.get(1).getSpace(6).setPiece(Piece.whiteSingle);
         gameBoard.updateWhitePlayer();
 
         String json;
-        json = "{\"start\":{\"row\":5,\"cell\":2},\"end\":{\"row\":3, \"cell\":4}}";
+        json = "{\"start\":{\"row\":4,\"cell\":3},\"end\":{\"row\":2, \"cell\":5}}";
 
         when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
         when(request.queryParams("actionData")).thenReturn(json);
 
         Cut.handle(request, response);
 
-        json = "{\"start\":{\"row\":3,\"cell\":4},\"end\":{\"row\":1, \"cell\":6}}";
+        json = "{\"start\":{\"row\":2,\"cell\":5},\"end\":{\"row\":0, \"cell\":7}}";
 
         Cut.handle(request, response);
     }
@@ -134,6 +134,7 @@ class PostValidateMoveRouteTest {
     @Test
     public void jumpGhostError() {
         String json;
+        gameBoard.setPiece(playerBoard, 5, 2, Piece.redSingle);
         json = "{\"start\":{\"row\":5,\"cell\":2},\"end\":{\"row\":3, \"cell\":4}}";
 
         when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
@@ -145,6 +146,8 @@ class PostValidateMoveRouteTest {
     @Test
     public void jumpOwnError() {
         String json;
+        gameBoard.setPiece(playerBoard, 6, 1, Piece.redSingle);
+        gameBoard.setPiece(playerBoard, 5, 2, Piece.redSingle);
         json = "{\"start\":{\"row\":6,\"cell\":1},\"end\":{\"row\":4, \"cell\":3}}";
 
         when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
