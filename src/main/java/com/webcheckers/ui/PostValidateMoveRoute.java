@@ -48,7 +48,7 @@ public class PostValidateMoveRoute implements Route {
         int moveStartRow = move.getStart().getRow();
         int moveStartCell = move.getStart().getCell();
 
-        if (board.getActivePiece() == null){
+        if (board.getActivePiece() == null){ //if the active piece is null, set the active piece
             board.setActivePiece(board.getPiece(playerBoard,moveStartRow,moveStartCell));
             board.setActivePieceStart(move.getStart());
         }
@@ -63,16 +63,16 @@ public class PostValidateMoveRoute implements Route {
         int moveEndRow = move.getEnd().getRow();
         int moveEndCell = move.getEnd().getCell();
         String json;
-        if(board.isValidSpace(playerBoard,moveEndRow,moveEndCell)) {
-            if (board.getActivePiece().getType() == Piece.type.SINGLE && moveEndRow > moveStartRow) {
+        if(board.isValidSpace(playerBoard,moveEndRow,moveEndCell)) { //checks to see if the space being moved to is valid
+            if (board.getActivePiece().getType() == Piece.type.SINGLE && moveEndRow > moveStartRow) { //if the piece is a single type and attempts to go backwards, output an error
                 json = gson.toJson(Message.error("Can't move backwards."));
             } else {
-                switch (moveEndCell - moveStartCell) {
+                switch (moveEndCell - moveStartCell) { //check to see if a jump or a single move
                     case -1:
                     case 1:
-                        if (board.isSingleMove()) {
+                        if (board.isSingleMove()) { //check to see if already moved
                             json = gson.toJson(Message.error("Can only move diagonally once."));
-                        } else if (board.getActivePieceMoves() > 1) {
+                        } else if (board.getActivePieceMoves() > 1) { //checks to see if trying to move after jump
                             json = gson.toJson(Message.error("Cannot move after jump."));
                         } else {
                             board.addActivePieceEnd(move.getEnd());

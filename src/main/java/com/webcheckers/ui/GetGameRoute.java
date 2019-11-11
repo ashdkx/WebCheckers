@@ -70,7 +70,7 @@ public class GetGameRoute implements Route {
 
     if (httpSession.attribute(GetHomeRoute.CURRENT_PLAYER) != null) {
       Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
-      String gameId = request.queryParams("gameID");
+      String gameId = request.queryParams("gameID"); //Requests gameID param
 
 
       if (!player.isPlaying()) {
@@ -80,13 +80,14 @@ public class GetGameRoute implements Route {
           response.redirect(WebServer.HOME_URL);
           return null;
         }
-        UUID uuid = UUID.randomUUID();
+        UUID uuid = UUID.randomUUID(); //Generates a UUID
         gameId = uuid.toString();
         gameCenter.addNewGame(gameId, player, player2);
-        response.redirect(WebServer.GAME_URL+"?gameID="+gameId);
+        response.redirect(WebServer.GAME_URL+"?gameID="+gameId); //Redirects player to game with UUID
       }
-      if(gameId.equals("")){
+      if(gameId.equals("")){ //Checks for an error and fixes it
         httpSession.attribute(GetHomeRoute.MESSAGE, "Not in a game, player should not be playing.");
+        player.setPlaying(false);
         response.redirect(WebServer.HOME_URL);
         return null;
       }
@@ -95,7 +96,7 @@ public class GetGameRoute implements Route {
       vm.put(GetHomeRoute.CURRENT_USER_ATTR, player);
       vm.put("viewMode", mode.PLAY);
 
-      GameBoard board = gameCenter.getGame(gameId);
+      GameBoard board = gameCenter.getGame(gameId); //gets board via gameID
       board.isWhitePlayerBoard(!board.isRedPlayer(player));
 
       vm.put("redPlayer", board.getRedPlayer());

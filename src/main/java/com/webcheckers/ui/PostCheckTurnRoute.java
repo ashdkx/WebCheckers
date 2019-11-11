@@ -36,8 +36,6 @@ public class PostCheckTurnRoute implements Route {
         GameBoard board = gameCenter.getGame(request.queryParams(GetGameRoute.GAMEID_PARAM));
 
         String json;
-        System.out.println("Red Player Total Pieces: "+ board.getRedPlayerTotalPieces());
-        System.out.println("White Player Total Pieces: "+ board.getWhitePlayerTotalPieces());
         if (board.isMyTurn(player)){
             json = gson.toJson(Message.info("true"));
         }
