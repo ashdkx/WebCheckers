@@ -238,39 +238,61 @@ public class GameBoard implements Iterable<Row> {
         return valid;
     }
 
-
+    /**
+     * Gets the players color
+     * @param player player to check
+     * @return color based on if the player is red or not
+     */
     public color getPlayerColor(Player player){
-        if(isRedPlayer(player)){
+        if(isRedPlayer(player)){ //if the player is the red player return the enum RED
             return color.RED;
         }
-        else {
+        else { //else return the enum WHITE
             return color.WHITE;
         }
     }
 
+
+    /**
+     * Gets the total number of red pieces
+     * @return total red pieces
+     */
     public int getRedPlayerTotalPieces() {
         return redPlayerTotalPieces;
     }
 
+
+    /**
+     *
+     * @param player: add the piece according to the players color
+     */
     public void addPlayerTotalPieces(Player player){
-        if(isRedPlayer(player)){
-            redPlayerTotalPieces++;
+        if(isRedPlayer(player)){ // checks to see if the player is the red player
+            redPlayerTotalPieces++; //adds one piece
         }
         else {
             whitePlayerTotalPieces++;
         }
     }
 
-
+    /**
+     *
+     * @param player get the opponent based on the player
+     * @param amount amount to remove
+     */
     public void removeOpponentTotalPieces(Player player, int amount){
-        if(!isRedPlayer(player)){
-            redPlayerTotalPieces-=amount;
+        if(!isRedPlayer(player)){ // checks to see if the player is not the red player, meaning player2 is red
+            redPlayerTotalPieces-=amount; //remove total pieces by amount
         }
         else {
             whitePlayerTotalPieces-=amount;
         }
     }
 
+    /**
+     * Gets the total white pieces
+     * @return total white pieces
+     */
     public int getWhitePlayerTotalPieces() {
         return whitePlayerTotalPieces;
     }
