@@ -9,6 +9,7 @@ import spark.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import static spark.Spark.halt;
@@ -25,6 +26,7 @@ public class GetGameRoute implements Route {
   private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
   private static final Message OTHER_PLAYERS_MSG = Message.info("Click on one of these players to begin a game of checkers.");
   static final String PLAYER_PARAM = "player";
+  static final String GAMEID_PARAM = "gameID";
   private final GameCenter gameCenter;
 
 
@@ -68,6 +70,9 @@ public class GetGameRoute implements Route {
 
     if (httpSession.attribute(GetHomeRoute.CURRENT_PLAYER) != null) {
       Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
+      String gameId = request.queryParams("gameID");
+
+
       if (!player.isPlaying()) {
         Player player2 = gameCenter.getPlayer(request.queryParams(PLAYER_PARAM));
         if (player2.isPlaying()) {
@@ -75,53 +80,35 @@ public class GetGameRoute implements Route {
           response.redirect(WebServer.HOME_URL);
           return null;
         }
-        GameBoard board = new GameBoard(player, player2);
-        player.setRedPlayer(true);
-        player.setPlaying(true);
-        player.setColor(GameBoard.color.RED);
-        player.setMyTurn(true);
-        player.setGame(board);
-        player2.setColor(GameBoard.color.WHITE);
-        player2.setPlaying(true);
-        player2.setGame(board);
-        vm.put("activeColor", GameBoard.color.RED);
+        UUID uuid = UUID.randomUUID();
+        gameId = uuid.toString();
+        gameCenter.addNewGame(gameId, player, player2);
+        response.redirect(WebServer.GAME_URL+"?gameID="+gameId);
+      }
+      if(gameId.equals("")){
+        httpSession.attribute(GetHomeRoute.MESSAGE, "Not in a game, player should not be playing.");
+        response.redirect(WebServer.HOME_URL);
+        return null;
       }
 
       vm.put(GetHomeRoute.TITLE_ATTR, "Checkers");
       vm.put(GetHomeRoute.CURRENT_USER_ATTR, player);
       vm.put("viewMode", mode.PLAY);
 
+      GameBoard board = gameCenter.getGame(gameId);
+      board.isWhitePlayerBoard(!board.isRedPlayer(player));
 
-      Player player2 = null;
-      if (player.isRedPlayer()) {
-        GameBoard board = player.getGame();
-        board.isWhitePlayerBoard(false);
-        vm.put("redPlayer", player);
-        vm.put("whitePlayer", board.getWhitePlayer());
-        vm.put("board", board);
-        player2 = board.getWhitePlayer();
-
-
-      } else {
-        GameBoard board = player.getGame();
-        board.isWhitePlayerBoard(true);
-        vm.put("redPlayer", board.getRedPlayer());
-        vm.put("whitePlayer", player);
-        vm.put("board", board);
-        player2 = board.getRedPlayer();
-      }
-
-      if (player.isMyTurn()) {
-        vm.put("activeColor", player.getColor());
-      } else {
-        vm.put("activeColor", player2.getColor());
-      }
+      vm.put("redPlayer", board.getRedPlayer());
+      vm.put("whitePlayer", board.getWhitePlayer());
+      vm.put("board", board);
+      vm.put("activeColor",board.getPlayerColor(board.getPlayerTurn()));
 
       // render the View
       return templateEngine.render(new ModelAndView(vm, "game.ftl"));
     }
     else {
       response.redirect(WebServer.HOME_URL);
+
       halt();
       return null;
     }

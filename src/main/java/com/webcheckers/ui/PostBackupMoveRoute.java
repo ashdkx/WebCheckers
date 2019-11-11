@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameBoard;
+import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Player;
 import com.webcheckers.util.Message;
 import spark.*;
@@ -16,26 +17,26 @@ public class PostBackupMoveRoute implements Route {
 
 
     private static final Logger LOG = Logger.getLogger(PostBackupMoveRoute.class.getName());
-
-    public PostBackupMoveRoute(){
+    private GameCenter gameCenter;
+    private Gson gson;
+    public PostBackupMoveRoute(GameCenter gameCenter, Gson gson){
         LOG.config("PostBackupMoveRoute is initialized.");
+        this.gameCenter = gameCenter;
+        this.gson = gson;
     }
 
     @Override
     public Object handle(Request request, Response response) {
 
         LOG.finer("PostBackupMoveRoute is invoked.");
-        Gson gson = new Gson();
-        final Session httpSession = request.session();
         String json;
-        Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
-        GameBoard board = player.getGame();
+        GameBoard board = gameCenter.getGame(request.queryParams(GetGameRoute.GAMEID_PARAM));
         board.decrementActivePieceMoves();
         if(!board.getPieceRemove().isEmpty()){
             board.removePieceRemove();
         }
-        if (player.isSingleMove()){
-            player.setSingleMove(false);
+        if (board.isSingleMove()){
+            board.setSingleMove(false);
         }
         if(board.getActivePieceMoves()==0){
             board.setActivePiece(null);

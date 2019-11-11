@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameBoard;
+import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
@@ -19,11 +20,13 @@ import java.util.logging.Logger;
 public class PostValidateMoveRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
+    private GameCenter gameCenter;
+    private Gson gson;
 
-    private Gson gson = new Gson();
-
-    public PostValidateMoveRoute(){
+    public PostValidateMoveRoute(GameCenter gameCenter, Gson gson){
         LOG.config("PostValidateMoveRoute is initialized.");
+        this.gameCenter = gameCenter;
+        this.gson = gson;
     }
 
     @Override
@@ -37,7 +40,7 @@ public class PostValidateMoveRoute implements Route {
 
         Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
 
-        GameBoard board = player.getGame();
+        GameBoard board = gameCenter.getGame(request.queryParams(GetGameRoute.GAMEID_PARAM));
         List<Row> playerBoard = board.getPlayerBoard(player);
         String json = request.queryParams("actionData");
         Move move = gson.fromJson(json,Move.class);
@@ -67,14 +70,14 @@ public class PostValidateMoveRoute implements Route {
                 switch (moveEndCell - moveStartCell) {
                     case -1:
                     case 1:
-                        if (player.isSingleMove()) {
+                        if (board.isSingleMove()) {
                             json = gson.toJson(Message.error("Can only move diagonally once."));
                         } else if (board.getActivePieceMoves() > 1) {
                             json = gson.toJson(Message.error("Cannot move after jump."));
                         } else {
                             board.addActivePieceEnd(move.getEnd());
                             board.incrementActivePieceMoves();
-                            player.setSingleMove(true);
+                            board.setSingleMove(true);
                             json = gson.toJson(Message.info("Valid move."));
                         }
                         break;
@@ -126,11 +129,11 @@ public class PostValidateMoveRoute implements Route {
 
     private String jump(GameBoard board, Player player, List<Row> playerBoard, int pieceJumpedRow, int pieceJumpedCol, Move move){
         int[] position = new int[2];
-        if(!player.isSingleMove()) {
+        if(!board.isSingleMove()) {
             if (board.getPiece(playerBoard, pieceJumpedRow, pieceJumpedCol) != null) {
                 Piece piece = board.getPiece(playerBoard, pieceJumpedRow, pieceJumpedCol);
 
-                if (player.isNotPlayerColor(piece)){
+                if (board.isNotPlayerColor(piece,player)){
                     position[0] = pieceJumpedRow;
                     position[1] = pieceJumpedCol;
                     board.addPieceRemove(position);

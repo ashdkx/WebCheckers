@@ -16,8 +16,10 @@ import static org.mockito.Mockito.when;
  * unit test for PlayerLobby class
  * @author - Alec Jackson
  */
+
 @Tag("UI-Tier")
 public class GetGameRouteTester {
+    /*
     private GetGameRoute CuT;
 
     private Request request;
@@ -40,9 +42,11 @@ public class GetGameRouteTester {
 
 
     }
-    /*
+    */
+    /**
      * tests if default display works
      */
+    /*
     @Test
     public void new_game() {
         // Arrange the test scenario: The session holds no game.
@@ -71,11 +75,11 @@ public class GetGameRouteTester {
         testHelper.assertViewModelAttribute("currentUser", center.getPlayer(SAMPLE_NAME));
         testHelper.assertViewModelAttribute("viewMode", GetGameRoute.mode.PLAY);
     }
-
-    /*
+    */
+    /**
      * tests if correct player is recognized
      */
-
+/*
     @Test
     public void isCorrectPlayer(){
         final GameCenter center = new GameCenter();
@@ -99,6 +103,5 @@ public class GetGameRouteTester {
         testHelper.assertViewModelAttribute("board", player.getGame());
 
     }
-
-
+ */
 }

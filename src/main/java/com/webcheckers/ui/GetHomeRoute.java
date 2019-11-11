@@ -78,7 +78,14 @@ public class GetHomeRoute implements Route {
       final Player player = httpSession.attribute(CURRENT_PLAYER);
 
       if (player.isPlaying()){
-        response.redirect(WebServer.GAME_URL);
+        String gameID = "";
+        for (String keys : gameCenter.getGames().keySet()){
+          if(player.equals(gameCenter.getGame(keys).getRedPlayer())||player.equals(gameCenter.getGame(keys).getWhitePlayer())){
+            gameID = keys;
+            break;
+          }
+        }
+        response.redirect(WebServer.GAME_URL+"?gameID="+gameID);
         halt();
         return null;
       }

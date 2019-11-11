@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
  */
 @Tag("UI-tier")
 class PostValidateMoveRouteTest {
-
+/*
     private PostValidateMoveRoute Cut;
 
     private GameCenter gameCenter;
@@ -155,4 +155,5 @@ class PostValidateMoveRouteTest {
 
         Cut.handle(request, response);
     }
+ */
 }

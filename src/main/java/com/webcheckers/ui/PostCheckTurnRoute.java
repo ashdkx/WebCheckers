@@ -1,6 +1,8 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
+import com.webcheckers.appl.GameBoard;
+import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Player;
 import com.webcheckers.util.Message;
 import spark.*;
@@ -14,10 +16,13 @@ import java.util.logging.Logger;
 public class PostCheckTurnRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostCheckTurnRoute.class.getName());
+    private GameCenter gameCenter;
+    private Gson gson;
 
-
-    public PostCheckTurnRoute(){
+    public PostCheckTurnRoute(GameCenter gameCenter, Gson gson){
         LOG.config("PostCheckTurnRoute is initialized.");
+        this.gameCenter = gameCenter;
+        this.gson = gson;
     }
 
     @Override
@@ -25,13 +30,15 @@ public class PostCheckTurnRoute implements Route {
 
 
         LOG.finer("PostCheckTurnRoute is invoked.");
-        Gson gson = new Gson();
         final Session httpSession = request.session();
 
         Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
+        GameBoard board = gameCenter.getGame(request.queryParams(GetGameRoute.GAMEID_PARAM));
 
         String json;
-        if (player.isMyTurn()){
+        System.out.println("Red Player Total Pieces: "+ board.getRedPlayerTotalPieces());
+        System.out.println("White Player Total Pieces: "+ board.getWhitePlayerTotalPieces());
+        if (board.isMyTurn(player)){
             json = gson.toJson(Message.info("true"));
         }
         else {

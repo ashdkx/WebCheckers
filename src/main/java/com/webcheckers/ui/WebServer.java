@@ -156,10 +156,10 @@ public class WebServer {
 
     post(SIGNIN_URL, new PostSignInRoute(gameCenter,templateEngine));
     post(SIGNOUT_URL, new PostSignOutRoute(gameCenter,templateEngine));
-    post(VALIDATEMOVE_URL, new PostValidateMoveRoute());
-    post(BACKUPMOVE_URL, new PostBackupMoveRoute());
-    post(CHECKTURN_URL, new PostCheckTurnRoute());
-    post(SUBMITTURN_URL, new PostSubmitTurnRoute());
+    post(VALIDATEMOVE_URL, new PostValidateMoveRoute(gameCenter,gson));
+    post(BACKUPMOVE_URL, new PostBackupMoveRoute(gameCenter,gson));
+    post(CHECKTURN_URL, new PostCheckTurnRoute(gameCenter,gson));
+    post(SUBMITTURN_URL, new PostSubmitTurnRoute(gameCenter,gson));
     //
     LOG.config("WebServer is initialized.");
   }

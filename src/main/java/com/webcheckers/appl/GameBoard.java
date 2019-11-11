@@ -10,13 +10,16 @@ import java.util.*;
 public class GameBoard implements Iterable<Row> {
 
     private GameView game;
+    private Player playerTurn;
+    private boolean singleMove = false;
     private Piece activePiece = null;
     private Position activePieceStart;
     private Stack<Position> activePieceEnds = new Stack<>();
     private int activePieceMoves = 0;
     private ArrayList<int[]> pieceRemove = new ArrayList<>();
     private Map<int[], List<int[]>> requiredMovePieces = new HashMap<>();
-    private List<int[]> jumpPositions = new ArrayList<>();
+    private int redPlayerTotalPieces = 12;
+    private int whitePlayerTotalPieces = 12;
 
     public enum color{RED, WHITE}
 
@@ -44,8 +47,24 @@ public class GameBoard implements Iterable<Row> {
         return game.getWhitePlayerBoard();
     }
 
+    public boolean isRedPlayer(Player player){
+        return player.equals(getRedPlayer());
+    }
+
+    public void setPlayerTurn(Player playerTurn) {
+        this.playerTurn = playerTurn;
+    }
+
+    public boolean isMyTurn(Player player){
+        return player.equals(playerTurn);
+    }
+
+    public Player getPlayerTurn(){
+        return playerTurn;
+    }
+
     public List<Row> getPlayerBoard(Player player){
-        if(player.isRedPlayer()){
+        if(this.isRedPlayer(player)){
             return this.getRedPlayerBoard();
         }
         else{
@@ -182,20 +201,8 @@ public class GameBoard implements Iterable<Row> {
         return jumpPositions;
     }
 
-    public List<int[]> getJumpPositions() {
-        return jumpPositions;
-    }
-
-    public void addJumpPosition(int[] jump){
-        jumpPositions.add(jump);
-    }
-
-    public void clearJumpPositions(){
-        jumpPositions.clear();
-    }
-
     public void setPieceKing(Player player, List<Row> playerBoard, int row, int col){
-        switch (player.getColor()){
+        switch (getPlayerColor(player)){
             case RED:
                 setPiece(playerBoard,row,col,Piece.redKing);
                 break;
@@ -203,6 +210,71 @@ public class GameBoard implements Iterable<Row> {
                 setPiece(playerBoard,row,col,Piece.whiteKing);
         }
     }
+
+    public void setSingleMove(boolean singleMove){
+        this.singleMove = singleMove;
+    }
+
+    public boolean isSingleMove() {
+        return singleMove;
+    }
+
+    public boolean isNotPlayerColor(Piece piece, Player player){
+        boolean valid = false;
+        if(piece != null) {
+            switch (piece.getColor()) {
+                case RED:
+                    if (!isRedPlayer(player)) { // if player's color equals white and the piece's color is red return true
+                        valid = true;
+                    }
+                    break;
+                case WHITE:
+                    if (isRedPlayer(player)) { // if player's color equal red and the piece's color is white return true
+                        valid = true;
+                    }
+                    break;
+            }
+        }
+        return valid;
+    }
+
+
+    public color getPlayerColor(Player player){
+        if(isRedPlayer(player)){
+            return color.RED;
+        }
+        else {
+            return color.WHITE;
+        }
+    }
+
+    public int getRedPlayerTotalPieces() {
+        return redPlayerTotalPieces;
+    }
+
+    public void addPlayerTotalPieces(Player player){
+        if(isRedPlayer(player)){
+            redPlayerTotalPieces++;
+        }
+        else {
+            whitePlayerTotalPieces++;
+        }
+    }
+
+
+    public void removeOpponentTotalPieces(Player player, int amount){
+        if(!isRedPlayer(player)){
+            redPlayerTotalPieces-=amount;
+        }
+        else {
+            whitePlayerTotalPieces-=amount;
+        }
+    }
+
+    public int getWhitePlayerTotalPieces() {
+        return whitePlayerTotalPieces;
+    }
+
 
     @Override
     public Iterator<Row> iterator(){
