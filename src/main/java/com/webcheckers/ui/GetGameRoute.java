@@ -2,7 +2,6 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameBoard;
 import com.webcheckers.appl.GameCenter;
-import com.webcheckers.model.GameView;
 import com.webcheckers.model.Player;
 import com.webcheckers.util.Message;
 import spark.*;
@@ -66,63 +65,67 @@ public class GetGameRoute implements Route {
     final Session httpSession = request.session();
 
 
-    Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
     Map<String, Object> vm = new HashMap<>();
 
-
-    if(!player.isPlaying()) {
-      Player player2 = gameCenter.getPlayer(request.queryParams(PLAYER_PARAM));
-      if (player2.isPlaying()){
-        httpSession.attribute(GetHomeRoute.MESSAGE,"Player already in game. Click a different player to begin a game of checkers.");
-        response.redirect(WebServer.HOME_URL);
-        return null;
+    if (httpSession.attribute(GetHomeRoute.CURRENT_PLAYER) != null) {
+      Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
+      if (!player.isPlaying()) {
+        Player player2 = gameCenter.getPlayer(request.queryParams(PLAYER_PARAM));
+        if (player2.isPlaying()) {
+          httpSession.attribute(GetHomeRoute.MESSAGE, "Player already in game. Click a different player to begin a game of checkers.");
+          response.redirect(WebServer.HOME_URL);
+          return null;
+        }
+        GameBoard board = new GameBoard(player, player2);
+        player.setRedPlayer(true);
+        player.setPlaying(true);
+        player.setColor(GameBoard.color.RED);
+        player.setMyTurn(true);
+        player.setGame(board);
+        player2.setColor(GameBoard.color.WHITE);
+        player2.setPlaying(true);
+        player2.setGame(board);
+        vm.put("activeColor", GameBoard.color.RED);
       }
-      gameCenter.setPlayer1(player, true);
-      gameCenter.setPlaying(player, true);
-      gameCenter.setPlaying(player2, true);
-      gameCenter.setPlayerColor(player, GameBoard.color.RED);
-      gameCenter.setPlayerColor(player2, GameBoard.color.WHITE);
-      gameCenter.setPlayerTurn(player, true);
-      GameBoard board = new GameBoard(player, player2);
-      gameCenter.setGame(player, board);
-      gameCenter.setGame(player2, board);
-      vm.put("activeColor", GameBoard.color.RED);
+
+      vm.put("title", "Checkers");
+      vm.put("currentUser", player);
+      vm.put("viewMode", mode.PLAY);
+
+
+      Player player2 = null;
+      if (player.isRedPlayer()) {
+        GameBoard board = player.getGame();
+        board.isWhitePlayerBoard(false);
+        vm.put("redPlayer", player);
+        vm.put("whitePlayer", board.getWhitePlayer());
+        vm.put("board", board);
+        player2 = board.getWhitePlayer();
+
+
+      } else {
+        GameBoard board = player.getGame();
+        board.isWhitePlayerBoard(true);
+        vm.put("redPlayer", board.getRedPlayer());
+        vm.put("whitePlayer", player);
+        vm.put("board", board);
+        player2 = board.getRedPlayer();
+      }
+
+      if (player.isMyTurn()) {
+        vm.put("activeColor", player.getColor());
+      } else {
+        vm.put("activeColor", player2.getColor());
+      }
+
+      // render the View
+      return templateEngine.render(new ModelAndView(vm, "game.ftl"));
     }
-
-    vm.put("title", "Checkers");
-    vm.put("currentUser", player);
-    vm.put("viewMode", mode.PLAY);
-
-
-    Player player2 = null;
-    if(player.isPlayer1()) {
-      //
-      gameCenter.getGame(player).isPlayer2Board(false);
-      vm.put("redPlayer", player);
-      vm.put("whitePlayer", gameCenter.getGame(player).getPlayer2());
-      vm.put("board", gameCenter.getGame(player));
-      player2 = gameCenter.getGame(player).getPlayer2();
-
-
+    else {
+      response.redirect(WebServer.HOME_URL);
+      halt();
+      return null;
     }
-
-   else{
-      gameCenter.getGame(player).isPlayer2Board(true);
-      vm.put("redPlayer",gameCenter.getGame(player).getPlayer1());
-      vm.put("whitePlayer", player);
-      vm.put("board", gameCenter.getGame(player));
-      player2 = gameCenter.getGame(player).getPlayer1();
-    }
-
-    if(player.isMyTurn()){
-      vm.put("activeColor",player.getColor());
-    }
-    else{
-      vm.put("activeColor",player2.getColor());
-    }
-
-    // render the View
-    return templateEngine.render(new ModelAndView(vm , "game.ftl"));
   }
 
 }

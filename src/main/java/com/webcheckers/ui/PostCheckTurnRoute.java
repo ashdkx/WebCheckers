@@ -32,7 +32,7 @@ public class PostCheckTurnRoute implements Route {
 
         Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
 
-        String json= "";
+        String json;
         if (player.isMyTurn()){
             json = gson.toJson(Message.info("true"));
         }

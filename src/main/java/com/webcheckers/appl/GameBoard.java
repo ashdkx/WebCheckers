@@ -2,8 +2,7 @@ package com.webcheckers.appl;
 
 import com.webcheckers.model.*;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Nicholas Curl
@@ -11,100 +10,192 @@ import java.util.List;
 public class GameBoard implements Iterable<Row> {
 
     private GameView game;
+    private Piece activePiece = null;
+    private Position activePieceStart;
+    private Stack<Position> activePieceEnds = new Stack<>();
+    private int activePieceMoves = 0;
+    private ArrayList<int[]> pieceRemove = new ArrayList<>();
+    private Map<int[], List<int[]>> requiredMovePieces = new HashMap<>();
+    private List<int[]> jumpPositions = new ArrayList<>();
 
     public enum color{
         RED,
         WHITE
     }
 
-    public GameBoard(Player player1, Player player2){
-        this.game = new GameView(player1,player2);
+    public GameBoard(Player redPlayer, Player whitePlayer){
+        this.game = new GameView(redPlayer,whitePlayer);
     }
-
 
     public GameView getGame() {
         return game;
     }
 
-    public Player getPlayer1(){
-        return game.getPlayer1();
+    public Player getRedPlayer(){
+        return game.getRedPlayer();
     }
 
-    public Player getPlayer2(){
-        return game.getPlayer2();
+    public Player getWhitePlayer(){
+        return game.getWhitePlayer();
     }
 
-    public List<Row> getPlayer1Board(){
-        return game.getPlayer1Board();
+    public List<Row> getRedPlayerBoard(){
+        return game.getRedPlayerBoard();
     }
 
-    public List<Row> getPlayer2Board(){
-        return game.getPlayer2Board();
+    public List<Row> getWhitePlayerBoard(){
+        return game.getWhitePlayerBoard();
     }
 
-    public void isPlayer2Board(boolean board2){
-        game.isPlayer2Board(board2);
+    public List<Row> getPlayerBoard(Player player){
+        if(player.isRedPlayer()){
+            return this.getRedPlayerBoard();
+        }
+        else{
+            return this.getWhitePlayerBoard();
+        }
     }
 
-    public boolean isValid(List<Row> board, int row, int col){
-        return game.isValid(board, row,col);
+    public void isWhitePlayerBoard(boolean whiteBoard){
+        game.isWhitePlayerBoard(whiteBoard);
     }
 
-    public Piece getPiece(List<Row> board, int row, int col){
-        return game.getPiece(board, row, col);
+    public void updateRedPlayer(){
+        game.updateRedPlayer();
     }
 
-    public void setActivePiece(Piece piece){
-        game.setActivePiece(piece);
-    }
-
-    public Piece getActivePiece(){
-        return game.getActivePiece();
+    public void updateWhitePlayer(){
+        game.updateWhitePlayer();
     }
 
     public List<Row> getBoard(){
         return game.getBoard();
     }
 
-
-    public Position getActiveStart(){
-        return game.getActiveStart();
+    public boolean isValidSpace(List<Row> board, int row, int col){
+        if(row>7||row<0||col>7||col<0){
+            return false;
+        }
+        else {
+            return board.get(row).getSpace(col).isValid();
+        }
     }
 
-    public void setActivePieceEnd(Position end){
-        game.setActivePieceEnd(end);
+    public Piece getPiece(List<Row> board, int row, int col){
+        if(row>7||row<0||col>7||col<0){
+            return null;
+        }
+        else {
+            return board.get(row).getSpace(col).getPiece();
+        }
     }
 
-    public void setActivePieceStart(Position start){
-        game.setActivePieceStart(start);
+    public void setPiece(List<Row> board, int row, int col, Piece piece){
+        if(!(row>7||row<0||col>7||col<0)) {
+            board.get(row).getSpace(col).setPiece(piece);
+        }
     }
 
-    public Position getActiveEnd(){
-        return game.getActiveEnd();
+    public void setActivePiece(Piece piece) {
+        this.activePiece = piece;
+
     }
 
-    public void updatePlayer1(){
-        game.updatePlayer1();
+    public Piece getActivePiece() {
+        return activePiece;
     }
 
-    public void updatePlayer2(){
-        game.updatePlayer2();
+    public void setActivePieceStart(Position activePieceStart) {
+        this.activePieceStart = activePieceStart;
     }
 
-    public int getActivePieceMoves(){
-        return game.getActivePieceMoves();
+    public Position getActivePieceStart(){
+        return this.activePieceStart;
     }
 
-    public void resetActivePieceMoves(){
-        game.setActivePieceMoves(0);
+    public void addActivePieceEnd(Position activePieceEnd) {
+        this.activePieceEnds.push(activePieceEnd);
+    }
+
+    public Position getActivePieceEnd(){
+        return this.activePieceEnds.pop();
+    }
+
+    public void clearActivePieceEnd(){
+        this.activePieceEnds.clear();
+    }
+
+    public int getActivePieceMoves() {
+        return activePieceMoves;
+    }
+
+    public void setActivePieceMoves(int activePieceMoves) {
+        this.activePieceMoves = activePieceMoves;
     }
 
     public void incrementActivePieceMoves(){
-        game.incrementActivePieceMoves();
+        this.activePieceMoves++;
     }
 
     public void decrementActivePieceMoves(){
-        game.decrementActivePieceMoves();
+        this.activePieceMoves--;
+    }
+
+    public void addPieceRemove(int[] position){
+        pieceRemove.add(position);
+    }
+
+    public int[] removePieceRemove(){
+        return pieceRemove.remove(pieceRemove.size()-1);
+    }
+
+    public ArrayList<int[]> getPieceRemove(){
+        return pieceRemove;
+    }
+
+    public Map<int[], List<int[]>> getRequiredMovePieces() {
+        return requiredMovePieces;
+    }
+
+    public boolean isRequiredMovePiece(int[] position){
+        boolean valid = false;
+        for(int[] requiredPosition:requiredMovePieces.keySet()){
+            if(position[0]==requiredPosition[0]&&position[1]==requiredPosition[1]){
+                valid = true;
+                break;
+            }
+        }
+        return valid;
+    }
+
+    public void addRequiredMovePieces(int[] position, List<int[]> jumps){
+        requiredMovePieces.put(position, jumps);
+    }
+
+    public void clearRequiredMovePieces(){
+        requiredMovePieces.clear();
+    }
+
+    public List<int[]> getRequiredMoveJumps(int[] position){
+        List<int[]> jumpPositions = new ArrayList<>();
+        for(int[] requiredPosition: requiredMovePieces.keySet()){
+            if(position[0]==requiredPosition[0]&&position[1]==requiredPosition[1]){
+                jumpPositions = requiredMovePieces.get(requiredPosition);
+            }
+        }
+        return jumpPositions;
+    }
+
+    public List<int[]> getJumpPositions() {
+        return jumpPositions;
+    }
+
+    public void addJumpPosition(int[] jump){
+        jumpPositions.add(jump);
+    }
+
+    public void clearJumpPositions(){
+        jumpPositions.clear();
     }
 
     @Override

@@ -26,7 +26,7 @@ public class Piece {
    public static final Piece redKing = new Piece(type.KING,color.RED);
 
 
-    Piece(Piece.type type, Piece.color color){
+    public Piece(Piece.type type, Piece.color color){
         this.pieceType = type;
         this.pieceColor = color;
 

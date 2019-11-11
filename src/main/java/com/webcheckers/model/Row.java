@@ -40,7 +40,6 @@ public class Row implements Iterable<Space>{
         return index;
     }
 
-
     public Space getSpace(int col){
         return space.get(col);
     }
