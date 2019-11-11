@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 
 
+import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -25,6 +26,8 @@ public class GetSignInRouteTest {
     private Session session;
     private Response response;
     private TemplateEngine engine;
+    private GameCenter gameCenter;
+
 
     @BeforeEach
     public void setup() {
@@ -33,7 +36,7 @@ public class GetSignInRouteTest {
         when(request.session()).thenReturn(session);
         response = mock(Response.class);
         engine = mock(TemplateEngine.class);
-
+        gameCenter = new GameCenter();
         CuT = new GetSignInRoute(engine);
     }
 
@@ -55,7 +58,10 @@ public class GetSignInRouteTest {
 
     @Test
     public void faultyLogIn() {
-        Player player = new Player("test","1");
+        final String name = "player";
+        gameCenter.addPlayer(name);
+
+        final Player player = gameCenter.getPlayer(name);
         when(session.attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player);
 
         try {

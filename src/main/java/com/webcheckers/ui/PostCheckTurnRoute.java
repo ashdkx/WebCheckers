@@ -17,8 +17,6 @@ public class PostCheckTurnRoute implements Route {
 
 
     public PostCheckTurnRoute(){
-
-
         LOG.config("PostCheckTurnRoute is initialized.");
     }
 
@@ -39,9 +37,6 @@ public class PostCheckTurnRoute implements Route {
         else {
             json = gson.toJson(Message.info("false"));
         }
-
-
-
 
         return json;
     }

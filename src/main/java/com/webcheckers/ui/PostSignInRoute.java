@@ -1,7 +1,6 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
-import com.webcheckers.model.Player;
 import spark.*;
 
 
@@ -46,7 +45,7 @@ public class PostSignInRoute implements Route {
         final Session httpSession = request.session();
         LOG.finer("PostSignInRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Sign In");
+        vm.put(GetHomeRoute.TITLE_ATTR, "Sign In");
 
         if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER)== null) {
             String username = request.queryParams(USERNAME_PARAM);
@@ -60,7 +59,7 @@ public class PostSignInRoute implements Route {
                 gameCenter.addPlayer("legend69");
                 gameCenter.addPlayer("nikki3413");
                 gameCenter.addPlayer("hillary239");
-            } else
+            }
             //check if username input exists or not
             if (gameCenter.getPlayers().containsKey(username)) {
                 mv = error(vm, "Username exists");
@@ -75,7 +74,7 @@ public class PostSignInRoute implements Route {
             // add new user to the list if it's valid
             } else {
                 gameCenter.addPlayer(username);
-                vm.put("currentUser", gameCenter.getPlayer(username));
+                vm.put(GetHomeRoute.CURRENT_USER_ATTR, gameCenter.getPlayer(username));
                 httpSession.attribute(GetHomeRoute.CURRENT_PLAYER, gameCenter.getPlayer(username));
             }
 

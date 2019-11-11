@@ -31,8 +31,9 @@ public class GetHomeRoute implements Route {
   static final String ERROR_TYPE = "error";
   static final String MESSAGE = "messageValue";
   static final String TITLE_ATTR = "title";
+  static final String TITLE = "Home";
   private final GameCenter gameCenter;
-
+  static final String CURRENT_USER_ATTR = "currentUser";
   private final String ACTIVE_PLAYERS = "activePlayers";
   static final String CURRENT_PLAYER = "currentPlayer";
 
@@ -68,7 +69,7 @@ public class GetHomeRoute implements Route {
     LOG.finer("GetHomeRoute is invoked.");
     //
     Map<String, Object> vm = new HashMap<>();
-
+    vm.put(TITLE_ATTR, TITLE);
     // display a user message in the Home page
 
     // show active players
@@ -82,20 +83,20 @@ public class GetHomeRoute implements Route {
         return null;
       }
       else {
-        vm.remove("message", WELCOME_MSG);
+        vm.remove(MESSAGE_ATTR, WELCOME_MSG);
         if(httpSession.attribute(MESSAGE)!=null){
           final String message = httpSession.attribute(MESSAGE);
           vm.put(MESSAGE_ATTR,Message.error(message));
         }
         else{
-          vm.put("message", OTHER_PLAYERS_MSG);
+          vm.put(MESSAGE_ATTR, OTHER_PLAYERS_MSG);
         }
 
 
         // print out the list of players
         vm.put(ACTIVE_PLAYERS, gameCenter.getPlayers());
         // remove current user from the list
-        vm.put("currentUser", player);
+        vm.put(CURRENT_USER_ATTR, player);
       }
     }
     else{

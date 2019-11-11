@@ -3,11 +3,11 @@ package com.webcheckers.ui;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
 import static com.webcheckers.ui.GetGameRoute.PLAYER_PARAM;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
  * unit test for PlayerLobby class
  * @author - Alec Jackson
  */
-
+@Tag("UI-Tier")
 public class GetGameRouteTester {
     private GetGameRoute CuT;
 
@@ -86,7 +86,7 @@ public class GetGameRouteTester {
         center.addPlayer(SAMPLE_NAME);
         center.addPlayer(SAMPLE_NAME_2);
         Player player = center.getPlayer(SAMPLE_NAME);
-        player.setPlayer1(true);
+        player.setRedPlayer(true);
 
         when(session.attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(center.getPlayer(SAMPLE_NAME));
         when(request.queryParams(PLAYER_PARAM)).thenReturn(SAMPLE_NAME_2);
@@ -95,8 +95,8 @@ public class GetGameRouteTester {
 
         CuT.handle(request, response);
         testHelper.assertViewModelAttribute("redPlayer", player);
-        testHelper.assertViewModelAttribute("whitePlayer", center.getGame(player).getPlayer2());
-        testHelper.assertViewModelAttribute("board", center.getGame(player));
+        testHelper.assertViewModelAttribute("whitePlayer", player.getGame().getWhitePlayer());
+        testHelper.assertViewModelAttribute("board", player.getGame());
 
     }
 
