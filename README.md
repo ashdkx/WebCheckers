@@ -8,7 +8,6 @@ a web micro-framework.
 
 - Nicholas Curl
 - Ash Nguyen
-- Eric Brockman
 - Alec Jackson
 - Alan Chen
 
