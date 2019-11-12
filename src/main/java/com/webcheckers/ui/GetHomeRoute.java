@@ -80,7 +80,7 @@ public class GetHomeRoute implements Route {
       if (player.isPlaying()){
         String gameID = "";
         for (String keys : gameCenter.getGames().keySet()){ //Go through all the gameIDs and checks if player is in the game
-          if(player.equals(gameCenter.getGame(keys).getRedPlayer())||player.equals(gameCenter.getGame(keys).getWhitePlayer())){
+          if((player.equals(gameCenter.getGame(keys).getRedPlayer())||player.equals(gameCenter.getGame(keys).getWhitePlayer()))&&!gameCenter.getGame(keys).isGameOver()){ //sets the gameID when its not a completed game as well
             gameID = keys;
             break;
           }

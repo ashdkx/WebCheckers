@@ -36,13 +36,16 @@ public class PostCheckTurnRoute implements Route {
         GameBoard board = gameCenter.getGame(request.queryParams(GetGameRoute.GAMEID_PARAM));
 
         String json;
-        if (board.isMyTurn(player)){
+        if (board.checkGameOver()){ //checks if game should be over
             json = gson.toJson(Message.info("true"));
         }
         else {
-            json = gson.toJson(Message.info("false"));
+            if (board.isMyTurn(player)) {
+                json = gson.toJson(Message.info("true"));
+            } else {
+                json = gson.toJson(Message.info("false"));
+            }
         }
-
         return json;
     }
 }

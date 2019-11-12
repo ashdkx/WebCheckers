@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.google.gson.Gson;
 import com.webcheckers.appl.GameBoard;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Player;
@@ -13,6 +14,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import static spark.Spark.halt;
+import static spark.Spark.threadPool;
 
 /**
  * The UI Controller to GET the Game page.
@@ -36,16 +38,17 @@ public class GetGameRoute implements Route {
     REPLAY
   }
   private final TemplateEngine templateEngine;
-
+  private final Gson gson;
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
    *
    * @param templateEngine
    *   the HTML template rendering engine
    */
-  public GetGameRoute(final GameCenter gameCenter, final TemplateEngine templateEngine) {
+  public GetGameRoute(final GameCenter gameCenter, final TemplateEngine templateEngine, final Gson gson) {
     this.gameCenter = gameCenter;
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
+    this.gson = gson;
     //
     LOG.config("GetHomeRoute is initialized.");
   }
@@ -65,35 +68,40 @@ public class GetGameRoute implements Route {
   public Object handle(Request request, Response response) {
     LOG.finer("GetGameRoute is invoked.");
     final Session httpSession = request.session();
-    
+    final Map<String, Object> modeOptions = new HashMap<>(2);
     Map<String, Object> vm = new HashMap<>();
 
     if (httpSession.attribute(GetHomeRoute.CURRENT_PLAYER) != null) {
       Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
       String gameId = request.queryParams("gameID"); //Requests gameID param
+      vm.put(GetHomeRoute.TITLE_ATTR, "Checkers");
+      vm.put(GetHomeRoute.CURRENT_USER_ATTR, player);
 
+      if(gameId == null) { //checks to see if the gameID is null
 
-      if (!player.isPlaying()) {
-        Player player2 = gameCenter.getPlayer(request.queryParams(PLAYER_PARAM));
-        if (player2.isPlaying()) {
-          httpSession.attribute(GetHomeRoute.MESSAGE, "Player already in game. Click a different player to begin a game of checkers.");
+        if (!player.isPlaying()) {
+          Player player2 = gameCenter.getPlayer(request.queryParams(PLAYER_PARAM));
+          if (player2.isPlaying()) {
+            httpSession.attribute(GetHomeRoute.MESSAGE, "Player already in game. Click a different player to begin a game of checkers.");
+            response.redirect(WebServer.HOME_URL);
+            return null;
+          }
+          UUID uuid = UUID.randomUUID(); //Generates a UUID
+          gameId = uuid.toString();
+          gameCenter.addNewGame(gameId, player, player2);
+          response.redirect(WebServer.GAME_URL + "?gameID=" + gameId); //Redirects player to game with UUID
+        }
+      }
+      else {
+        if(gameId.equals("")){ //Checks for an error and fixes it
+          httpSession.attribute(GetHomeRoute.MESSAGE, "Not in a game, player should not be playing.");
+          player.setPlaying(false);
           response.redirect(WebServer.HOME_URL);
           return null;
         }
-        UUID uuid = UUID.randomUUID(); //Generates a UUID
-        gameId = uuid.toString();
-        gameCenter.addNewGame(gameId, player, player2);
-        response.redirect(WebServer.GAME_URL+"?gameID="+gameId); //Redirects player to game with UUID
-      }
-      if(gameId.equals("")){ //Checks for an error and fixes it
-        httpSession.attribute(GetHomeRoute.MESSAGE, "Not in a game, player should not be playing.");
-        player.setPlaying(false);
-        response.redirect(WebServer.HOME_URL);
-        return null;
       }
 
-      vm.put(GetHomeRoute.TITLE_ATTR, "Checkers");
-      vm.put(GetHomeRoute.CURRENT_USER_ATTR, player);
+
       vm.put("viewMode", mode.PLAY);
 
       GameBoard board = gameCenter.getGame(gameId); //gets board via gameID
@@ -103,6 +111,13 @@ public class GetGameRoute implements Route {
       vm.put("whitePlayer", board.getWhitePlayer());
       vm.put("board", board);
       vm.put("activeColor",board.getPlayerColor(board.getPlayerTurn()));
+      if(board.isGameOver()){ // checks to see if the game is over
+        modeOptions.put("isGameOver",board.isGameOver()); //sets the game over value into the map
+        modeOptions.put("gameOverMessage",board.getGameOverMessage()); //stores the gameOver message into the map
+        vm.put("modeOptionsAsJSON", gson.toJson(modeOptions)); //converts the modeOptions map into a json
+        board.getRedPlayer().setPlaying(false); //sets the red player to not be playing
+        board.getWhitePlayer().setPlaying(false); //sets the white player to not be playing
+      }
 
       // render the View
       return templateEngine.render(new ModelAndView(vm, "game.ftl"));

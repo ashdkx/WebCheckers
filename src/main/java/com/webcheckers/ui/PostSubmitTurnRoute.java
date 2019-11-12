@@ -27,7 +27,6 @@ public class PostSubmitTurnRoute implements Route {
     private static final Logger LOG = Logger.getLogger(PostSubmitTurnRoute.class.getName());
     private Gson gson;
     private GameCenter gameCenter;
-    private List<int[]> jumpPositions = new ArrayList<>();
 
     public PostSubmitTurnRoute(GameCenter gameCenter, Gson gson){
         LOG.config("PostSubmitTurnRoute is initialized.");
@@ -90,76 +89,14 @@ public class PostSubmitTurnRoute implements Route {
                 if(board.isNotPlayerColor(piece,player)||piece==null) { //if the piece is not the players color or there is no piece continue on
                     continue;
                 }
-                if (canJump(board,player,playerBoard,i,j,piece)){ //check if the current piece can jump
+                if (board.canJump(player,playerBoard,i,j,piece)){ //check if the current piece can jump
                     int[] position = new int [] {i,j};
-                    List<int[]> jumpPositionsAdd = new ArrayList<>(jumpPositions);
+                    List<int[]> jumpPositionsAdd = new ArrayList<>(board.getJumpPositions());
                     board.addRequiredMovePieces(position,jumpPositionsAdd); //add piece and possible jumps to required moves
-                    jumpPositions.clear();
+                    board.getJumpPositions().clear();
                 }
             }
         }
-    }
-
-    private boolean canJump(GameBoard board, Player player, List<Row> playerBoard, int row, int col, Piece piece){
-        boolean validPos1 = false;
-        boolean validPos2 = false;
-        boolean validPos3 = false;
-        boolean validPos4 = false;
-        
-        /*
-            201
-            0P0
-            403
-            
-            0 = invalid space
-            1 = validPos1
-            2 = validPos2
-            3 = validPos3
-            4 = validPos4
-            P = piece being checked
-        */
-        if (board.getPiece(playerBoard, row - 1, col + 1) != null) {
-            Piece pieceJump = board.getPiece(playerBoard, row - 1, col + 1); //get piece at validPos1
-            boolean isCorrectColor = board.isNotPlayerColor(pieceJump,player); //check if piece at validPos1 is the opponent color
-            boolean isValidSpace = board.isValidSpace(playerBoard,row-2,col+2); //Check to see if open space to jump to
-            validPos1 = isValidSpace&&isCorrectColor;
-            if(validPos1){
-                jumpPositions.add(new int[]{row-1,col+1}); //if it is valid add it to possible jumps
-            }
-        }
-        if (board.getPiece(playerBoard, row - 1, col - 1) != null) {
-            Piece pieceJump = board.getPiece(playerBoard, row - 1, col - 1); //get piece at validPos2
-            boolean isCorrectColor = board.isNotPlayerColor(pieceJump,player); //check if piece at validPos2 is the opponent color
-            boolean isValidSpace = board.isValidSpace(playerBoard,row-2,col-2); //Check to see if open space to jump to
-            validPos2 = isCorrectColor&&isValidSpace;
-
-            if (validPos2){
-                jumpPositions.add(new int[]{row-1,col-1}); //if it is valid add it to possible jumps
-            }
-
-        }
-        
-        if(piece.getType() == Piece.type.KING){ // check to see if the piece being checked is a King type
-            if (board.getPiece(playerBoard, row+1, col+1) != null){
-                Piece pieceJump = board.getPiece(playerBoard, row + 1, col + 1); //get piece at validPos3
-                boolean isCorrectColor = board.isNotPlayerColor(pieceJump,player); //check if piece at validPos3 is the opponent color
-                boolean isValidSpace = board.isValidSpace(playerBoard,row+2,col+2); //Check to see if open space to jump to
-                validPos3 = isValidSpace&&isCorrectColor;
-                if (validPos3){
-                    jumpPositions.add(new int[]{row+1,col+1}); //if it is valid add it to possible jumps
-                }
-            }
-            if (board.getPiece(playerBoard, row+1, col-1) != null){
-                Piece pieceJump = board.getPiece(playerBoard, row + 1, col - 1); //get piece at validPos4
-                boolean isCorrectColor = board.isNotPlayerColor(pieceJump,player); //check if piece at validPos4 is the opponent color
-                boolean isValidSpace = board.isValidSpace(playerBoard,row+2,col-2); //Check to see if open space to jump to
-                validPos4 = isValidSpace&&isCorrectColor;
-                if (validPos4){
-                    jumpPositions.add(new int[]{row+1,col-1}); //if it is valid add it to possible jumps
-                }
-            }
-        }
-        return validPos1||validPos2||validPos3||validPos4;
     }
 
     private String submit(GameBoard board, List<Row> playerBoard, Player player, Position moveStart, Position moveEnd){
@@ -189,7 +126,7 @@ public class PostSubmitTurnRoute implements Route {
         board.setSingleMove(false);
         board.clearRequiredMovePieces();
         board.clearActivePieceEnd();
-        jumpPositions.clear();
+        board.getJumpPositions().clear();
         return gson.toJson(Message.info("Valid Move."));
     }
 
@@ -199,7 +136,7 @@ public class PostSubmitTurnRoute implements Route {
         if (board.isSingleMove()) { //check to see if piece moved one space diagonally
             json = submit(board, playerBoard, player, moveStart, moveEnd);
         } else {
-            if (canJump(board, player, playerBoard, moveEnd.getRow(), moveEnd.getCell(), board.getActivePiece())) { //handles multiple jump
+            if (board.canJump(player, playerBoard, moveEnd.getRow(), moveEnd.getCell(), board.getActivePiece())) { //handles multiple jump
                 json = gson.toJson(Message.error("Piece is still able to jump."));
             } else {
                 while (!board.getPieceRemove().isEmpty()) { //goes through the entire list of pieces to remove

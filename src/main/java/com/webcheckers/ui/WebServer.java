@@ -152,7 +152,7 @@ public class WebServer {
     //Show the Checkers sign in page.
     get(SIGNIN_URL, new GetSignInRoute(templateEngine));
 
-    get(GAME_URL, new GetGameRoute(gameCenter,templateEngine));
+    get(GAME_URL, new GetGameRoute(gameCenter,templateEngine,gson));
 
     post(SIGNIN_URL, new PostSignInRoute(gameCenter,templateEngine));
     post(SIGNOUT_URL, new PostSignOutRoute(gameCenter,templateEngine));
