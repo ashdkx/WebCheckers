@@ -1,6 +1,5 @@
 package com.webcheckers.appl;
 
-import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.PlayerLobby;
 
@@ -13,24 +12,44 @@ import java.util.Map;
 public class GameCenter{
     private PlayerLobby lobby;
 
-    private Map<String, GameBoard> games = new HashMap<>();
+    private Map<String, GameBoard> games = new HashMap<>(); //Map to store all of the games based on a unique identifier
 
+    /**
+     * Constructor of the game center
+     */
     public GameCenter(){
         this.lobby = new PlayerLobby();
     }
 
+    /**
+     * Adds player with username username to the lobby
+     * @param username the string identifier of the player to be added
+     */
     public void addPlayer(String username){
         lobby.addPlayer(username);
     }
 
+    /**
+     * Gets all the players present in the lobby
+     * @return the map of all the players in the lobby
+     */
      public HashMap<String, Player> getPlayers() {
         return lobby.getPlayers();
     }
 
+    /**
+     * Removes the player with the username name from the lobby
+     * @param name the string identifier of the player to remove
+     */
     public void removePlayer(String name ){
         lobby.removePlayer(name);
     }
 
+    /**
+     * Gets the player based on the username from the lobby
+     * @param username the string identifier of the player
+     * @return the player associated with the username from the lobby
+     */
     public Player getPlayer(String username){
         return lobby.getPlayer(username);
     }
