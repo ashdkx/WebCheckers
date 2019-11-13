@@ -40,6 +40,7 @@ public class PostValidateMoveRoute implements Route {
         GameBoard board = player.getGame();
         List<Row> playerBoard = board.getPlayerBoard(player);
         String json = request.queryParams("actionData");
+        System.out.println(json);
         Move move = gson.fromJson(json,Move.class);
 
         int moveStartRow = move.getStart().getRow();
@@ -69,7 +70,7 @@ public class PostValidateMoveRoute implements Route {
                     case 1:
                         if (player.isSingleMove()) {
                             json = gson.toJson(Message.error("Can only move diagonally once."));
-                        } else if (board.getActivePieceMoves() > 1) {
+                        } else if (board.getActivePieceMoves() >= 1) {
                             json = gson.toJson(Message.error("Cannot move after jump."));
                         } else {
                             board.addActivePieceEnd(move.getEnd());

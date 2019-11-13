@@ -127,4 +127,16 @@ public class GameView {
 
     }
 
+    private void testMoveAfterJump(){
+        for(int i = 0; i<8; i++){
+            for(int j=0; j<8; j++){
+                redPlayerBoard.get(i).getSpace(j).setPiece(null);
+            }
+        }
+        redPlayerBoard.get(2).getSpace(3).setPiece(Piece.whiteSingle);
+        redPlayerBoard.get(5).getSpace(2).setPiece(Piece.redSingle);
+        redPlayerBoard.get(4).getSpace(3).setPiece(Piece.whiteSingle);
+        updateWhitePlayer();
+    }
+
 }
