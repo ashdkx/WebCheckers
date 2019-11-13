@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author - Alec Jackson
  */
 
-public class PlayerLobbyTester {
+public class PlayerLobbyTest {
     private static final String SAMPLE_NAME = "Bob";
     private static final int ONE_ADDED = 1;
     private static final int EMPTY = 0;

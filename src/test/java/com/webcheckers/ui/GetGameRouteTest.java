@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
  * @author - Alec Jackson
  */
 @Tag("UI-Tier")
-public class GetGameRouteTester {
+public class GetGameRouteTest {
     private GetGameRoute CuT;
 
     private Request request;
@@ -26,6 +26,7 @@ public class GetGameRouteTester {
     private TemplateEngine engine;
     private static final String SAMPLE_NAME = "Bob";
     private static final String SAMPLE_NAME_2 = "Steve";
+    private GameCenter gameCenter;
 
 
 
@@ -36,7 +37,8 @@ public class GetGameRouteTester {
         when(request.session()).thenReturn(session);
         response = mock(Response.class);
         engine = mock(TemplateEngine.class);
-
+        gameCenter = new GameCenter();
+        CuT = new GetGameRoute(gameCenter, engine);
 
 
     }
@@ -46,12 +48,12 @@ public class GetGameRouteTester {
     @Test
     public void new_game() {
         // Arrange the test scenario: The session holds no game.
-        final GameCenter center = new GameCenter();
-        center.addPlayer(SAMPLE_NAME);
-        center.addPlayer(SAMPLE_NAME_2);
+
+        gameCenter.addPlayer(SAMPLE_NAME);
+        gameCenter.addPlayer(SAMPLE_NAME_2);
 
 
-        when(session.attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(center.getPlayer(SAMPLE_NAME));
+        when(session.attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(gameCenter.getPlayer(SAMPLE_NAME));
         when(request.queryParams(PLAYER_PARAM)).thenReturn(SAMPLE_NAME_2);
 
 
@@ -61,14 +63,14 @@ public class GetGameRouteTester {
         // Invoke the test (ignore the output)
 
 
-        CuT = new GetGameRoute(center, engine);
+
         CuT.handle(request, response);
 
 
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
         testHelper.assertViewModelAttribute("title", "Checkers");
-        testHelper.assertViewModelAttribute("currentUser", center.getPlayer(SAMPLE_NAME));
+        testHelper.assertViewModelAttribute("currentUser", gameCenter.getPlayer(SAMPLE_NAME));
         testHelper.assertViewModelAttribute("viewMode", GetGameRoute.mode.PLAY);
     }
 
@@ -78,20 +80,18 @@ public class GetGameRouteTester {
 
     @Test
     public void isCorrectPlayer(){
-        final GameCenter center = new GameCenter();
 
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
-        center.addPlayer(SAMPLE_NAME);
-        center.addPlayer(SAMPLE_NAME_2);
-        Player player = center.getPlayer(SAMPLE_NAME);
+        gameCenter.addPlayer(SAMPLE_NAME);
+        gameCenter.addPlayer(SAMPLE_NAME_2);
+        Player player = gameCenter.getPlayer(SAMPLE_NAME);
         player.setRedPlayer(true);
 
-        when(session.attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(center.getPlayer(SAMPLE_NAME));
+        when(session.attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(gameCenter.getPlayer(SAMPLE_NAME));
         when(request.queryParams(PLAYER_PARAM)).thenReturn(SAMPLE_NAME_2);
 
-        CuT = new GetGameRoute(center, engine);
 
         CuT.handle(request, response);
         testHelper.assertViewModelAttribute("redPlayer", player);
