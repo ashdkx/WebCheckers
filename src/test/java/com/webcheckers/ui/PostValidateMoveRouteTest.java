@@ -92,20 +92,22 @@ class PostValidateMoveRouteTest {
 
     @Test
     public void jumpSingle() {
-        gameBoard.setPiece(playerBoard, 5, 2, null);
-        gameBoard.setPiece(playerBoard, 4, 3, new Piece(Piece.type.SINGLE, Piece.color.RED));
-
         gameBoard.setPiece(playerBoard, 2, 5, null);
-        gameBoard.setPiece(playerBoard, 3, 4, new Piece(Piece.type.SINGLE, Piece.color.WHITE));
+        gameBoard.setPiece(playerBoard, 3, 4, Piece.whiteSingle);
 
         gameBoard.updateWhitePlayer();
 
         String json;
-        json = "{\"start\":{\"row\":4,\"cell\":3},\"end\":{\"row\":2, \"cell\":5}}";
+        json = "{\"start\":{\"row\":5,\"cell\":2},\"end\":{\"row\":3, \"cell\":4}}";
 
         when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
         when(request.queryParams("actionData")).thenReturn(json);
 
+        Cut.handle(request, response);
+
+        // move after jump error
+        json = "{\"start\":{\"row\":3,\"cell\":4},\"end\":{\"row\":2, \"cell\":5}}";
+        when(request.queryParams("actionData")).thenReturn(json);
         Cut.handle(request, response);
 
     }
