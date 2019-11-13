@@ -22,7 +22,8 @@ public class GameBoard implements Iterable<Row> {
     private int whitePlayerTotalPieces = 12; // total amount of white pieces
     private List<int[]> jumpPositions = new ArrayList<>(); // the positions that a piece can jump over
     private boolean gameOver = false; // is the game over
-    private String gameOverMessage; // the message associated to game over
+    private String gameOverMessage = ""; // the message associated to game over
+    private List<MoveSave> moves  = new ArrayList<>();
 
     /**
      * The colors of the pieces and players
@@ -695,6 +696,16 @@ public class GameBoard implements Iterable<Row> {
      */
     public String getGameOverMessage() {
         return gameOverMessage;
+    }
+
+
+    public void addMove(){
+        MoveSave move = new MoveSave(getRedPlayerBoard(),getPlayerColor(playerTurn),gameOverMessage);
+        moves.add(move);
+    }
+
+    public List<MoveSave> getMoves (){
+        return moves;
     }
 
     /**

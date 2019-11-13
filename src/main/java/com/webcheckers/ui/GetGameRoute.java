@@ -86,6 +86,11 @@ public class GetGameRoute implements Route {
             response.redirect(WebServer.HOME_URL);
             return null;
           }
+          if(player2.isReplaying()){
+            httpSession.attribute(GetHomeRoute.MESSAGE, "Player is replaying a game. Click a different player to begin a game of checkers.");
+            response.redirect(WebServer.HOME_URL);
+            return null;
+          }
           UUID uuid = UUID.randomUUID(); //Generates a UUID
           gameId = uuid.toString();
           gameCenter.addNewGame(gameId, player, player2);

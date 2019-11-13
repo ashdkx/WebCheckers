@@ -1,9 +1,12 @@
 package com.webcheckers.appl;
 
+import com.webcheckers.model.MoveSave;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.PlayerLobby;
+import com.webcheckers.model.SavedGame;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,6 +16,8 @@ public class GameCenter{
     private PlayerLobby lobby;
 
     private Map<String, GameBoard> games = new HashMap<>(); //Map to store all of the games based on a unique identifier
+    private Map<String, SavedGame> savedGames = new HashMap<>();
+
 
     /**
      * Constructor of the game center
@@ -86,6 +91,17 @@ public class GameCenter{
         redPlayer.setPlaying(true); //set the redPlayer to be playing
         whitePlayer.setPlaying(true); //set the whitePlayer to be playing
         board.setPlayerTurn(redPlayer); //set that its the redPlayer's turn
+        board.addMove();
+    }
+
+    public void addGameSave(String gameID){
+        GameBoard board = games.get(gameID);
+        SavedGame gameSave = new SavedGame(board.getMoves());
+        savedGames.put(gameID,gameSave);
+    }
+
+    public SavedGame getGameSave(String gameID){
+        return savedGames.get(gameID);
     }
 
 }

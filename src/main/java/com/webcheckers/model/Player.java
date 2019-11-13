@@ -12,6 +12,7 @@ public class Player{
 
     // if the player is in a game
     private boolean playing = false;
+    private boolean replaying = false;
 
     public Player(String name, String sessionID) {
         this.name = name;
@@ -33,6 +34,14 @@ public class Player{
 
     public boolean isPlaying(){
         return playing;
+    }
+
+    public void setReplaying(boolean replaying) {
+        this.replaying = replaying;
+    }
+
+    public boolean isReplaying() {
+        return replaying;
     }
 
     public boolean equals(Player player){
