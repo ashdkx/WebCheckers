@@ -104,11 +104,11 @@ class PostSubmitTurnRouteTest {
 
         int[] remove = {3, 4};
 
-        gameBoard.getRedPlayerBoard().get(5).getSpace(2).setPiece(null);
-        gameBoard.getRedPlayerBoard().get(4).getSpace(3).setPiece(Piece.redSingle);
+        gameBoard.setPiece(playerBoard, 5,2, null);
+        gameBoard.setPiece(playerBoard, 4, 3, Piece.redSingle);
 
-        gameBoard.getRedPlayerBoard().get(2).getSpace(5).setPiece(null);
-        gameBoard.getRedPlayerBoard().get(3).getSpace(4).setPiece(Piece.whiteSingle);
+        gameBoard.setPiece(playerBoard,2, 5, null);
+        gameBoard.setPiece(playerBoard, 3, 4, Piece.whiteSingle);
         gameBoard.addPieceRemove(remove);
 
         gameBoard.updateWhitePlayer();
@@ -124,5 +124,35 @@ class PostSubmitTurnRouteTest {
         assertNull(gameBoard.getPiece(playerBoard, 4, 3));
         assertNull(gameBoard.getPiece(playerBoard, 3, 4));
         assertNotNull(gameBoard.getPiece(playerBoard,2, 5));
+    }
+
+    @Test
+    public void multipleJump() {
+        playerBoard = gameBoard.getRedPlayerBoard();
+        player1.setMyTurn(true);
+
+        int[] remove = {4, 3};
+        int[] remove2 = {2, 5};
+
+        gameBoard.setPiece(playerBoard, 1,6, null);
+        gameBoard.setPiece(playerBoard, 4, 3, Piece.whiteSingle);
+
+        gameBoard.addPieceRemove(remove);
+        gameBoard.addPieceRemove(remove2);
+
+        gameBoard.updateWhitePlayer();
+
+        gameBoard.setActivePiece(gameBoard.getPiece(playerBoard, 5, 2));
+        gameBoard.setActivePieceStart(new Position(5, 2));
+        gameBoard.addActivePieceEnd(new Position(1,6));
+
+        when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
+
+        Cut.handle(request, response);
+
+        assertNull(gameBoard.getPiece(playerBoard, 5, 2));
+        assertNull(gameBoard.getPiece(playerBoard, 4, 3));
+        assertNull(gameBoard.getPiece(playerBoard,2, 5));
+        assertNotNull(gameBoard.getPiece(playerBoard, 1, 6));
     }
 }
