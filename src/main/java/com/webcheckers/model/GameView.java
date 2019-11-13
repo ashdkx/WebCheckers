@@ -18,8 +18,6 @@ public class GameView {
     private List<Row> whitePlayerBoard = new ArrayList<>();
 
 
-
-
     public GameView(Player redPlayer, Player whitePlayer) {
         this.redPlayer = redPlayer;
         this.whitePlayer = whitePlayer;
@@ -121,10 +119,10 @@ public class GameView {
                 redPlayerBoard.get(i).getSpace(j).setPiece(null);
             }
         }
-        redPlayerBoard.get(4).getSpace(3).setPiece(Piece.redSingle);
-        redPlayerBoard.get(3).getSpace(4).setPiece(Piece.whiteSingle);
-        redPlayerBoard.get(1).getSpace(4).setPiece(Piece.whiteSingle);
-        redPlayerBoard.get(1).getSpace(6).setPiece(Piece.whiteSingle);
+        redPlayerBoard.get(5).getSpace(2).setPiece(Piece.redSingle);
+        redPlayerBoard.get(4).getSpace(3).setPiece(Piece.whiteSingle);
+        redPlayerBoard.get(2).getSpace(3).setPiece(Piece.whiteSingle);
+        redPlayerBoard.get(2).getSpace(5).setPiece(Piece.whiteSingle);
         updateWhitePlayer();
 
     }

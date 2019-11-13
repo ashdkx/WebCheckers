@@ -1,0 +1,5 @@
+Download the ZIP file. Extract the files from the zip file to an easy to locate directory.
+Open a terminal window (Command Prompt - Windows; Terminal - Mac) and navigate to the directory where you extracted the files. This is the directory with the pom.xml file that describes how to build and execute the sample webapp.
+Execute the command mvn compile exec:java which first builds the application and then starts the webapp running in a local jetty web server.
+There should be no errors during the compile, and the last thing you see should be the local jetty webserver starting on localhost:4567.
+Open a web browser and navigate to localhost:4567. Use localhost:4567/127.0.0.x to connect to multiple sessions

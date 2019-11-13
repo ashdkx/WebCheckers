@@ -17,14 +17,12 @@ public class PostBackupMoveRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostBackupMoveRoute.class.getName());
 
-
     public PostBackupMoveRoute(){
         LOG.config("PostBackupMoveRoute is initialized.");
     }
 
     @Override
     public Object handle(Request request, Response response) {
-
 
         LOG.finer("PostBackupMoveRoute is invoked.");
         Gson gson = new Gson();
@@ -53,7 +51,6 @@ public class PostBackupMoveRoute implements Route {
             board.getActivePieceEnd();
             json = gson.toJson(Message.info("Backup Successful."));
         }
-
         return json;
     }
 
