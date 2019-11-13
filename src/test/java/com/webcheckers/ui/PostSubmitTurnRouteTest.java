@@ -68,7 +68,7 @@ class PostSubmitTurnRouteTest {
 
     @Test
     public void moveSinglePLayer1() {
-        playerBoard = gameBoard.getRedPlayerBoard();
+        playerBoard = gameBoard.getPlayerBoard(player1);
         player1.setMyTurn(true);
         gameBoard.setActivePiece(gameBoard.getPiece(playerBoard, 5, 2));
         gameBoard.setActivePieceStart(new Position(5, 2));
@@ -83,7 +83,7 @@ class PostSubmitTurnRouteTest {
 
     @Test
     public void moveSinglePlayer2() {
-        playerBoard = gameBoard.getWhitePlayerBoard();
+        playerBoard = gameBoard.getPlayerBoard(player2);
         player2.setMyTurn(true);
         gameBoard.setActivePiece(gameBoard.getPiece(playerBoard, 2, 3));
         gameBoard.setActivePieceStart(new Position(2, 3));
@@ -99,7 +99,7 @@ class PostSubmitTurnRouteTest {
 
     @Test
     public void omniMovement() {
-        playerBoard = gameBoard.getRedPlayerBoard();
+        playerBoard = gameBoard.getPlayerBoard(player1);
         player1.setMyTurn(true);
 
         gameBoard.setPiece(playerBoard, 3, 2, Piece.redKing);
@@ -119,8 +119,29 @@ class PostSubmitTurnRouteTest {
     }
 
     @Test
+    public void crowning() {
+        playerBoard = gameBoard.getPlayerBoard(player1);
+        player1.setMyTurn(true);
+
+        gameBoard.setPiece(playerBoard, 1, 4, Piece.redSingle);
+        gameBoard.setPiece(playerBoard, 0, 5, null);
+
+        gameBoard.setActivePiece(gameBoard.getPiece(playerBoard, 1, 4));
+        gameBoard.setActivePieceStart(new Position(1, 4));
+        gameBoard.addActivePieceEnd(new Position(0,5));
+
+        when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
+
+        Cut.handle(request, response);
+
+        assertNull(gameBoard.getPiece(playerBoard, 1, 4));
+        assertNotNull(gameBoard.getPiece(playerBoard, 0, 5));
+        assertEquals(gameBoard.getPiece(playerBoard, 0, 5).getType(), Piece.type.KING);
+    }
+
+    @Test
     public void jump() {
-        playerBoard = gameBoard.getRedPlayerBoard();
+        playerBoard = gameBoard.getPlayerBoard(player1);
         player1.setMyTurn(true);
 
         int[] remove = {3, 4};
@@ -149,7 +170,7 @@ class PostSubmitTurnRouteTest {
 
     @Test
     public void multipleJump() {
-        playerBoard = gameBoard.getRedPlayerBoard();
+        playerBoard = gameBoard.getPlayerBoard(player1);
         player1.setMyTurn(true);
 
         int[] remove = {4, 3};

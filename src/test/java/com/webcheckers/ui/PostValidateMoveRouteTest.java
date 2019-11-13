@@ -63,7 +63,7 @@ class PostValidateMoveRouteTest {
         player2.setGame(gameBoard);
 
         gameView = new GameView(player1, player2);
-        playerBoard = gameBoard.getRedPlayerBoard();
+        playerBoard = gameBoard.getPlayerBoard(player1);
         for(int i = 0; i<8; i++){
             for(int j=0; j<8; j++){
                 playerBoard.get(i).getSpace(j).setPiece(null);
