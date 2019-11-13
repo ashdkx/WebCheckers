@@ -144,28 +144,25 @@ class PostSubmitTurnRouteTest {
         playerBoard = gameBoard.getPlayerBoard(player1);
         player1.setMyTurn(true);
 
-        int[] remove = {3, 4};
-
-        gameBoard.setPiece(playerBoard, 5,2, null);
-        gameBoard.setPiece(playerBoard, 4, 3, Piece.redSingle);
+        int[] remove = {4, 3};
 
         gameBoard.setPiece(playerBoard,2, 5, null);
-        gameBoard.setPiece(playerBoard, 3, 4, Piece.whiteSingle);
+        gameBoard.setPiece(playerBoard, 4, 3, Piece.whiteSingle);
         gameBoard.addPieceRemove(remove);
 
         gameBoard.updateWhitePlayer();
 
-        gameBoard.setActivePiece(gameBoard.getPiece(playerBoard, 4, 3));
-        gameBoard.setActivePieceStart(new Position(4, 3));
-        gameBoard.addActivePieceEnd(new Position(2,5));
+        gameBoard.setActivePiece(gameBoard.getPiece(playerBoard, 5, 2));
+        gameBoard.setActivePieceStart(new Position(5, 2));
+        gameBoard.addActivePieceEnd(new Position(3,4));
 
         when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
 
         Cut.handle(request, response);
 
         assertNull(gameBoard.getPiece(playerBoard, 4, 3));
-        assertNull(gameBoard.getPiece(playerBoard, 3, 4));
-        assertNotNull(gameBoard.getPiece(playerBoard,2, 5));
+        assertNull(gameBoard.getPiece(playerBoard, 5, 2));
+        assertNotNull(gameBoard.getPiece(playerBoard,3, 4));
     }
 
     @Test
