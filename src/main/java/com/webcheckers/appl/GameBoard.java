@@ -18,7 +18,10 @@ public class GameBoard implements Iterable<Row> {
     private Map<int[], List<int[]>> requiredMovePieces = new HashMap<>();
     private List<int[]> jumpPositions = new ArrayList<>();
 
-    public enum color{RED, WHITE}
+    public enum color{
+        RED,
+        WHITE
+    }
 
     public GameBoard(Player redPlayer, Player whitePlayer){
         this.game = new GameView(redPlayer,whitePlayer);
@@ -36,11 +39,11 @@ public class GameBoard implements Iterable<Row> {
         return game.getWhitePlayer();
     }
 
-    private List<Row> getRedPlayerBoard(){
+    public List<Row> getRedPlayerBoard(){
         return game.getRedPlayerBoard();
     }
 
-    private List<Row> getWhitePlayerBoard(){
+    public List<Row> getWhitePlayerBoard(){
         return game.getWhitePlayerBoard();
     }
 
@@ -53,8 +56,8 @@ public class GameBoard implements Iterable<Row> {
         }
     }
 
-    public void isWhitePlayerBoard(boolean board2){
-        game.isWhitePlayerBoard(board2);
+    public void isWhitePlayerBoard(boolean whiteBoard){
+        game.isWhitePlayerBoard(whiteBoard);
     }
 
     public void updateRedPlayer(){
@@ -95,6 +98,7 @@ public class GameBoard implements Iterable<Row> {
 
     public void setActivePiece(Piece piece) {
         this.activePiece = piece;
+
     }
 
     public Piece getActivePiece() {
@@ -192,16 +196,6 @@ public class GameBoard implements Iterable<Row> {
 
     public void clearJumpPositions(){
         jumpPositions.clear();
-    }
-
-    public void setPieceKing(Player player, List<Row> playerBoard, int row, int col){
-        switch (player.getColor()){
-            case RED:
-                setPiece(playerBoard,row,col,Piece.redKing);
-                break;
-            case WHITE:
-                setPiece(playerBoard,row,col,Piece.whiteKing);
-        }
     }
 
     @Override

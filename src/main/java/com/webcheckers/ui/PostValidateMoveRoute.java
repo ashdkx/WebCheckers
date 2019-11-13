@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameBoard;
+import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
@@ -20,6 +21,7 @@ public class PostValidateMoveRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
 
+    private GameCenter gameCenter;
     private Gson gson = new Gson();
 
     public PostValidateMoveRoute(){
@@ -82,34 +84,12 @@ public class PostValidateMoveRoute implements Route {
                         if (board.getActivePiece().getType() == Piece.type.SINGLE) {
                             json = jump(board, player, playerBoard, moveEndRow + 1, moveEndCell + 1, move);
                         }
-                        else {
-                            switch (moveEndRow - moveStartRow) {
-                                case 2:
-                                    json = jump(board, player, playerBoard, moveEndRow-1,moveEndCell+1,move);
-                                    break;
-                                case -2:
-                                    json = jump(board, player, playerBoard, moveEndRow+1, moveEndCell+1,move);
-                                    break;
-                                default:
-                                    json = gson.toJson(Message.error("Invalid move."));
-                            }
-                        }
+                        else {json = gson.toJson(Message.error("Invalid move."));}
                         break;
                     case 2:
                         if (board.getActivePiece().getType() == Piece.type.SINGLE) {
                             json = jump(board, player, playerBoard, moveEndRow + 1, moveEndCell - 1, move);
-                        }else {
-                            switch (moveEndRow - moveStartRow) {
-                                case 2:
-                                    json = jump(board, player, playerBoard, moveEndRow-1,moveEndCell-1,move);
-                                    break;
-                                case -2:
-                                    json = jump(board, player, playerBoard, moveEndRow+1, moveEndCell-1,move);
-                                    break;
-                                default:
-                                    json = gson.toJson(Message.error("Invalid move."));
-                            }
-                        }
+                        }else{json = gson.toJson(Message.error("Invalid move."));}
                         break;
                     default:
                         json = gson.toJson(Message.error("Invalid move."));
@@ -130,7 +110,7 @@ public class PostValidateMoveRoute implements Route {
             if (board.getPiece(playerBoard, pieceJumpedRow, pieceJumpedCol) != null) {
                 Piece piece = board.getPiece(playerBoard, pieceJumpedRow, pieceJumpedCol);
 
-                if (player.isNotActiveColor(piece)){
+                if (player.isNotPlayerColor(piece)){
                     position[0] = pieceJumpedRow;
                     position[1] = pieceJumpedCol;
                     board.addPieceRemove(position);
