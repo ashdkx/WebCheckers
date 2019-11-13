@@ -98,6 +98,27 @@ class PostSubmitTurnRouteTest {
     }
 
     @Test
+    public void omniMovement() {
+        playerBoard = gameBoard.getRedPlayerBoard();
+        player1.setMyTurn(true);
+
+        gameBoard.setPiece(playerBoard, 3, 2, Piece.redKing);
+        gameBoard.setPiece(playerBoard, 5, 4, null);
+
+        gameBoard.setActivePiece(gameBoard.getPiece(playerBoard, 3, 2));
+        gameBoard.setActivePieceStart(new Position(3,2 ));
+        gameBoard.addActivePieceEnd(new Position(4,3 ));
+
+        when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
+
+        Cut.handle(request, response);
+
+        assertNull(gameBoard.getPiece(playerBoard, 3,2 ));
+        assertNull(gameBoard.getPiece(playerBoard, 5, 4));
+        assertNotNull(gameBoard.getPiece(playerBoard, 4, 3));
+    }
+
+    @Test
     public void jump() {
         playerBoard = gameBoard.getRedPlayerBoard();
         player1.setMyTurn(true);
