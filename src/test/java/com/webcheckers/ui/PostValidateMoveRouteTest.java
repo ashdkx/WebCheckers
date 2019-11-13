@@ -132,6 +132,20 @@ class PostValidateMoveRouteTest {
     }
 
     @Test
+    public void omniMovement() {
+        gameBoard.setPiece(playerBoard, 3,4,Piece.redKing);
+        gameBoard.updateWhitePlayer();
+
+        String json;
+        json = "{\"start\":{\"row\":3,\"cell\":4},\"end\":{\"row\":4, \"cell\":5}}";
+
+        when(request.session().attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(player1);
+        when(request.queryParams("actionData")).thenReturn(json);
+
+        Cut.handle(request, response);
+    }
+
+    @Test
     public void jumpGhostError() {
         String json;
         gameBoard.setPiece(playerBoard, 5, 2, Piece.redSingle);
