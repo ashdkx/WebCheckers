@@ -96,7 +96,7 @@ public class GameCenter{
 
     public void addGameSave(String gameID){
         GameBoard board = games.get(gameID);
-        SavedGame gameSave = new SavedGame(board.getMoves());
+        SavedGame gameSave = new SavedGame(board.getMoves(),board.getRedPlayer(),board.getWhitePlayer());
         savedGames.put(gameID,gameSave);
     }
 
@@ -104,4 +104,7 @@ public class GameCenter{
         return savedGames.get(gameID);
     }
 
+    public Map<String, SavedGame> getSavedGames() {
+        return savedGames;
+    }
 }

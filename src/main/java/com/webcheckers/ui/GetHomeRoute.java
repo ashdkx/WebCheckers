@@ -73,7 +73,7 @@ public class GetHomeRoute implements Route {
     // display a user message in the Home page
 
     // show active players
-    vm.put("numPlayers", gameCenter.getPlayers().size());
+
     if(httpSession.attribute(CURRENT_PLAYER) != null){
       final Player player = httpSession.attribute(CURRENT_PLAYER);
 
@@ -90,10 +90,14 @@ public class GetHomeRoute implements Route {
         return null;
       }
       else {
+        if(player.isReplaying()){
+          player.setReplaying(false);
+        }
         vm.remove(MESSAGE_ATTR, WELCOME_MSG);
         if(httpSession.attribute(MESSAGE)!=null){
           final String message = httpSession.attribute(MESSAGE);
           vm.put(MESSAGE_ATTR,Message.error(message));
+          httpSession.attribute(MESSAGE, null);
         }
         else{
           vm.put(MESSAGE_ATTR, OTHER_PLAYERS_MSG);
@@ -108,6 +112,7 @@ public class GetHomeRoute implements Route {
     }
     else{
         vm.put(MESSAGE_ATTR, WELCOME_MSG);
+        vm.put("numPlayers", gameCenter.getPlayers().size());
     }
 
 

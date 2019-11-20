@@ -29,7 +29,7 @@ public class MoveSave {
         return activeColor;
     }
 
-    public void setGameOverMessage(String gameOverMessage) {
-        this.gameOverMessage = gameOverMessage;
+    public String getGameOverMessage() {
+        return gameOverMessage;
     }
 }

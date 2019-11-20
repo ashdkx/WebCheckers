@@ -23,7 +23,7 @@ public class GameBoard implements Iterable<Row> {
     private List<int[]> jumpPositions = new ArrayList<>(); // the positions that a piece can jump over
     private boolean gameOver = false; // is the game over
     private String gameOverMessage = ""; // the message associated to game over
-    private List<MoveSave> moves  = new ArrayList<>();
+    private ArrayList<MoveSave> moves  = new ArrayList<>();
 
     /**
      * The colors of the pieces and players
@@ -704,7 +704,7 @@ public class GameBoard implements Iterable<Row> {
         moves.add(move);
     }
 
-    public List<MoveSave> getMoves (){
+    public ArrayList<MoveSave> getMoves (){
         return moves;
     }
 
