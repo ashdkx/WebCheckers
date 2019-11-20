@@ -7,10 +7,11 @@ import spark.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.logging.Logger;
 
-
+/**
+ * @author Nicholas Curl
+ */
 public class GetReplayStopWatchRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetReplayStopWatchRoute.class.getName());
 
@@ -24,17 +25,6 @@ public class GetReplayStopWatchRoute implements Route {
         LOG.config("GetReplayStopWatchRoute is initialized.");
     }
 
-    /**
-     * Render the WebCheckers Home page.
-     *
-     * @param request
-     *   the HTTP request
-     * @param response
-     *   the HTTP response
-     *
-     * @return
-     *   the rendered HTML for the Home page
-     */
     @Override
     public Object handle(Request request, Response response) {
         final Session httpSession = request.session();
@@ -44,11 +34,11 @@ public class GetReplayStopWatchRoute implements Route {
         vm.put(GetHomeRoute.TITLE_ATTR, TITLE);
 
         final Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
-        final SavedGame savedGame = gameCenter.getGameSave(request.queryParams(GetGameRoute.GAMEID_PARAM));
-        savedGame.resetSavedGame();
-        player.setReplaying(false);
+        final SavedGame savedGame = gameCenter.getGameSave(request.queryParams(GetGameRoute.GAMEID_PARAM)); // get the saved game
+        savedGame.resetSavedGame(); //resets the saved game back to the default state
+        player.setReplaying(false); // sets the current player to not watching a game replay
         vm.put(GetHomeRoute.CURRENT_USER_ATTR,player);
-        response.redirect(WebServer.HOME_URL);
+        response.redirect(WebServer.HOME_URL); // redirects home
         return null;
     }
 }

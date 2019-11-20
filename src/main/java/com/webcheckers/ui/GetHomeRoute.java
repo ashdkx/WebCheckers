@@ -39,12 +39,6 @@ public class GetHomeRoute implements Route {
 
   private final TemplateEngine templateEngine;
 
-  /**
-   * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
-   *
-   * @param templateEngine
-   *   the HTML template rendering engine
-   */
   public GetHomeRoute(final GameCenter gameCenter, final TemplateEngine templateEngine) {
     this.gameCenter = gameCenter;
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
@@ -52,17 +46,7 @@ public class GetHomeRoute implements Route {
     LOG.config("GetHomeRoute is initialized.");
   }
 
-  /**
-   * Render the WebCheckers Home page.
-   *
-   * @param request
-   *   the HTTP request
-   * @param response
-   *   the HTTP response
-   *
-   * @return
-   *   the rendered HTML for the Home page
-   */
+
   @Override
   public Object handle(Request request, Response response) {
     final Session httpSession = request.session();
@@ -90,7 +74,7 @@ public class GetHomeRoute implements Route {
         return null;
       }
       else {
-        if(player.isReplaying()){
+        if(player.isReplaying()){ //set player replaying a game to false
           player.setReplaying(false);
         }
         vm.remove(MESSAGE_ATTR, WELCOME_MSG);

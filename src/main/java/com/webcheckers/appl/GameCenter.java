@@ -1,12 +1,10 @@
 package com.webcheckers.appl;
 
-import com.webcheckers.model.MoveSave;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.PlayerLobby;
 import com.webcheckers.model.SavedGame;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -94,16 +92,29 @@ public class GameCenter{
         board.addMove();
     }
 
+    /**
+     * Creates a new saved game based on the gameID
+     * @param gameID the unique identifier of the game
+     */
     public void addGameSave(String gameID){
-        GameBoard board = games.get(gameID);
-        SavedGame gameSave = new SavedGame(board.getMoves(),board.getRedPlayer(),board.getWhitePlayer());
-        savedGames.put(gameID,gameSave);
+        GameBoard board = games.get(gameID); // gets game board associated to the gameID
+        SavedGame gameSave = new SavedGame(board.getMoves(),board.getRedPlayer(),board.getWhitePlayer()); // Creates a new saved game
+        savedGames.put(gameID,gameSave); // stores the saved game into a map with the key being the gameID
     }
 
+    /**
+     * Get the saved game specified by the gameID
+     * @param gameID the unique identifier for the saved game
+     * @return the saved game
+     */
     public SavedGame getGameSave(String gameID){
         return savedGames.get(gameID);
     }
 
+    /**
+     * Get the map of all the saved games
+     * @return the map of all the saved games
+     */
     public Map<String, SavedGame> getSavedGames() {
         return savedGames;
     }

@@ -10,6 +10,9 @@ import spark.Route;
 
 import java.util.logging.Logger;
 
+/**
+ * @author Nicholas Curl
+ */
 public class PostPreviousTurnRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostPreviousTurnRoute.class.getName());
@@ -25,16 +28,16 @@ public class PostPreviousTurnRoute implements Route {
     public Object handle(Request request, Response response) {
 
         LOG.finer("PostPreviousTurnRoute is invoked.");
-        SavedGame savedGame = gameCenter.getGameSave(request.queryParams(GetGameRoute.GAMEID_PARAM));
-        int previousTurnNumber = savedGame.getTurnNumber();
-        savedGame.previousTurn();
-        if(savedGame.getTurnNumber()<previousTurnNumber){
-            if(savedGame.getTurnNumber() < 0){
-                savedGame.setTurnNumber(0);
+        SavedGame savedGame = gameCenter.getGameSave(request.queryParams(GetGameRoute.GAMEID_PARAM));// get the saved game
+        int previousTurnNumber = savedGame.getTurnNumber(); // store the current turn number before going to the previous turn
+        savedGame.previousTurn(); // go to the previous turn
+        if(savedGame.getTurnNumber()<previousTurnNumber){// checks to see if the turn number was successfully decremented
+            if(savedGame.getTurnNumber() < 0){ // checks to see if the new turn number is outside the start
+                savedGame.setTurnNumber(0); //reset back to the start of the moves
                 return gson.toJson(Message.error("Could not advance to previous move."));
             }
             else {
-                return gson.toJson(Message.info("true"));
+                return gson.toJson(Message.info("true")); //if everything is fine return a json string of the message with true as the message and the type info
             }
         }
         else {

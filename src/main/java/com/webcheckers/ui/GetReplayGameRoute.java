@@ -15,6 +15,9 @@ import java.util.logging.Logger;
 
 import static spark.Spark.halt;
 
+/**
+ * @author Nicholas Curl
+ */
 public class GetReplayGameRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetReplayGameRoute.class.getName());
 
@@ -23,12 +26,6 @@ public class GetReplayGameRoute implements Route {
     private final TemplateEngine templateEngine;
     private final Gson gson;
 
-    /**
-     * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
-     *
-     * @param templateEngine
-     *   the HTML template rendering engine
-     */
     public GetReplayGameRoute(final GameCenter gameCenter, final TemplateEngine templateEngine, final Gson gson) {
         this.gameCenter = gameCenter;
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
@@ -37,17 +34,7 @@ public class GetReplayGameRoute implements Route {
         LOG.config("GetReplayGameRoute is initialized.");
     }
 
-    /**
-     * Render the WebCheckers Home page.
-     *
-     * @param request
-     *   the HTTP request
-     * @param response
-     *   the HTTP response
-     *
-     * @return
-     *   the rendered HTML for the Home page
-     */
+
     @Override
     public Object handle(Request request, Response response) {
         final Session httpSession = request.session();
@@ -64,27 +51,28 @@ public class GetReplayGameRoute implements Route {
             final String gameID = request.queryParams(GetGameRoute.GAMEID_PARAM);
             vm.put(GetHomeRoute.CURRENT_USER_ATTR, player);
             vm.put(GetGameRoute.VIEWMODE_PARAM, GetGameRoute.mode.REPLAY);
-            SavedGame savedGame = gameCenter.getGameSave(gameID);
-            if (savedGame.getPlayerWatching() == null){
+            SavedGame savedGame = gameCenter.getGameSave(gameID); //gets the saved game
+            if (savedGame.getPlayerWatching() == null){ //checks to see if there is no one watching
                 savedGame.setPlayerWatching(player);
             }
-            else if (!(savedGame.getPlayerWatching().equals(player))&& savedGame.getPlayerWatching() != null){
+            else if (!(savedGame.getPlayerWatching().equals(player))&& savedGame.getPlayerWatching() != null){ //checks to see if the player matches the player watching and the watching player is not null
                 httpSession.attribute(GetHomeRoute.MESSAGE, "Player is already replaying the game. Click a different game to replay.");
                 response.redirect(WebServer.REPLAYMODE_URL);
                 return null;
             }
 
-                modeOptions.put("hasNext", savedGame.hasNext());
-                modeOptions.put("hasPrevious", savedGame.hasPrevious());
-                GameBoard board = savedGame.getGameBoard();
-                MoveSave move = savedGame.getMove();
-                if (!savedGame.hasNext()) {
+                modeOptions.put("hasNext", savedGame.hasNext()); // enables next button if there are available moves to display
+                modeOptions.put("hasPrevious", savedGame.hasPrevious()); // enable the previous button if there are moves to display
+                GameBoard board = savedGame.getGameBoard(); // gets the board to display
+                MoveSave move = savedGame.getMove(); //get the current move
+                if (!savedGame.hasNext()) { //checks to see if the current move is the last move and display the winning conditions if is at the end
                     modeOptions.put("isGameOver", true);
                     modeOptions.put("gameOverMessage", move.getGameOverMessage());
                 }
                 vm.put(GetGameRoute.MODEOPTIONS_PARAM, gson.toJson(modeOptions));
                 board.isWhitePlayerBoard(false);
-                savedGame.setPositions(move.getPositions());
+                savedGame.setPositions(move.getPositions()); //sets the positions of the pieces for the current move
+                //stores the necessary value needed to display the game html file
                 vm.put(GetGameRoute.BOARD_PARAM, board);
                 vm.put(GetGameRoute.REDPLAYER_PARAM, board.getRedPlayer());
                 vm.put(GetGameRoute.WHITEPLAYER_PARAM, board.getWhitePlayer());
@@ -93,7 +81,7 @@ public class GetReplayGameRoute implements Route {
         else{
             final String gameID = request.queryParams(GetGameRoute.GAMEID_PARAM);
             SavedGame savedGame = gameCenter.getGameSave(gameID);
-            savedGame.setPlayerWatching(null);
+            savedGame.setPlayerWatching(null); //clears player watching if current player is reset
             response.redirect(WebServer.HOME_URL);
             halt();
             return null;

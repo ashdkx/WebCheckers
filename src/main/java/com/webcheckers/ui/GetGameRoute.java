@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.webcheckers.appl.GameBoard;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Player;
-import com.webcheckers.util.Message;
 import spark.*;
 
 import java.util.HashMap;
@@ -14,7 +13,6 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import static spark.Spark.halt;
-import static spark.Spark.threadPool;
 
 /**
  * The UI Controller to GET the Game page.
@@ -43,31 +41,17 @@ public class GetGameRoute implements Route {
   }
   private final TemplateEngine templateEngine;
   private final Gson gson;
-  /**
-   * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
-   *
-   * @param templateEngine
-   *   the HTML template rendering engine
-   */
+
+
   public GetGameRoute(final GameCenter gameCenter, final TemplateEngine templateEngine, final Gson gson) {
     this.gameCenter = gameCenter;
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     this.gson = gson;
     //
-    LOG.config("GetHomeRoute is initialized.");
+    LOG.config("GetGameRoute is initialized.");
   }
 
-  /**
-   * Render the WebCheckers Home page.
-   *
-   * @param request
-   *   the HTTP request
-   * @param response
-   *   the HTTP response
-   *
-   * @return
-   *   the rendered HTML for the Game page
-   */
+
   @Override
   public Object handle(Request request, Response response) {
     LOG.finer("GetGameRoute is invoked.");
@@ -83,14 +67,14 @@ public class GetGameRoute implements Route {
 
       if(gameId == null) { //checks to see if the gameID is null
 
-        if (!player.isPlaying()) {
+        if (!player.isPlaying()) { // checks to see if player2 is already playing a game
           Player player2 = gameCenter.getPlayer(request.queryParams(PLAYER_PARAM));
           if (player2.isPlaying()) {
             httpSession.attribute(GetHomeRoute.MESSAGE, "Player already in game. Click a different player to begin a game of checkers.");
             response.redirect(WebServer.HOME_URL);
             return null;
           }
-          if(player2.isReplaying()){
+          if(player2.isReplaying()){ //checks to see if player 2 is replaying a game
             httpSession.attribute(GetHomeRoute.MESSAGE, "Player is replaying a game. Click a different player to begin a game of checkers.");
             response.redirect(WebServer.HOME_URL);
             return null;
