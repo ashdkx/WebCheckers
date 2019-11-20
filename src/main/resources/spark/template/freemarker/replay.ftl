@@ -29,11 +29,11 @@
         <#if savedGames??>
             <h2>Saved Games</h2><br>
             <#list savedGames?keys as key>
+                <br>
                 <form action="/replay/game" method="GET">
                     <input type="hidden" name="gameID" value="${key}">
                     <input type="submit" value="${savedGames[key].gameBoard.redPlayer.name} v. ${savedGames[key].gameBoard.whitePlayer.name}">
                 </form>
-                <br>
             </#list>
         </#if>
 
