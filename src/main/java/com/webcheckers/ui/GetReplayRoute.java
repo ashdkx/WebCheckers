@@ -58,6 +58,11 @@ public class GetReplayRoute implements Route {
         if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER) != null){
             final Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
             player.setReplaying(true);
+            if(gameCenter.getSavedGames().isEmpty()){
+                response.redirect(WebServer.HOME_URL);
+                halt();
+                return null;
+            }
             vm.put(GetHomeRoute.CURRENT_USER_ATTR, player);
             vm.put("savedGames", gameCenter.getSavedGames());
             if(httpSession.attribute(GetHomeRoute.MESSAGE)!=null){
