@@ -10,7 +10,7 @@ import spark.*;
 import java.util.logging.Logger;
 
 /**
- * @author Nicholas Curl
+ * @author Alec Jackson
  */
 
 public class PostResignGameRoute implements Route {
@@ -34,15 +34,11 @@ public class PostResignGameRoute implements Route {
 
         Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
         GameBoard board = gameCenter.getGame(request.queryParams(GetGameRoute.GAMEID_PARAM));
-        String json;
-        if(board.isMyTurn(player)) {
-            board.resign(player);
-             json = gson.toJson(Message.info("true"));
+        board.resign(player);
+        String json = gson.toJson(Message.info("true"));
 
-        }
-        else {
-             json = gson.toJson(Message.info("false"));
-        }
+
+
 
 
         return json;

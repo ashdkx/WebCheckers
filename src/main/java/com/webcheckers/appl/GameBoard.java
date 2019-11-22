@@ -490,6 +490,8 @@ public class GameBoard implements Iterable<Row> {
      * @return true if it should false otherwise
      */
     public boolean checkGameOver() {
+        if(gameOver == true)
+            return gameOver;
         if (redPlayerTotalPieces <= 0) { // check to see if there are no remaining red pieces
             gameOver = true;
             gameOverMessage = getWhitePlayer().getName() + " has captured all pieces.";
@@ -531,6 +533,11 @@ public class GameBoard implements Iterable<Row> {
         return gameOver;
     }
 
+    public void resign(Player player){
+        gameOver = true;
+        gameOverMessage = player.getName() + " has resigned.";
+        player.setPlaying(false);
+    }
 
     /**
      * @return the game over message
