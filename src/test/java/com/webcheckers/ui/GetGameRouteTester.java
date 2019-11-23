@@ -1,11 +1,15 @@
 package com.webcheckers.ui;
 
+import com.google.gson.Gson;
+import com.webcheckers.appl.GameBoard;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
+
+import java.util.UUID;
 
 import static com.webcheckers.ui.GetGameRoute.PLAYER_PARAM;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 @Tag("UI-Tier")
 public class GetGameRouteTester {
-    /*
+
     private GetGameRoute CuT;
 
     private Request request;
@@ -42,11 +46,10 @@ public class GetGameRouteTester {
 
 
     }
-    */
+
     /**
      * tests if default display works
      */
-    /*
     @Test
     public void new_game() {
         // Arrange the test scenario: The session holds no game.
@@ -61,11 +64,12 @@ public class GetGameRouteTester {
 
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        Gson gson = new Gson();
 
         // Invoke the test (ignore the output)
 
 
-        CuT = new GetGameRoute(center, engine);
+        CuT = new GetGameRoute(center, engine, gson);
         CuT.handle(request, response);
 
 
@@ -75,33 +79,40 @@ public class GetGameRouteTester {
         testHelper.assertViewModelAttribute("currentUser", center.getPlayer(SAMPLE_NAME));
         testHelper.assertViewModelAttribute("viewMode", GetGameRoute.mode.PLAY);
     }
-    */
+
     /**
      * tests if correct player is recognized
      */
-/*
+
     @Test
     public void isCorrectPlayer(){
         final GameCenter center = new GameCenter();
 
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        Gson gson = new Gson();
 
         center.addPlayer(SAMPLE_NAME);
         center.addPlayer(SAMPLE_NAME_2);
-        Player player = center.getPlayer(SAMPLE_NAME);
-        player.setRedPlayer(true);
+        GameBoard gameBoard = new GameBoard(center.getPlayer(SAMPLE_NAME), center.getPlayer(SAMPLE_NAME_2));
+        gameBoard.setPlayerTurn(center.getPlayer(SAMPLE_NAME));
+        gameBoard.addMove();
+
+        //creating and adding the game with gameID into the game center
+        String gameID = UUID.randomUUID().toString();
+        center.addNewGame(gameID, center.getPlayer(SAMPLE_NAME), center.getPlayer(SAMPLE_NAME_2));
+        when(request.queryParams(GetGameRoute.GAMEID_PARAM)).thenReturn(gameID);
 
         when(session.attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(center.getPlayer(SAMPLE_NAME));
         when(request.queryParams(PLAYER_PARAM)).thenReturn(SAMPLE_NAME_2);
 
-        CuT = new GetGameRoute(center, engine);
+        CuT = new GetGameRoute(center, engine, gson);
 
         CuT.handle(request, response);
-        testHelper.assertViewModelAttribute("redPlayer", player);
-        testHelper.assertViewModelAttribute("whitePlayer", player.getGame().getWhitePlayer());
-        testHelper.assertViewModelAttribute("board", player.getGame());
+        testHelper.assertViewModelAttribute("redPlayer", gameBoard.getRedPlayer());
+        testHelper.assertViewModelAttribute("whitePlayer", gameBoard.getWhitePlayer());
+        testHelper.assertViewModelAttribute("board", gameBoard);
 
     }
- */
+
 }
