@@ -61,6 +61,12 @@ public class WebServer {
   public static final String BACKUPMOVE_URL = "/backupMove";
   public static final String CHECKTURN_URL = "/checkTurn";
   public static final String SUBMITTURN_URL = "/submitTurn";
+  public static final String REPLAYMODE_URL = "/replay";
+  public static final String REPLAYGAME_URL = "/replay/game";
+  public static final String NEXTTURN_URL = "/replay/nextTurn";
+  public static final String PREVTURN_URL = "/replay/previousTurn";
+  public static final String STOPREPLAY_URL = "/replay/stopWatching";
+  public static final String RESIGN_URL = "/resignGame";
   //
   // Attributes
   //
@@ -154,12 +160,19 @@ public class WebServer {
 
     get(GAME_URL, new GetGameRoute(gameCenter,templateEngine,gson));
 
+
     post(SIGNIN_URL, new PostSignInRoute(gameCenter,templateEngine));
     post(SIGNOUT_URL, new PostSignOutRoute(gameCenter,templateEngine));
     post(VALIDATEMOVE_URL, new PostValidateMoveRoute(gameCenter,gson));
     post(BACKUPMOVE_URL, new PostBackupMoveRoute(gameCenter,gson));
     post(CHECKTURN_URL, new PostCheckTurnRoute(gameCenter,gson));
     post(SUBMITTURN_URL, new PostSubmitTurnRoute(gameCenter,gson));
+    get(REPLAYMODE_URL, new GetReplayRoute(gameCenter,templateEngine));
+    get(REPLAYGAME_URL, new GetReplayGameRoute(gameCenter,templateEngine,gson));
+    post(NEXTTURN_URL, new PostNextTurnRoute(gameCenter,gson));
+    post(PREVTURN_URL, new PostPreviousTurnRoute(gameCenter,gson));
+    get(STOPREPLAY_URL, new GetReplayStopWatchRoute(gameCenter));
+    post(RESIGN_URL, new PostResignGameRoute(gameCenter,gson));
     //
     LOG.config("WebServer is initialized.");
   }
