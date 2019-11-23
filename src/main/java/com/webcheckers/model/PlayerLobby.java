@@ -1,9 +1,5 @@
 package com.webcheckers.model;
 
-import com.webcheckers.model.Player;
-
-import com.webcheckers.appl.GameBoard;
-
 import java.util.HashMap;
 
 /**
@@ -13,7 +9,6 @@ public class PlayerLobby{
     // list of all players signed in
     private HashMap<String, Player> players;
     // list of players waiting for a game
-    private int playerNum = 0;
 
     public PlayerLobby(){
         this.players = new HashMap<>();
@@ -36,9 +31,8 @@ public class PlayerLobby{
     }
 
     public synchronized void addPlayer(String username){
-        Player newPlayer = new Player(username, String.valueOf(playerNum));
+        Player newPlayer = new Player(username);
         this.players.put(username, newPlayer);
-        playerNum++;
     }
 
 }

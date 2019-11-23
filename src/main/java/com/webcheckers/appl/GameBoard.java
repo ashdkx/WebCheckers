@@ -9,63 +9,115 @@ import java.util.*;
  */
 public class GameBoard implements Iterable<Row> {
 
-    private GameView game;
-    private Player playerTurn;
-    private boolean singleMove = false;
-    private Piece activePiece = null;
-    private Position activePieceStart;
-    private Stack<Position> activePieceEnds = new Stack<>();
-    private int activePieceMoves = 0;
-    private ArrayList<int[]> pieceRemove = new ArrayList<>();
-    private Map<int[], List<int[]>> requiredMovePieces = new HashMap<>();
-    private int redPlayerTotalPieces = 12;
-    private int whitePlayerTotalPieces = 12;
-    private List<int[]> jumpPositions = new ArrayList<>();
-    private boolean gameOver = false;
-    private String gameOverMessage;
+    private GameView game; // the game view associated to the GameBoard
+    private Player playerTurn; // the whose turn it is
+    private boolean singleMove = false; // is the move a single diagonal
+    private Piece activePiece = null; // the active piece being moved
+    private Position activePieceStart; // the start of the active piece
+    private Stack<Position> activePieceEnds = new Stack<>(); // the ends of the active piece
+    private int activePieceMoves = 0; // the total moves for the active piece
+    private ArrayList<int[]> pieceRemove = new ArrayList<>(); // the pieces to be removed
+    private Map<int[], List<int[]>> requiredMovePieces = new HashMap<>(); // the pieces that are required to move
+    private int redPlayerTotalPieces = 12; // total amount of red pieces
+    private int whitePlayerTotalPieces = 12; // total amount of white pieces
+    private List<int[]> jumpPositions = new ArrayList<>(); // the positions that a piece can jump over
+    private boolean gameOver = false; // is the game over
+    private String gameOverMessage = ""; // the message associated to game over
+    private ArrayList<MoveSave> moves  = new ArrayList<>(); // A list store the moves made
 
+    /**
+     * The colors of the pieces and players
+     */
     public enum color {RED, WHITE}
 
+    /**
+     * Constructor for creating a new GameBoard to play on
+     * @param redPlayer the player to be the redPlayer
+     * @param whitePlayer the player to be the whitePlayer
+     */
     public GameBoard(Player redPlayer, Player whitePlayer) {
         this.game = new GameView(redPlayer, whitePlayer);
     }
 
+    /**
+     * Gets the game view
+     * @return the game view
+     */
     public GameView getGame() {
         return game;
     }
 
+    /**
+     * Gets the red player
+     * @return the red player
+     */
     public Player getRedPlayer() {
         return game.getRedPlayer();
     }
 
+    /**
+     * Gets the white player
+     * @return the white player
+     */
     public Player getWhitePlayer() {
         return game.getWhitePlayer();
     }
 
+    /**
+     * Get the red player's board
+     * @return the red player's board
+     */
     private List<Row> getRedPlayerBoard() {
         return game.getRedPlayerBoard();
     }
 
+    /**
+     * Gets the white player's board
+     * @return the white player's board
+     */
     private List<Row> getWhitePlayerBoard() {
         return game.getWhitePlayerBoard();
     }
 
+    /**
+     * Checks to see if the player is the red player
+     * @param player the player to check
+     * @return true if the player is the red player, false otherwise
+     */
     public boolean isRedPlayer(Player player) {
         return player.equals(getRedPlayer());
     }
 
+    /**
+     * Sets the player whose turn it is
+     * @param playerTurn the player whose turn it is
+     */
     public void setPlayerTurn(Player playerTurn) {
         this.playerTurn = playerTurn;
     }
 
+    /**
+     * Checks to see if it is currently the player's turn
+     * @param player the player to check
+     * @return true if it is the player's turn, false otherwise
+     */
     public boolean isMyTurn(Player player) {
         return player.equals(playerTurn);
     }
 
+    /**
+     * Gets which player has the active turn
+     * @return the player whose turn it is
+     */
     public Player getPlayerTurn() {
         return playerTurn;
     }
 
+    /**
+     * Gets the player board based on the player's color
+     * @param player the player to check
+     * @return the player board based on the player's color
+     */
     public List<Row> getPlayerBoard(Player player) {
         if (this.isRedPlayer(player)) {
             return this.getRedPlayerBoard();
@@ -74,105 +126,202 @@ public class GameBoard implements Iterable<Row> {
         }
     }
 
+    /**
+     * Toggles which board to display
+     * @param whiteBoard is the white board to be displayed
+     */
     public void isWhitePlayerBoard(boolean whiteBoard) {
         game.isWhitePlayerBoard(whiteBoard);
     }
 
+    /**
+     * Update the red player's board
+     */
     public void updateRedPlayer() {
         game.updateRedPlayer();
     }
 
+    /**
+     * Updates the white player's board
+     */
     public void updateWhitePlayer() {
         game.updateWhitePlayer();
     }
 
+    /**
+     * Gets the board
+     * @return the board
+     */
     public List<Row> getBoard() {
         return game.getBoard();
     }
 
+    /**
+     * Checks to see if the space is valid
+     * @param board the board to base the coordinates on
+     * @param row the row to check
+     * @param col the column to check
+     * @return true if the space is valid false otherwise
+     */
     public boolean isValidSpace(List<Row> board, int row, int col) {
-        if (row > 7 || row < 0 || col > 7 || col < 0) {
+        if (row > 7 || row < 0 || col > 7 || col < 0) { //checks to see if space is outside the board
             return false;
         } else {
             return board.get(row).getSpace(col).isValid();
         }
     }
 
+    /**
+     * Gets the piece at the specified location based on the board
+     * @param board the board to base the coordinates on
+     * @param row the row to get the piece
+     * @param col the column to get the piece
+     * @return the piece at the row and column
+     */
     public Piece getPiece(List<Row> board, int row, int col) {
-        if (row > 7 || row < 0 || col > 7 || col < 0) {
+        if (row > 7 || row < 0 || col > 7 || col < 0) { //checks to see if the piece is outside the board
             return null;
         } else {
             return board.get(row).getSpace(col).getPiece();
         }
     }
 
+    /**
+     * Sets the piece at specific row and column in reference to board
+     * @param board the board to base the coordinates on
+     * @param row the row for the piece to be set
+     * @param col the column for the piece to be set
+     * @param piece the piece to be set
+     */
     public void setPiece(List<Row> board, int row, int col, Piece piece) {
-        if (!(row > 7 || row < 0 || col > 7 || col < 0)) {
+        if (!(row > 7 || row < 0 || col > 7 || col < 0)) { //checks to see if the piece is outside the board
             board.get(row).getSpace(col).setPiece(piece);
         }
     }
 
+    /**
+     * Sets the active piece
+     * @param piece the piece to be active
+     */
     public void setActivePiece(Piece piece) {
         this.activePiece = piece;
     }
 
+    /**
+     * Gets the active piece
+     * @return the active piece
+     */
     public Piece getActivePiece() {
         return activePiece;
     }
 
+    /**
+     * Sets the start of the active piece
+     * @param activePieceStart position of the active piece start
+     */
     public void setActivePieceStart(Position activePieceStart) {
         this.activePieceStart = activePieceStart;
     }
 
+    /**
+     * Gets the starting position of the active piece
+     * @return the starting position of the active piece
+     */
     public Position getActivePieceStart() {
         return this.activePieceStart;
     }
 
+    /**
+     * Adds an end position to the active piece
+     * @param activePieceEnd the position of the new end
+     */
     public void addActivePieceEnd(Position activePieceEnd) {
         this.activePieceEnds.push(activePieceEnd);
     }
 
+    /**
+     * Gets the active piece end from the top of the stack
+     * @return the active piece end from the top of the stack
+     */
     public Position getActivePieceEnd() {
         return this.activePieceEnds.pop();
     }
 
+    /**
+     * Clears activePieceEnds
+     */
     public void clearActivePieceEnd() {
         this.activePieceEnds.clear();
     }
 
+    /**
+     * Gets the total number of active piece moves
+     * @return the total active piece moves
+     */
     public int getActivePieceMoves() {
         return activePieceMoves;
     }
 
+    /**
+     * Sets the number of moves the active piece has
+     * @param activePieceMoves the amount of moves
+     */
     public void setActivePieceMoves(int activePieceMoves) {
         this.activePieceMoves = activePieceMoves;
     }
 
+    /**
+     * Increments the active piece moves
+     */
     public void incrementActivePieceMoves() {
         this.activePieceMoves++;
     }
 
+    /**
+     * Decrements the active piece moves
+     */
     public void decrementActivePieceMoves() {
         this.activePieceMoves--;
     }
 
+    /**
+     * Add piece to piece remove
+     * @param position position of the piece to remove
+     */
     public void addPieceRemove(int[] position) {
         pieceRemove.add(position);
     }
 
+    /**
+     * Remove piece from piece remove
+     * @return the removed piece
+     */
     public int[] removePieceRemove() {
         return pieceRemove.remove(pieceRemove.size() - 1);
     }
 
+    /**
+     * Gets the position of the piece to remove
+     * @return the position of the piece to remove
+     */
     public ArrayList<int[]> getPieceRemove() {
         return pieceRemove;
     }
 
-
+    /**
+     * Gets the map of all the required move pieces
+     * @return map of the required move pieces
+     */
     public Map<int[], List<int[]>> getRequiredMovePieces() {
         return requiredMovePieces;
     }
 
+
+    /**
+     * Checks to see if the piece at position is one of the required move pieces
+     * @param position position of the piece
+     * @return true if it is a required move piece, false otherwise
+     */
     public boolean isRequiredMovePiece(int[] position) {
         boolean valid = false;
         for (int[] requiredPosition : requiredMovePieces.keySet()) {
@@ -246,7 +395,8 @@ public class GameBoard implements Iterable<Row> {
     }
 
     /**
-     * @return is the move a single move
+     * Is the move a single move?
+     * @return single move
      */
     public boolean isSingleMove() {
         return singleMove;
@@ -295,6 +445,7 @@ public class GameBoard implements Iterable<Row> {
 
 
     /**
+     * Gets the total red pieces
      * @return total red pieces
      */
     public int getRedPlayerTotalPieces() {
@@ -330,12 +481,18 @@ public class GameBoard implements Iterable<Row> {
     }
 
     /**
+     * Gets the total white Pieces
      * @return total white pieces
      */
     public int getWhitePlayerTotalPieces() {
         return whitePlayerTotalPieces;
     }
 
+    /**
+     * Get the list of jump positions
+     *
+     * @return list of jump positions
+     */
     public List<int[]> getJumpPositions() {
         return jumpPositions;
     }
@@ -527,7 +684,8 @@ public class GameBoard implements Iterable<Row> {
 
 
     /**
-     * @return is the game over
+     * Is the game over
+     * @return game over
      */
     public boolean isGameOver() {
         return gameOver;
@@ -540,12 +698,33 @@ public class GameBoard implements Iterable<Row> {
     }
 
     /**
+     * Gets the game over message
      * @return the game over message
      */
     public String getGameOverMessage() {
         return gameOverMessage;
     }
 
+    /**
+     * Creates a new saved move and adds it to the moves list
+     */
+    public void addMove(){
+        MoveSave move = new MoveSave(getRedPlayerBoard(),getPlayerColor(playerTurn),gameOverMessage);
+        moves.add(move);
+    }
+
+    /**
+     * Get the list of moves
+     * @return the list of moves
+     */
+    public ArrayList<MoveSave> getMoves (){
+        return moves;
+    }
+
+    /**
+     * Iterates the board for displaying
+     * @return the iterator of the board
+     */
     @Override
     public Iterator<Row> iterator() {
         return game.getBoard().iterator();
