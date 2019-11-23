@@ -94,6 +94,7 @@ public class GetGameRouteTester {
 
         center.addPlayer(SAMPLE_NAME);
         center.addPlayer(SAMPLE_NAME_2);
+        //create the game board
         GameBoard gameBoard = new GameBoard(center.getPlayer(SAMPLE_NAME), center.getPlayer(SAMPLE_NAME_2));
         gameBoard.setPlayerTurn(center.getPlayer(SAMPLE_NAME));
         gameBoard.addMove();
