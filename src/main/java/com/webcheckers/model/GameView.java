@@ -56,6 +56,22 @@ public class GameView {
 
     /**
      * Initializes the red player's board
+     * <br>
+     * <pre>
+     *             0   1   2   3   4   5   6   7<br>
+     *         0   *   W   *   W   *   W   *   W<br>
+     *         1   W   *   W   *   W   *   W   *<br>
+     *         2   *   W   *   W   *   W   *   W<br>
+     *         3   *   *   *   *   *   *   *   *<br>
+     *         4   *   *   *   *   *   *   *   *<br>
+     *         5   R   *   R   *   R   *   R   *<br>
+     *         6   *   R   *   R   *   R   *   R<br>
+     *         7   R   *   R   *   R   *   R   *<br>
+     *
+     *         R = red single pieces
+     *         W = white single pieces
+     *         * = blank spaces
+     *</pre>
      */
     private void initRedPlayer(){
         boolean valid1 = false;
@@ -92,6 +108,22 @@ public class GameView {
 
     /**
      * Initializes the white player's board
+     * <br>
+     *<pre>
+     *             0   1   2   3   4   5   6   7<br>
+     *         0   *   R   *   R   *   R   *   R<br>
+     *         1   R   *   R   *   R   *   R   *<br>
+     *         2   *   R   *   R   *   R   *   R<br>
+     *         3   *   *   *   *   *   *   *   *<br>
+     *         4   *   *   *   *   *   *   *   *<br>
+     *         5   W   *   W   *   W   *   W   *<br>
+     *         6   *   W   *   W   *   W   *   W<br>
+     *         7   W   *   W   *   W   *   W   *<br>
+     *
+     *         R = red single pieces
+     *         W = white single pieces
+     *         * = blank spaces
+     *</pre>
      */
     private void initWhitePlayer(){
         boolean valid2 = false;

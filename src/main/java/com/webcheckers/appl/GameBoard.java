@@ -506,6 +506,18 @@ public class GameBoard implements Iterable<Row> {
      * @param col         column of the piece
      * @param piece       the piece
      * @return true if able to jump false otherwise
+     *
+     * Structure:
+     *             201
+     *             0P0
+     *             403
+     *
+     *             0 = invalid space
+     *             1 = validPos1
+     *             2 = validPos2
+     *             3 = validPos3
+     *             4 = validPos4
+     *             P = piece being checked
      */
     public boolean canJump(Player player, List<Row> playerBoard, int row, int col, Piece piece) {
         boolean validPos1 = false;
@@ -578,6 +590,19 @@ public class GameBoard implements Iterable<Row> {
      * @param col         column of the piece
      * @param piece       the piece
      * @return true if can move diagonally once false otherwise
+     *
+     * Structure:
+     *
+     *             201
+     *             0P0
+     *             403
+     *
+     *             0 = invalid space
+     *             1 = validPos1
+     *             2 = validPos2
+     *             3 = validPos3
+     *             4 = validPos4
+     *             P = piece being checked
      */
     private boolean canMove(List<Row> playerBoard, int row, int col, Piece piece) {
         boolean validPos1 = false;
