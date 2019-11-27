@@ -100,36 +100,46 @@ public class PostSubmitTurnRoute implements Route {
     }
 
     private String submit(GameBoard board, List<Row> playerBoard, Player player, Position moveStart, Position moveEnd){
-        board.setPiece(playerBoard, moveStart.getRow(), moveStart.getCell(), null); // remove old piece position
-
-        if(moveEnd.getRow()==0){ //Check to see if piece reached the end of the board and crown the piece
-            board.setPieceKing(player,playerBoard,moveEnd.getRow(),moveEnd.getCell());
-            board.addPlayerTotalPieces(player);
+        if(board.hasResigned()){
+            board.setActivePiece(null);
+            board.setActivePieceMoves(0);
+            board.setSingleMove(false);
+            board.clearRequiredMovePieces();
+            board.clearActivePieceEnd();
+            board.getJumpPositions().clear();
+            return gson.toJson(Message.info("Opponent Resigned"));
         }
-        else{
-            board.setPiece(playerBoard, moveEnd.getRow(), moveEnd.getCell(), board.getActivePiece());
-        }
+        else {
+            board.setPiece(playerBoard, moveStart.getRow(), moveStart.getCell(), null); // remove old piece position
 
-        if(board.isRedPlayer(player)){
-            board.updateWhitePlayer(); //update white player's board
-            board.setPlayerTurn(board.getWhitePlayer()); //set to white player's turn
 
-        }
-        else{
-            board.updateRedPlayer(); //update red player's board
-            board.setPlayerTurn(board.getRedPlayer()); //set to red player's turn
-        }
+            if (moveEnd.getRow() == 0) { //Check to see if piece reached the end of the board and crown the piece
+                board.setPieceKing(player, playerBoard, moveEnd.getRow(), moveEnd.getCell());
+                board.addPlayerTotalPieces(player);
+            } else {
+                board.setPiece(playerBoard, moveEnd.getRow(), moveEnd.getCell(), board.getActivePiece());
+            }
 
-        //reset everything for the next turn
-        board.setActivePiece(null);
-        board.setActivePieceMoves(0);
-        board.setSingleMove(false);
-        board.clearRequiredMovePieces();
-        board.clearActivePieceEnd();
-        board.getJumpPositions().clear();
-        board.checkGameOver();
-        board.addMove();
-        return gson.toJson(Message.info("Valid Move."));
+            if (board.isRedPlayer(player)) {
+                board.updateWhitePlayer(); //update white player's board
+                board.setPlayerTurn(board.getWhitePlayer()); //set to white player's turn
+
+            } else {
+                board.updateRedPlayer(); //update red player's board
+                board.setPlayerTurn(board.getRedPlayer()); //set to red player's turn
+            }
+
+            //reset everything for the next turn
+            board.setActivePiece(null);
+            board.setActivePieceMoves(0);
+            board.setSingleMove(false);
+            board.clearRequiredMovePieces();
+            board.clearActivePieceEnd();
+            board.getJumpPositions().clear();
+            board.checkGameOver();
+            board.addMove();
+            return gson.toJson(Message.info("Valid Move."));
+        }
     }
 
 

@@ -61,6 +61,7 @@ public class WebServer {
   public static final String BACKUPMOVE_URL = "/backupMove";
   public static final String CHECKTURN_URL = "/checkTurn";
   public static final String SUBMITTURN_URL = "/submitTurn";
+  public static final String RESIGN_URL = "/resignGame";
   public static final String REPLAYMODE_URL = "/replay";
   public static final String REPLAYGAME_URL = "/replay/game";
   public static final String NEXTTURN_URL = "/replay/nextTurn";
@@ -165,6 +166,7 @@ public class WebServer {
     post(BACKUPMOVE_URL, new PostBackupMoveRoute(gameCenter,gson));
     post(CHECKTURN_URL, new PostCheckTurnRoute(gameCenter,gson));
     post(SUBMITTURN_URL, new PostSubmitTurnRoute(gameCenter,gson));
+    post(RESIGN_URL, new PostResignGameRoute(gameCenter,gson));
     get(REPLAYMODE_URL, new GetReplayRoute(gameCenter,templateEngine));
     get(REPLAYGAME_URL, new GetReplayGameRoute(gameCenter,templateEngine,gson));
     post(NEXTTURN_URL, new PostNextTurnRoute(gameCenter,gson));

@@ -55,4 +55,8 @@ public class MoveSave {
     public String getGameOverMessage() {
         return gameOverMessage;
     }
+
+    public void setGameOverMessage(String gameOverMessage) {
+        this.gameOverMessage = gameOverMessage;
+    }
 }

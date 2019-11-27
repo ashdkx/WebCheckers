@@ -23,6 +23,7 @@ public class GameBoard implements Iterable<Row> {
     private List<int[]> jumpPositions = new ArrayList<>(); // the positions that a piece can jump over
     private boolean gameOver = false; // is the game over
     private String gameOverMessage = ""; // the message associated to game over
+    private boolean resigned = false;
     private ArrayList<MoveSave> moves  = new ArrayList<>(); // A list store the moves made
 
     /**
@@ -672,7 +673,10 @@ public class GameBoard implements Iterable<Row> {
      * @return true if it should false otherwise
      */
     public boolean checkGameOver() {
-        if (redPlayerTotalPieces <= 0) { // check to see if there are no remaining red pieces
+        if(resigned) {
+            gameOver = true;
+        }
+        else if (redPlayerTotalPieces <= 0) { // check to see if there are no remaining red pieces
             gameOver = true;
             gameOverMessage = getWhitePlayer().getName() + " has captured all pieces.";
         } else if (whitePlayerTotalPieces <= 0) { //checks to see if there are no remaining white pieces
@@ -714,6 +718,17 @@ public class GameBoard implements Iterable<Row> {
         return gameOver;
     }
 
+
+    public void resign(Player player){
+        gameOverMessage = player.getName() + " has resigned.";
+        resigned = true;
+        moves.get(moves.size()-1).setGameOverMessage(gameOverMessage);
+        player.setPlaying(false);
+    }
+
+    public boolean hasResigned() {
+        return resigned;
+    }
 
     /**
      * Gets the game over message
