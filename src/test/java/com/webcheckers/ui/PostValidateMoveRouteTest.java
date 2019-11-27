@@ -53,29 +53,25 @@ class PostValidateMoveRouteTest {
         gameCenter.addPlayer(p1);
         gameCenter.addPlayer(p2);
 
-        gameBoard = new GameBoard(gameCenter.getPlayer(p1), gameCenter.getPlayer(p2));
 
         player1 = gameCenter.getPlayer(p1);
-        player1.setPlaying(true);
 
         player2 = gameCenter.getPlayer(p2);
-        player2.setPlaying(true);
 
-        gameView = new GameView(player1, player2);
+
+
+        //creating and adding the game with gameID into the game center
+        gameID = UUID.randomUUID().toString();
+        gameCenter.addNewGame(gameID, player1, player2);
+        gameBoard = gameCenter.getGame(gameID);
         playerBoard = gameBoard.getPlayerBoard(player1);
-        /*
+
         for(int i = 0; i<8; i++){
             for(int j=0; j<8; j++){
                 playerBoard.get(i).getSpace(j).setPiece(null);
             }
         }
 
-         */
-
-        //creating and adding the game with gameID into the game center
-        gameID = UUID.randomUUID().toString();
-        gameCenter.addNewGame(gameID, player1, player2);
-        gameBoard = gameCenter.getGame(gameID);
         when(request.queryParams(GetGameRoute.GAMEID_PARAM)).thenReturn(gameID);
 
         Cut = new PostValidateMoveRoute(gameCenter, gson);
