@@ -75,8 +75,6 @@ class PostValidateMoveRouteTest {
         //creating and adding the game with gameID into the game center
         gameID = UUID.randomUUID().toString();
         gameCenter.addNewGame(gameID, player1, player2);
-        gameBoard = gameCenter.getGame(gameID);
-        
         when(request.queryParams(GetGameRoute.GAMEID_PARAM)).thenReturn(gameID);
 
         Cut = new PostValidateMoveRoute(gameCenter, gson);
@@ -102,10 +100,10 @@ class PostValidateMoveRouteTest {
 
     @Test
     public void jumpSingle() {
-        gameBoard.setPiece(playerBoard, 5, 2, Piece.redSingle);
+        //gameBoard.setPiece(playerBoard, 5, 2, Piece.redSingle);
         //gameBoard.setPiece(playerBoard, 5, 4, Piece.redSingle);
         gameBoard.setPiece(playerBoard, 4, 3, Piece.whiteSingle);
-        //gameBoard.setPiece(playerBoard, 4, 1, Piece.whiteSingle);
+        gameBoard.setPiece(playerBoard, 4, 1, Piece.whiteSingle);
 
 
         gameBoard.updateWhitePlayer();
