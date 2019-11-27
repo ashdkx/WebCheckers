@@ -75,6 +75,7 @@ class PostValidateMoveRouteTest {
         //creating and adding the game with gameID into the game center
         gameID = UUID.randomUUID().toString();
         gameCenter.addNewGame(gameID, player1, player2);
+        gameBoard = gameCenter.getGame(gameID);
         when(request.queryParams(GetGameRoute.GAMEID_PARAM)).thenReturn(gameID);
 
         Cut = new PostValidateMoveRoute(gameCenter, gson);
