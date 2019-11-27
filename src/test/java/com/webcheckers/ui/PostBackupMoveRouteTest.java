@@ -35,6 +35,7 @@ class PostBackupMoveRouteTest {
     private Session session;
     private Response response;
     private Gson gson;
+    private String gameID;
 
     @BeforeEach
     public void setup() {
@@ -59,8 +60,9 @@ class PostBackupMoveRouteTest {
         gameView = new GameView(player1, player2);
 
         //creating and adding the game with gameID into the game center
-        String gameID = UUID.randomUUID().toString();
+        gameID = UUID.randomUUID().toString();
         gameCenter.addNewGame(gameID, player1, player2);
+        gameBoard = gameCenter.getGame(gameID);
         when(request.queryParams(GetGameRoute.GAMEID_PARAM)).thenReturn(gameID);
 
         Cut = new PostBackupMoveRoute(gameCenter, gson);
