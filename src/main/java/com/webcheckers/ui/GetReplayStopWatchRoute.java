@@ -10,21 +10,46 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
+ * The UI Controller to GET the ReplayStopWatch page.
+ *
  * @author Nicholas Curl
  */
 public class GetReplayStopWatchRoute implements Route {
+
+    /**
+     * The logger for this class
+     */
     private static final Logger LOG = Logger.getLogger(GetReplayStopWatchRoute.class.getName());
 
+    /**
+     * The value of this route's title
+     */
     static final String TITLE = "Replay Exit";
+
+    /**
+     * The game center from the server
+     */
     private final GameCenter gameCenter;
 
 
+    /**
+     * Create the Spark Route (UI controller) to handle all {@code GET /replay/stopWatching} HTTP requests.
+     *
+     * @param gameCenter The instance of the GameCenter
+     */
     public GetReplayStopWatchRoute(final GameCenter gameCenter) {
         this.gameCenter = gameCenter;
         //
         LOG.config("GetReplayStopWatchRoute is initialized.");
     }
 
+    /**
+     * Render the WebCheckers Replay stopWatch page.
+     *
+     * @param request The HTTP request
+     * @param response The HTTP response
+     * @return The rendered HTML for the Replay stopWatch page
+     */
     @Override
     public Object handle(Request request, Response response) {
         final Session httpSession = request.session();

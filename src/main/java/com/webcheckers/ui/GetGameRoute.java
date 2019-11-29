@@ -21,28 +21,83 @@ import static spark.Spark.halt;
  * @author Nicholas Curl
  */
 public class GetGameRoute implements Route {
+  /**
+   * The logger of this class
+   */
   private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
 
+  /**
+   * The parameter pattern for a player
+   */
   static final String PLAYER_PARAM = "player";
+
+  /**
+   * The parameter pattern for the gameID
+   */
   static final String GAMEID_PARAM = "gameID";
+
+  /**
+   * The parameter pattern for the redPlayer
+   */
   static final String REDPLAYER_PARAM = "redPlayer";
+
+  /**
+   * The parameter pattern for the whitePlayer
+   */
   static final String WHITEPLAYER_PARAM = "whitePlayer";
+
+  /**
+   * The parameter pattern for the viewMode
+   */
   static final String VIEWMODE_PARAM = "viewMode";
+
+  /**
+   * The parameter pattern for the board
+   */
   static final String BOARD_PARAM = "board";
+
+  /**
+   * The parameter pattern for the mode options
+   */
   static final String MODEOPTIONS_PARAM = "modeOptionsAsJSON";
+
+  /**
+   * The parameter pattern for the active color
+   */
   static final String ACTIVECOLOR_PARAM = "activeColor";
+
+  /**
+   * The game center from the server
+   */
   private final GameCenter gameCenter;
 
-
+  /**
+   * The enumeration of the view mode
+   */
   public enum mode {
     PLAY,
     SPECTATOR,
     REPLAY
   }
+
+  /**
+   * The template engine from the server
+   */
   private final TemplateEngine templateEngine;
+
+  /**
+   * The Gson instance from the server
+   */
   private final Gson gson;
 
 
+  /**
+   * Create the Spark Route (UI controller) to handle all {@code GET /game} HTTP requests.
+   *
+   * @param gameCenter The instance of the GameCenter
+   * @param templateEngine The HTML template rendering engine
+   * @param gson The instance of Gson
+   */
   public GetGameRoute(final GameCenter gameCenter, final TemplateEngine templateEngine, final Gson gson) {
     this.gameCenter = gameCenter;
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
@@ -52,6 +107,14 @@ public class GetGameRoute implements Route {
   }
 
 
+
+  /**
+   * Render the WebCheckers Game page.
+   *
+   * @param request The HTTP request
+   * @param response The HTTP response
+   * @return The rendered HTML for the Game page
+   */
   @Override
   public Object handle(Request request, Response response) {
     LOG.finer("GetGameRoute is invoked.");

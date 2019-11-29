@@ -19,21 +19,47 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
+ * The Ajax Controller for submitting a turn.
+ *
  * @author Nicholas Curl
  */
 
 public class PostSubmitTurnRoute implements Route {
 
+    /**
+     * The logger of this class
+     */
     private static final Logger LOG = Logger.getLogger(PostSubmitTurnRoute.class.getName());
+
+    /**
+     * The Gson instance from the server
+     */
     private Gson gson;
+
+    /**
+     * The game center from the server
+     */
     private GameCenter gameCenter;
 
+    /**
+     * Create the Spark Route (UI controller) to handle all {@code POST /submitTurn} HTTP Ajax requests.
+     *
+     * @param gameCenter The instance of the GameCenter
+     * @param gson The instance of Gson
+     */
     public PostSubmitTurnRoute(GameCenter gameCenter, Gson gson){
         LOG.config("PostSubmitTurnRoute is initialized.");
         this.gameCenter = gameCenter;
         this.gson = gson;
     }
 
+    /**
+     * Handle the WebCheckers SubmitTurn Ajax requests
+     *
+     * @param request The HTTP request
+     * @param response The HTTP response
+     * @return The json of the message of whether if the player was able to submit a turn or not
+     */
     @Override
     public Object handle(Request request, Response response) {
 
@@ -69,6 +95,13 @@ public class PostSubmitTurnRoute implements Route {
     }
 
 
+    /**
+     * Helper function to see if a required move piece has jumped or not
+     *
+     * @param board The game board
+     * @param position The position of the piece being moved
+     * @return True if the required piece has jumped a piece and false otherwise
+     */
     private boolean hasJumped(GameBoard board, int[] position){
         boolean jumped = false;
         for (int[] jumpPositions : board.getRequiredMoveJumps(position)){ //go through the required jumps for the piece at position
@@ -82,6 +115,13 @@ public class PostSubmitTurnRoute implements Route {
         return jumped;
     }
 
+    /**
+     * A helper function to check if the piece being moved is a required move piece
+     *
+     * @param board The game board
+     * @param player The player moving the piece
+     * @param playerBoard The board used for reference
+     */
     private void checkRequiredMoves(GameBoard board, Player player, List<Row> playerBoard){
         for(int i = 7; i>-1;i--){ //go through the entire board
             for(int j = 0; j<8;j++){
@@ -99,8 +139,18 @@ public class PostSubmitTurnRoute implements Route {
         }
     }
 
+    /**
+     * Submits the turn by setting and clearing the required pieces
+     *
+     * @param board The game board
+     * @param playerBoard The board used as a reference
+     * @param player The player submitting the turn
+     * @param moveStart The starting move of the active piece
+     * @param moveEnd The ending position of the active piece
+     * @return The json string of whether the move was submitted or not
+     */
     private String submit(GameBoard board, List<Row> playerBoard, Player player, Position moveStart, Position moveEnd){
-        if(board.hasResigned()){
+        if(board.hasResigned()){ //check to see if the opponent has resigned and reset everything
             board.setActivePiece(null);
             board.setActivePieceMoves(0);
             board.setSingleMove(false);
@@ -137,12 +187,22 @@ public class PostSubmitTurnRoute implements Route {
             board.clearActivePieceEnd();
             board.getJumpPositions().clear();
             board.checkGameOver();
-            board.addMove();
+            board.addMove(); // stores a move
             return gson.toJson(Message.info("Valid Move."));
         }
     }
 
 
+    /**
+     * A helper function to check the type of move of the active piece and compute accordingly
+     *
+     * @param board The game board
+     * @param player The player moving the piece
+     * @param playerBoard The board used as a reference
+     * @param moveStart The starting move of the active piece
+     * @param moveEnd The ending move of the active piece
+     * @return The json on string of whether the turn was successfully submitted or not
+     */
     private String move(GameBoard board, Player player, List<Row> playerBoard, Position moveStart, Position moveEnd){
         String json;
         if (board.isSingleMove()) { //check to see if piece moved one space diagonally

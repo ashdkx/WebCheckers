@@ -14,20 +14,39 @@ import static spark.Spark.halt;
 
 
 /**
+ * The UI Controller to POST the Sign In page after an acceptable username.
+ *
  * @author Nicholas Curl
  * @author Ash Nguyen
  */
 public class PostSignInRoute implements Route {
 
+    /**
+     * The logger of this class
+     */
     private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());
 
+    /**
+     * The template engine from the server
+     */
     private final TemplateEngine templateEngine;
+
+    /**
+     * The game center from the server
+     */
     private final GameCenter gameCenter;
 
-
+    /**
+     * The parameter pattern of the username
+     */
     static final String USERNAME_PARAM = "username";
 
-
+    /**
+     * Create the Spark Route (UI controller) to handle all {@code POST /signIn} HTTP requests.
+     *
+     * @param gameCenter The instance of the GameCenter
+     * @param templateEngine The HTML template rendering engine
+     */
     public PostSignInRoute(GameCenter gameCenter, final TemplateEngine templateEngine){
 
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
@@ -35,11 +54,15 @@ public class PostSignInRoute implements Route {
         this.gameCenter = gameCenter;
 
         LOG.config("PostSignInRoute is initialized.");
-      
-
     }
 
-
+    /**
+     * Render the WebCheckers Sign In page.
+     *
+     * @param request The HTTP request
+     * @param response The HTTP response
+     * @return The rendered HTML for the Sign In page
+     */
     @Override
     public Object handle(Request request, Response response){
         final Session httpSession = request.session();
@@ -88,7 +111,12 @@ public class PostSignInRoute implements Route {
         }
     }
 
-
+    /**
+     * The helper function for displaying an error message
+     * @param vm The map of the view model
+     * @param message The message to display
+     * @return The rendered HTML for the Sign In page with an error message
+     */
     private ModelAndView error(final Map<String, Object> vm, final String message) {
         vm.put(GetHomeRoute.MESSAGE_ATTR, message);
         vm.put(GetHomeRoute.MESSAGE_TYPE_ATTR, GetHomeRoute.ERROR_TYPE);

@@ -22,23 +22,83 @@ import static spark.Spark.halt;
  * @author Nicholas Curl
  */
 public class GetHomeRoute implements Route {
-   static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
-   static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+  /**
+   * The logger of this class
+   */
+  static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
+
+  /**
+   * The welcome message
+   */
+  static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+
+  /**
+   * The message to display when the player has signed in
+   */
    static final Message OTHER_PLAYERS_MSG = Message.info("Click on one of these players to begin a game of checkers.");
+
+  /**
+   * The parameter pattern for the message
+   */
   static final String MESSAGE_ATTR = "message";
+
+  /**
+   * The parameter pattern for the message's type
+   */
   static final String MESSAGE_TYPE_ATTR = "messageType";
+
+  /**
+   * The pattern to set the message type to error
+   */
   static final String ERROR_TYPE = "error";
+
+  /**
+   * The parameter pattern to get the message to display
+   */
   static final String MESSAGE = "messageValue";
+
+  /**
+   * The parameter pattern for the title
+   */
   static final String TITLE_ATTR = "title";
+
+  /**
+   * The value of the title for the home page
+   */
   static final String TITLE = "Home";
-  private final GameCenter gameCenter;
+
+  /**
+   * The parameter pattern for the current user
+   */
   static final String CURRENT_USER_ATTR = "currentUser";
+
+  /**
+   * The parameter pattern for the active players
+   */
   private final String ACTIVE_PLAYERS = "activePlayers";
+
+  /**
+   * The parameter pattern for getting the currentPlayer
+   */
   static final String CURRENT_PLAYER = "currentPlayer";
 
+  /**
+   * The game center from the server
+   */
+  private final GameCenter gameCenter;
+
+  /**
+   * The template engine from the server
+   */
   private final TemplateEngine templateEngine;
 
+  /**
+   * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
+   *
+   * @param gameCenter The instance of the GameCenter
+   * @param templateEngine The HTML template rendering engine
+   */
   public GetHomeRoute(final GameCenter gameCenter, final TemplateEngine templateEngine) {
     this.gameCenter = gameCenter;
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
@@ -47,6 +107,13 @@ public class GetHomeRoute implements Route {
   }
 
 
+  /**
+   * Render the WebCheckers Home page.
+   *
+   * @param request The HTTP request
+   * @param response The HTTP response
+   * @return The rendered HTML for the Home page
+   */
   @Override
   public Object handle(Request request, Response response) {
     final Session httpSession = request.session();
@@ -78,7 +145,7 @@ public class GetHomeRoute implements Route {
           player.setReplaying(false);
         }
         vm.remove(MESSAGE_ATTR, WELCOME_MSG);
-        if(httpSession.attribute(MESSAGE)!=null){
+        if(httpSession.attribute(MESSAGE)!=null){ //display the error message
           final String message = httpSession.attribute(MESSAGE);
           vm.put(MESSAGE_ATTR,Message.error(message));
           httpSession.attribute(MESSAGE, null);

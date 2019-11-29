@@ -11,19 +11,46 @@ import spark.Route;
 import java.util.logging.Logger;
 
 /**
+ * The Ajax Controller for going to the previous move in replay.
+ *
  * @author Nicholas Curl
  */
 public class PostPreviousTurnRoute implements Route {
 
+    /**
+     * The logger of this class
+     */
     private static final Logger LOG = Logger.getLogger(PostPreviousTurnRoute.class.getName());
+
+    /**
+     * The game center from the server
+     */
     private GameCenter gameCenter;
+
+    /**
+     * The Gson instance from the server
+     */
     private Gson gson;
+
+    /**
+     * Create the Spark Route (UI controller) to handle all {@code POST /replay/previousTurn} HTTP Ajax requests.
+     *
+     * @param gameCenter The instance of the GameCenter
+     * @param gson The instance of Gson
+     */
     public PostPreviousTurnRoute(GameCenter gameCenter, Gson gson){
         LOG.config("PostPreviousTurnRoute is initialized.");
         this.gameCenter = gameCenter;
         this.gson = gson;
     }
 
+    /**
+     * Handle the WebCheckers PreviousTurn Ajax requests
+     *
+     * @param request The HTTP request
+     * @param response The HTTP response
+     * @return The json of the message of whether if it was able to go to the previous move or not
+     */
     @Override
     public Object handle(Request request, Response response) {
 

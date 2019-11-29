@@ -15,20 +15,46 @@ import java.util.logging.Logger;
 
 
 /**
+ * The AJax Controller for validating a move.
+ *
  * @author Nicholas Curl
  */
 public class PostValidateMoveRoute implements Route {
 
+    /**
+     * The logger of this class
+     */
     private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
+
+    /**
+     * The game center from the server
+     */
     private GameCenter gameCenter;
+
+    /**
+     * The Gson instance from the server
+     */
     private Gson gson;
 
+    /**
+     * Create the Spark Route (UI controller) to handle all {@code POST /validateTurn} HTTP Ajax requests.
+     *
+     * @param gameCenter The instance of the GameCenter
+     * @param gson The instance of Gson
+     */
     public PostValidateMoveRoute(GameCenter gameCenter, Gson gson){
         LOG.config("PostValidateMoveRoute is initialized.");
         this.gameCenter = gameCenter;
         this.gson = gson;
     }
 
+    /**
+     * Handle the WebCheckers ValidateTurn Ajax requests
+     *
+     * @param request The HTTP request
+     * @param response The HTTP response
+     * @return The json of the message of whether if the turn is valid or not
+     */
     @Override
     public Object handle(Request request, Response response){
 
@@ -57,6 +83,14 @@ public class PostValidateMoveRoute implements Route {
     }
 
 
+    /**
+     * A helper function to check the move is either a jump or a single diagonal and whether it's valid
+     * @param board The game board
+     * @param player The player moving the piece
+     * @param playerBoard The board used for reference
+     * @param move The move
+     * @return The json string of whether the move is valid or not
+     */
     private String move(GameBoard board, Player player, List<Row> playerBoard, Move move){
         int moveStartRow = move.getStart().getRow(); //the row of the starting position
         int moveStartCell = move.getStart().getCell(); // the cell of the starting position
@@ -127,6 +161,17 @@ public class PostValidateMoveRoute implements Route {
     }
 
 
+    /**
+     * A helper function to see if the jump is valid
+     *
+     * @param board The game board
+     * @param player The player moving the piece
+     * @param playerBoard The board used for reference
+     * @param pieceJumpedRow The row number of the piece being jumped
+     * @param pieceJumpedCol The column number of the piece being jumped
+     * @param move The move
+     * @return The json string of whether the jump is valid or not
+     */
     private String jump(GameBoard board, Player player, List<Row> playerBoard, int pieceJumpedRow, int pieceJumpedCol, Move move){
         int[] position = new int[2];
         if(!board.isSingleMove()) { //checks to see if the piece has already moved once diagonally

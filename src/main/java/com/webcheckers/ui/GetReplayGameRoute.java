@@ -16,16 +16,44 @@ import java.util.logging.Logger;
 import static spark.Spark.halt;
 
 /**
+ * The UI Controller to GET the ReplayGame page.
+ *
  * @author Nicholas Curl
  */
 public class GetReplayGameRoute implements Route {
+    /**
+     * The logger of the this class
+     */
     private static final Logger LOG = Logger.getLogger(GetReplayGameRoute.class.getName());
 
+    /**
+     * The value of this route's title
+     */
     static final String TITLE = "Game Replay";
+
+    /**
+     * The game center from the server
+     */
     private final GameCenter gameCenter;
+
+    /**
+     * The template engine from the server
+     */
     private final TemplateEngine templateEngine;
+
+    /**
+     * The Gson instance from the server
+     */
     private final Gson gson;
 
+
+    /**
+     * Create the Spark Route (UI controller) to handle all {@code GET /replay/game} HTTP requests.
+     *
+     * @param gameCenter The instance of the GameCenter
+     * @param templateEngine The HTML template rendering engine
+     * @param gson The instance of Gson
+     */
     public GetReplayGameRoute(final GameCenter gameCenter, final TemplateEngine templateEngine, final Gson gson) {
         this.gameCenter = gameCenter;
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
@@ -35,6 +63,13 @@ public class GetReplayGameRoute implements Route {
     }
 
 
+    /**
+     * Render the WebCheckers Replay Game page.
+     *
+     * @param request The HTTP request
+     * @param response The HTTP response
+     * @return The rendered HTML for the Replay Game page
+     */
     @Override
     public Object handle(Request request, Response response) {
         final Session httpSession = request.session();

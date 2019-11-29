@@ -10,20 +10,47 @@ import java.util.logging.Logger;
 
 
 /**
+ * The Ajax Controller for Backing Up a move.
+ *
  * @author Nicholas Curl
  */
 public class PostBackupMoveRoute implements Route {
 
-
+    /**
+     * The logger for this class
+     */
     private static final Logger LOG = Logger.getLogger(PostBackupMoveRoute.class.getName());
+
+    /**
+     * The game center from the server
+     */
     private GameCenter gameCenter;
+
+    /**
+     * The Gson instance from the server
+     */
     private Gson gson;
+
+    /**
+     * Create the Spark Route (UI controller) to handle all {@code POST /backupMove} HTTP Ajax requests.
+     *
+     * @param gameCenter The instance of the GameCenter
+     * @param gson The instance of Gson
+     */
     public PostBackupMoveRoute(GameCenter gameCenter, Gson gson){
         LOG.config("PostBackupMoveRoute is initialized.");
         this.gameCenter = gameCenter;
         this.gson = gson;
     }
 
+
+    /**
+     * Handle the WebCheckers BackupMove Ajax requests
+     *
+     * @param request The HTTP request
+     * @param response The HTTP response
+     * @return The json of the message of whether the backup was successful or not
+     */
     @Override
     public Object handle(Request request, Response response) {
 

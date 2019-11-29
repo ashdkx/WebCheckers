@@ -6,22 +6,42 @@ import java.util.List;
 
 
 /**
+ * The view of the game and modifying the pieces
+ *
  * @author Nicholas Curl
  */
 public class GameView {
 
+    /**
+     * Representation of the red player
+     */
+    private Player redPlayer;
 
-    private Player redPlayer; // Representation of the red player
-    private Player whitePlayer; // Representation of the white player
-    private List<Row> board; // the list used to display the board
-    private List<Row> redPlayerBoard = new ArrayList<>(); // the red player's board
-    private List<Row> whitePlayerBoard = new ArrayList<>(); // the white player's board
+    /**
+     * Representation of the white player
+     */
+    private Player whitePlayer;
 
+    /**
+     * The list used to display the board
+     */
+    private List<Row> board;
+
+    /**
+     * The red player's board
+     */
+    private List<Row> redPlayerBoard = new ArrayList<>();
+
+    /**
+     * The white player's board
+     */
+    private List<Row> whitePlayerBoard = new ArrayList<>();
 
     /**
      * Constructor for a new GameView for a GameBoard
-     * @param redPlayer the player to be the red player
-     * @param whitePlayer the player to be the white player
+     *
+     * @param redPlayer The player to be the red player
+     * @param whitePlayer The player to be the white player
      */
     public GameView(Player redPlayer, Player whitePlayer) {
         this.redPlayer = redPlayer;
@@ -32,7 +52,8 @@ public class GameView {
 
     /**
      * Gets the board to be displayed
-     * @return the board to be displayed
+     *
+     * @return The board to be displayed
      */
     public List<Row> getBoard() {
         return board;
@@ -40,7 +61,8 @@ public class GameView {
 
     /**
      * Sets the board to be displayed
-     * @param board the board to be displayed
+     *
+     * @param board The board to be displayed
      */
     public void setBoard(List<Row> board){
         this.board = board;
@@ -77,21 +99,6 @@ public class GameView {
         boolean valid1 = false;
 
 
-        /*
-            0   1   2   3   4   5   6   7
-        0   *   W   *   W   *   W   *   W
-        1   W   *   W   *   W   *   W   *
-        2   *   W   *   W   *   W   *   W
-        3   *   *   *   *   *   *   *   *
-        4   *   *   *   *   *   *   *   *
-        5   R   *   R   *   R   *   R   *
-        6   *   R   *   R   *   R   *   R
-        7   R   *   R   *   R   *   R   *
-
-        R = red single pieces
-        W = white single pieces
-        * = blank spaces
-        */
         for(int i = 0; i < 8; i++){
             if (i<=2){
                 redPlayerBoard.add(i,new Row(i,Piece.whiteSingle,valid1));
@@ -128,21 +135,7 @@ public class GameView {
     private void initWhitePlayer(){
         boolean valid2 = false;
 
-        /*
-            0   1   2   3   4   5   6   7
-        0   *   R   *   R   *   R   *   R
-        1   R   *   R   *   R   *   R   *
-        2   *   R   *   R   *   R   *   R
-        3   *   *   *   *   *   *   *   *
-        4   *   *   *   *   *   *   *   *
-        5   W   *   W   *   W   *   W   *
-        6   *   W   *   W   *   W   *   W
-        7   W   *   W   *   W   *   W   *
 
-        R = red single pieces
-        W = white single pieces
-        * = blank spaces
-        */
         for(int i = 0; i < 8; i++){
             if (i<=2){
                 whitePlayerBoard.add(i,new Row(i,Piece.redSingle,valid2));
@@ -159,7 +152,8 @@ public class GameView {
 
     /**
      * Sets the display board to the white players board when true
-     * @param whiteBoard if the display board should be the white player's board
+     *
+     * @param whiteBoard If the display board should be the white player's board
      */
     public void isWhitePlayerBoard(boolean whiteBoard){
         if(whiteBoard){
@@ -195,7 +189,8 @@ public class GameView {
 
     /**
      * Gets the red player's board
-     * @return the red player's board
+     *
+     * @return The red player's board
      */
     public List<Row> getRedPlayerBoard(){
         return redPlayerBoard;
@@ -203,7 +198,8 @@ public class GameView {
 
     /**
      * Gets the white player's board
-     * @return the white player's board
+     *
+     * @return The white player's board
      */
     public List<Row> getWhitePlayerBoard() {
         return whitePlayerBoard;
@@ -211,7 +207,8 @@ public class GameView {
 
     /**
      * Gets the red player
-     * @return the red player
+     *
+     * @return The red player
      */
     public Player getRedPlayer() {
         return redPlayer;
@@ -219,7 +216,8 @@ public class GameView {
 
     /**
      * Gets the white player
-     * @return the white player
+     *
+     * @return The white player
      */
     public Player getWhitePlayer() {
         return whitePlayer;
