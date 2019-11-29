@@ -39,6 +39,7 @@ class PostSubmitTurnRouteTest {
     private Session session;
     private Response response;
     private Gson gson;
+    private String gameID;
 
     @BeforeEach
     public void setup() {
@@ -63,8 +64,10 @@ class PostSubmitTurnRouteTest {
         gameView = new GameView(player1, player2);
 
         //creating and adding the game with gameID into the game center
-        String gameID = UUID.randomUUID().toString();
+        gameID = UUID.randomUUID().toString();
         gameCenter.addNewGame(gameID, player1, player2);
+        gameBoard = gameCenter.getGame(gameID);
+        playerBoard = gameBoard.getPlayerBoard(player1);
         when(request.queryParams(GetGameRoute.GAMEID_PARAM)).thenReturn(gameID);
 
         Cut = new PostSubmitTurnRoute(gameCenter, gson);

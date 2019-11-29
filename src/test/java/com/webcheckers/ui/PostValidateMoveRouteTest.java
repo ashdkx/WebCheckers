@@ -53,12 +53,8 @@ class PostValidateMoveRouteTest {
         gameCenter.addPlayer(p1);
         gameCenter.addPlayer(p2);
 
-
         player1 = gameCenter.getPlayer(p1);
-
         player2 = gameCenter.getPlayer(p2);
-
-
 
         //creating and adding the game with gameID into the game center
         gameID = UUID.randomUUID().toString();
@@ -97,10 +93,10 @@ class PostValidateMoveRouteTest {
 
     @Test
     public void jumpSingle() {
-        //gameBoard.setPiece(playerBoard, 5, 2, Piece.redSingle);
+        gameBoard.setPiece(playerBoard, 5, 2, Piece.redSingle);
         //gameBoard.setPiece(playerBoard, 5, 4, Piece.redSingle);
         gameBoard.setPiece(playerBoard, 4, 3, Piece.whiteSingle);
-        gameBoard.setPiece(playerBoard, 4, 1, Piece.whiteSingle);
+        //gameBoard.setPiece(playerBoard, 4, 1, Piece.whiteSingle);
 
 
         gameBoard.updateWhitePlayer();
