@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @author Nicholas Curl
  */
-public class GameCenter{
+public class GameCenter {
 
     /**
      * The player lobby
@@ -32,7 +32,7 @@ public class GameCenter{
     /**
      * Constructor of the game center
      */
-    public GameCenter(){
+    public GameCenter() {
         this.lobby = new PlayerLobby();
     }
 
@@ -41,7 +41,7 @@ public class GameCenter{
      *
      * @param username The string identifier of the player to be added
      */
-    public void addPlayer(String username){
+    public void addPlayer(String username) {
         lobby.addPlayer(username);
     }
 
@@ -50,7 +50,7 @@ public class GameCenter{
      *
      * @return The map of all the players in the lobby
      */
-     public HashMap<String, Player> getPlayers() {
+    public HashMap<String, Player> getPlayers() {
         return lobby.getPlayers();
     }
 
@@ -59,7 +59,7 @@ public class GameCenter{
      *
      * @param name The string identifier of the player to remove
      */
-    public void removePlayer(String name ){
+    public void removePlayer(String name) {
         lobby.removePlayer(name);
     }
 
@@ -69,7 +69,7 @@ public class GameCenter{
      * @param username The string identifier of the player
      * @return The player associated with the username from the lobby
      */
-    public Player getPlayer(String username){
+    public Player getPlayer(String username) {
         return lobby.getPlayer(username);
     }
 
@@ -79,7 +79,7 @@ public class GameCenter{
      * @param gameId The unique identifier for the game
      * @return The GameBoard based on the gameID
      */
-    public GameBoard getGame(String gameId){
+    public GameBoard getGame(String gameId) {
 
         return games.get(gameId);
 
@@ -97,13 +97,13 @@ public class GameCenter{
     /**
      * Creates a new game and adds it to the games
      *
-     * @param gameId A unique string identifier
-     * @param redPlayer Player going to be the red player
+     * @param gameId      A unique string identifier
+     * @param redPlayer   Player going to be the red player
      * @param whitePlayer Player going to be the white player
      */
-    public void addNewGame(String gameId, Player redPlayer, Player whitePlayer){
-        GameBoard board = new GameBoard(redPlayer,whitePlayer); //create a new GameBoard
-        games.put(gameId,board); //store it based on the gameId into a map
+    public void addNewGame(String gameId, Player redPlayer, Player whitePlayer) {
+        GameBoard board = new GameBoard(redPlayer, whitePlayer); //create a new GameBoard
+        games.put(gameId, board); //store it based on the gameId into a map
         redPlayer.setPlaying(true); //set the redPlayer to be playing
         whitePlayer.setPlaying(true); //set the whitePlayer to be playing
         board.setPlayerTurn(redPlayer); //set that its the redPlayer's turn
@@ -115,10 +115,10 @@ public class GameCenter{
      *
      * @param gameID The unique identifier of the game
      */
-    public void addGameSave(String gameID){
+    public void addGameSave(String gameID) {
         GameBoard board = games.get(gameID); // gets game board associated to the gameID
-        SavedGame gameSave = new SavedGame(board.getMoves(),board.getRedPlayer(),board.getWhitePlayer()); // Creates a new saved game
-        savedGames.put(gameID,gameSave); // stores the saved game into a map with the key being the gameID
+        SavedGame gameSave = new SavedGame(board.getMoves(), board.getRedPlayer(), board.getWhitePlayer()); // Creates a new saved game
+        savedGames.put(gameID, gameSave); // stores the saved game into a map with the key being the gameID
     }
 
     /**
@@ -127,7 +127,7 @@ public class GameCenter{
      * @param gameID The unique identifier for the saved game
      * @return The saved game
      */
-    public SavedGame getGameSave(String gameID){
+    public SavedGame getGameSave(String gameID) {
         return savedGames.get(gameID);
     }
 

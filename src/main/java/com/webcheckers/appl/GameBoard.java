@@ -89,7 +89,7 @@ public class GameBoard implements Iterable<Row> {
     /**
      * A list to store the moves made
      */
-    private ArrayList<MoveSave> moves  = new ArrayList<>();
+    private ArrayList<MoveSave> moves = new ArrayList<>();
 
     /**
      * The colors of the players
@@ -99,7 +99,7 @@ public class GameBoard implements Iterable<Row> {
     /**
      * Constructor for creating a new GameBoard to play on
      *
-     * @param redPlayer The player to be the redPlayer
+     * @param redPlayer   The player to be the redPlayer
      * @param whitePlayer The player to be the whitePlayer
      */
     public GameBoard(Player redPlayer, Player whitePlayer) {
@@ -239,8 +239,8 @@ public class GameBoard implements Iterable<Row> {
      * Checks to see if the space is valid
      *
      * @param board The board to base the coordinates on
-     * @param row The row to check
-     * @param col The column to check
+     * @param row   The row to check
+     * @param col   The column to check
      * @return True if the space is valid false otherwise
      */
     public boolean isValidSpace(List<Row> board, int row, int col) {
@@ -255,8 +255,8 @@ public class GameBoard implements Iterable<Row> {
      * Gets the piece at the specified location based on the current player's view
      *
      * @param board The board to base the coordinates on
-     * @param row The row to get the piece
-     * @param col The column to get the piece
+     * @param row   The row to get the piece
+     * @param col   The column to get the piece
      * @return The piece at the row and column
      */
     public Piece getPiece(List<Row> board, int row, int col) {
@@ -271,8 +271,8 @@ public class GameBoard implements Iterable<Row> {
      * Sets the piece at specific row and column based on the current player's view
      *
      * @param board The board to base the coordinates on
-     * @param row The row number for the piece to be set
-     * @param col The column number for the piece to be set
+     * @param row   The row number for the piece to be set
+     * @param col   The column number for the piece to be set
      * @param piece The piece to be set
      */
     public void setPiece(List<Row> board, int row, int col, Piece piece) {
@@ -431,7 +431,7 @@ public class GameBoard implements Iterable<Row> {
      * Adds a piece to the required moves including the possible jumps
      *
      * @param position The position of the piece to add to the required moves
-     * @param jumps The list of possible jumps for the piece
+     * @param jumps    The list of possible jumps for the piece
      */
     public void addRequiredMovePieces(int[] position, List<int[]> jumps) {
         requiredMovePieces.put(position, jumps);
@@ -463,10 +463,10 @@ public class GameBoard implements Iterable<Row> {
     /**
      * Sets the piece relative to the player to be king
      *
-     * @param player The player
+     * @param player      The player
      * @param playerBoard The board associated to the player
-     * @param row Row number of the piece to crown
-     * @param col Column number of the piece to crown
+     * @param row         Row number of the piece to crown
+     * @param col         Column number of the piece to crown
      */
     public void setPieceKing(Player player, List<Row> playerBoard, int row, int col) {
         switch (getPlayerColor(player)) {
@@ -499,7 +499,7 @@ public class GameBoard implements Iterable<Row> {
     /**
      * Checks to see if the piece does not match the player's color
      *
-     * @param piece The piece to check
+     * @param piece  The piece to check
      * @param player The player to compare to
      * @return True if the piece is not the same as the player's color false otherwise
      */
@@ -594,11 +594,11 @@ public class GameBoard implements Iterable<Row> {
     /**
      * Checks to see if a piece is able to jump
      *
-     * @param player The current player
+     * @param player      The current player
      * @param playerBoard The board that is associated to the current player
-     * @param row Row number of the piece
-     * @param col Column number of the piece
-     * @param piece The piece
+     * @param row         Row number of the piece
+     * @param col         Column number of the piece
+     * @param piece       The piece
      * @return True if able to jump false otherwise
      *
      * <pre>
@@ -613,7 +613,7 @@ public class GameBoard implements Iterable<Row> {
      *             3 = validPos3
      *             4 = validPos4
      *             P = piece being checked
-     *</pre>
+     * </pre>
      */
     public boolean canJump(Player player, List<Row> playerBoard, int row, int col, Piece piece) {
         boolean validPos1 = false;
@@ -669,12 +669,12 @@ public class GameBoard implements Iterable<Row> {
      * Checks to see if a piece can move diagonally once
      *
      * @param playerBoard Board used for reference
-     * @param row Row number of the piece
-     * @param col Column number of the piece
-     * @param piece The piece
+     * @param row         Row number of the piece
+     * @param col         Column number of the piece
+     * @param piece       The piece
      * @return True if can move diagonally once false otherwise
      *
-     *<pre>
+     * <pre>
      * Structure:
      *
      *             201
@@ -687,7 +687,7 @@ public class GameBoard implements Iterable<Row> {
      *             3 = validPos3
      *             4 = validPos4
      *             P = piece being checked
-     *</pre>
+     * </pre>
      */
     private boolean canMove(List<Row> playerBoard, int row, int col, Piece piece) {
         boolean validPos1 = false;
@@ -743,10 +743,9 @@ public class GameBoard implements Iterable<Row> {
      * @return True if it should false otherwise
      */
     public boolean checkGameOver() {
-        if(resigned) { // checks to see if a player has resigned
+        if (resigned) { // checks to see if a player has resigned
             gameOver = true;
-        }
-        else if (redPlayerTotalPieces <= 0) { // check to see if there are no remaining red pieces
+        } else if (redPlayerTotalPieces <= 0) { // check to see if there are no remaining red pieces
             gameOver = true;
             gameOverMessage = getWhitePlayer().getName() + " has captured all pieces.";
         } else if (whitePlayerTotalPieces <= 0) { //checks to see if there are no remaining white pieces
@@ -793,10 +792,10 @@ public class GameBoard implements Iterable<Row> {
      *
      * @param player The player that is resigning
      */
-    public void resign(Player player){
+    public void resign(Player player) {
         gameOverMessage = player.getName() + " has resigned.";
         resigned = true; // sets the game to be resigned
-        moves.get(moves.size()-1).setGameOverMessage(gameOverMessage); // set the new gameover message to the latest move
+        moves.get(moves.size() - 1).setGameOverMessage(gameOverMessage); // set the new gameover message to the latest move
         player.setPlaying(false);
     }
 
@@ -821,8 +820,8 @@ public class GameBoard implements Iterable<Row> {
     /**
      * Creates a new saved move and adds it to the moves list
      */
-    public void addMove(){
-        MoveSave move = new MoveSave(getRedPlayerBoard(),getPlayerColor(playerTurn),gameOverMessage);
+    public void addMove() {
+        MoveSave move = new MoveSave(getRedPlayerBoard(), getPlayerColor(playerTurn), gameOverMessage);
         moves.add(move);
     }
 
@@ -831,7 +830,7 @@ public class GameBoard implements Iterable<Row> {
      *
      * @return The list of moves
      */
-    public ArrayList<MoveSave> getMoves (){
+    public ArrayList<MoveSave> getMoves() {
         return moves;
     }
 

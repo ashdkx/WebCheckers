@@ -37,9 +37,9 @@ public class PostResignGameRoute implements Route {
      * Create the Spark Route (UI controller) to handle all {@code POST /resignGame} HTTP Ajax requests.
      *
      * @param gameCenter The instance of the GameCenter
-     * @param gson The instance of Gson
+     * @param gson       The instance of Gson
      */
-    public PostResignGameRoute(GameCenter gameCenter, Gson gson){
+    public PostResignGameRoute(GameCenter gameCenter, Gson gson) {
         LOG.config("PostResignGameRoute is initialized.");
         this.gameCenter = gameCenter;
         this.gson = gson;
@@ -48,29 +48,27 @@ public class PostResignGameRoute implements Route {
     /**
      * Handle the WebCheckers Resign Ajax requests
      *
-     * @param request The HTTP request
+     * @param request  The HTTP request
      * @param response The HTTP response
      * @return The json of the message of whether if the player was able resign or not
      */
     @Override
     public Object handle(Request request, Response response) {
-
-
         LOG.finer("PostResignGameRoute is invoked.");
+
         final Session httpSession = request.session();
 
         Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
         GameBoard board = gameCenter.getGame(request.queryParams(GetGameRoute.GAMEID_PARAM));
         String json;
-        if(board.hasResigned()&&player.isPlaying()){ // check to see if a player resigned and it's not the current player
+        if (board.hasResigned() && player.isPlaying()) { // check to see if a player resigned and it's not the current player
             return gson.toJson(Message.error("Unable to resign, please submit a turn."));
         }
 
         board.resign(player); // resign the current player
-        if(board.hasResigned()&&!(player.isPlaying())) { // check to see if it was successful
+        if (board.hasResigned() && !(player.isPlaying())) { // check to see if it was successful
             json = gson.toJson(Message.info("true"));
-        }
-        else{
+        } else {
             json = gson.toJson(Message.error("Unable to resign"));
         }
         return json;

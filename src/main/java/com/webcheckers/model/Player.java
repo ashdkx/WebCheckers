@@ -5,7 +5,7 @@ package com.webcheckers.model;
  *
  * @author Nicholas Curl
  */
-public class Player{
+public class Player {
 
     /**
      * The username of the player
@@ -45,7 +45,7 @@ public class Player{
      *
      * @param status True if the player is playing a game, false otherwise
      */
-    public void setPlaying(boolean status){
+    public void setPlaying(boolean status) {
         playing = status;
     }
 
@@ -54,7 +54,7 @@ public class Player{
      *
      * @return Playing
      */
-    public boolean isPlaying(){
+    public boolean isPlaying() {
         return playing;
     }
 
@@ -82,7 +82,7 @@ public class Player{
      * @param player The player to compare to
      * @return True if the same, false otherwise
      */
-    public boolean equals(Player player){
+    public boolean equals(Player player) {
         return this.name.equals(player.name);
     }
 

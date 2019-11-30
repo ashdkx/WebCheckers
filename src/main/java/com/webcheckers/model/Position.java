@@ -17,14 +17,13 @@ public class Position {
      */
     private int cell;
 
-
     /**
      * Creates a new position with a specified row and cell
      *
-     * @param row The row number
+     * @param row  The row number
      * @param cell The cell number
      */
-    public Position(int row, int cell){
+    public Position(int row, int cell) {
         this.row = row;
         this.cell = cell;
     }

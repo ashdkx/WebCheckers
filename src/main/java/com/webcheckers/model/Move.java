@@ -20,7 +20,7 @@ public class Move {
     /**
      * The constructor for a move
      */
-    public Move(){
+    public Move() {
 
     }
 

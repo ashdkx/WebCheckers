@@ -36,16 +36,16 @@ public class SavedGame {
     /**
      * Constructor for a saved game
      *
-     * @param moves The list of moves from the game to be saved
-     * @param redPlayer The red player of the game to be saved
+     * @param moves       The list of moves from the game to be saved
+     * @param redPlayer   The red player of the game to be saved
      * @param whitePlayer The white player of the game to be saved
      */
-    public SavedGame(ArrayList<MoveSave> moves, Player redPlayer, Player whitePlayer){
+    public SavedGame(ArrayList<MoveSave> moves, Player redPlayer, Player whitePlayer) {
         this.savedGame = new ArrayList<>(moves);
         this.turnNumber = 0;
         this.gameBoard = new GameBoard(redPlayer, whitePlayer);
         this.playerWatching = null;
-        clearBoard();
+        gameBoard.getGame().clearBoard();
     }
 
     /**
@@ -62,7 +62,7 @@ public class SavedGame {
      *
      * @return The move at the specific turn
      */
-    public MoveSave getMove(){
+    public MoveSave getMove() {
         return savedGame.get(turnNumber);
     }
 
@@ -71,7 +71,7 @@ public class SavedGame {
      *
      * @return True if it is not at the end, false otherwise
      */
-    public boolean hasNext(){
+    public boolean hasNext() {
         return turnNumber != savedGame.size() - 1;
     }
 
@@ -80,24 +80,24 @@ public class SavedGame {
      *
      * @return True if it is not at the start, false otherwise
      */
-    public boolean hasPrevious(){
+    public boolean hasPrevious() {
         return turnNumber > 0;
     }
 
     /**
      * Increment the turn number and clear the board for the next move in the list
      */
-    public void nextTurn(){
+    public void nextTurn() {
         turnNumber++;
-        clearBoard();
+        gameBoard.getGame().clearBoard();
     }
 
     /**
      * Decrement the turn number and clear the board for the previous move in the list
      */
-    public void previousTurn(){
+    public void previousTurn() {
         turnNumber--;
-        clearBoard();
+        gameBoard.getGame().clearBoard();
     }
 
     /**
@@ -130,27 +130,26 @@ public class SavedGame {
     /**
      * Goes through the entire board and removes all the pieces
      */
-    private void clearBoard(){
-        for(int i=0;i<8;i++){
-            for(int j = 0; j<8; j++){
+    private void clearBoard() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
                 List<Row> playerBoard = gameBoard.getPlayerBoard(gameBoard.getRedPlayer());
-                gameBoard.setPiece(playerBoard,i,j,null);
+                gameBoard.setPiece(playerBoard, i, j, null);
             }
         }
     }
-
 
     /**
      * Goes through the entire board and sets pieces at that space
      *
      * @param positions The 2d array of pieces to be set
      */
-    public void setPositions(Piece[][] positions){
-        for(int i=0;i<8;i++){
-            for(int j = 0; j<8; j++){
+    public void setPositions(Piece[][] positions) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
                 List<Row> playerBoard = gameBoard.getPlayerBoard(gameBoard.getRedPlayer());
                 Piece piece = positions[i][j];
-                gameBoard.setPiece(playerBoard,i,j,piece);
+                gameBoard.setPiece(playerBoard, i, j, piece);
             }
         }
     }
@@ -173,11 +172,10 @@ public class SavedGame {
         return playerWatching;
     }
 
-
     /**
      * A helper function to reset the saved game back to the starting state;
      */
-    public void resetSavedGame(){
+    public void resetSavedGame() {
         this.playerWatching = null;
         this.turnNumber = 0;
         clearBoard();

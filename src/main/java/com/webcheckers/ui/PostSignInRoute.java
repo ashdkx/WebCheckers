@@ -44,33 +44,30 @@ public class PostSignInRoute implements Route {
     /**
      * Create the Spark Route (UI controller) to handle all {@code POST /signIn} HTTP requests.
      *
-     * @param gameCenter The instance of the GameCenter
+     * @param gameCenter     The instance of the GameCenter
      * @param templateEngine The HTML template rendering engine
      */
-    public PostSignInRoute(GameCenter gameCenter, final TemplateEngine templateEngine){
-
+    public PostSignInRoute(GameCenter gameCenter, final TemplateEngine templateEngine) {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
-
         this.gameCenter = gameCenter;
-
         LOG.config("PostSignInRoute is initialized.");
     }
 
     /**
      * Render the WebCheckers Sign In page.
      *
-     * @param request The HTTP request
+     * @param request  The HTTP request
      * @param response The HTTP response
      * @return The rendered HTML for the Sign In page
      */
     @Override
-    public Object handle(Request request, Response response){
+    public Object handle(Request request, Response response) {
         final Session httpSession = request.session();
         LOG.finer("PostSignInRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
         vm.put(GetHomeRoute.TITLE_ATTR, "Sign In");
 
-        if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER)== null) {
+        if (httpSession.attribute(GetHomeRoute.CURRENT_PLAYER) == null) {
             String username = request.queryParams(USERNAME_PARAM);
             Pattern p = Pattern.compile("[^a-zA-Z0-9]");
 
@@ -87,14 +84,14 @@ public class PostSignInRoute implements Route {
             if (gameCenter.getPlayers().containsKey(username)) {
                 mv = error(vm, "Username exists");
                 return templateEngine.render(mv);
-            } else if (username.isEmpty() || p.matcher(username).find()) {
+            } else if (username.isEmpty() || p.matcher(username).find()) {// check if username input is not empty
                 mv = error(vm, "Please enter a valid username");
                 return templateEngine.render(mv);
-            // check if username input is not empty
-            } else if (username.isEmpty() || p.matcher(username).find()) {
+
+            } else if (username.isEmpty() || p.matcher(username).find()) {// add new user to the list if it's valid
                 mv = error(vm, "Please enter a valid character");
                 return templateEngine.render(mv);
-            // add new user to the list if it's valid
+
             } else {
                 gameCenter.addPlayer(username);
                 vm.put(GetHomeRoute.CURRENT_USER_ATTR, gameCenter.getPlayer(username));
@@ -103,8 +100,7 @@ public class PostSignInRoute implements Route {
 
 
             return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
-        }
-        else{
+        } else {
             response.redirect(WebServer.HOME_URL);
             halt();
             return null;
@@ -113,7 +109,8 @@ public class PostSignInRoute implements Route {
 
     /**
      * The helper function for displaying an error message
-     * @param vm The map of the view model
+     *
+     * @param vm      The map of the view model
      * @param message The message to display
      * @return The rendered HTML for the Sign In page with an error message
      */

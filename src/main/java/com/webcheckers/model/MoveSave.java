@@ -30,15 +30,15 @@ public class MoveSave {
     /**
      * The constructor used to create a move save
      *
-     * @param redPlayerBoard The list representing the red player's board
-     * @param activeColor The enum value of the active color
+     * @param redPlayerBoard  The list representing the red player's board
+     * @param activeColor     The enum value of the active color
      * @param gameOverMessage The string of the game over message
      */
-    public MoveSave(List<Row> redPlayerBoard, GameBoard.color activeColor, String gameOverMessage){
+    public MoveSave(List<Row> redPlayerBoard, GameBoard.color activeColor, String gameOverMessage) {
         this.activeColor = activeColor;
         this.gameOverMessage = gameOverMessage;
-        for(int i = 0; i<8; i++){ // goes through the entire board and stores it into the 2d array
-            for(int j=0; j<8; j++){
+        for (int i = 0; i < 8; i++) { // goes through the entire board and stores it into the 2d array
+            for (int j = 0; j < 8; j++) {
                 positions[i][j] = redPlayerBoard.get(i).getSpace(j).getPiece();
             }
         }

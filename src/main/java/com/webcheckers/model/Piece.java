@@ -10,7 +10,7 @@ public class Piece {
     /**
      * The enumeration of the piece's type
      */
-    public enum type{
+    public enum type {
         SINGLE,
         KING
     }
@@ -18,7 +18,7 @@ public class Piece {
     /**
      * The enumeration of the piece's color
      */
-    public enum color{
+    public enum color {
         RED,
         WHITE
     }
@@ -41,28 +41,27 @@ public class Piece {
     /**
      * The representation of a king piece with the color white
      */
-    public static final Piece whiteKing = new Piece(type.KING,color.WHITE);
+    public static final Piece whiteKing = new Piece(type.KING, color.WHITE);
 
     /**
      * The representation of a single piece with the color red
      */
-    public static final Piece redSingle = new Piece(type.SINGLE,color.RED);
+    public static final Piece redSingle = new Piece(type.SINGLE, color.RED);
 
     /**
      * The representation of a king piece with the color red
      */
-    public static final Piece redKing = new Piece(type.KING,color.RED);
+    public static final Piece redKing = new Piece(type.KING, color.RED);
 
     /**
      * The constructor for a piece
      *
-     * @param type The type of piece
+     * @param type  The type of piece
      * @param color The color of the piece
      */
-    public Piece(Piece.type type, Piece.color color){
+    public Piece(Piece.type type, Piece.color color) {
         this.pieceType = type;
         this.pieceColor = color;
-
     }
 
     /**
@@ -70,7 +69,7 @@ public class Piece {
      *
      * @return The piece's type
      */
-    public Piece.type getType(){
+    public Piece.type getType() {
         return pieceType;
     }
 

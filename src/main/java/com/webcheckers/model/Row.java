@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Nicholas Curl
  */
-public class Row implements Iterable<Space>{
+public class Row implements Iterable<Space> {
 
     /**
      * The row number
@@ -25,24 +25,22 @@ public class Row implements Iterable<Space>{
     /**
      * Representation of a row for the game
      *
-     * @param index The row number
-     * @param piece The piece to set in the row
+     * @param index      The row number
+     * @param piece      The piece to set in the row
      * @param startValid If the starting space is black
      */
-    public Row(int index, Piece piece, boolean startValid){
+    public Row(int index, Piece piece, boolean startValid) {
         this.index = index;
         this.space = new ArrayList<>();
         boolean valid = startValid;
-        for(int i = 0; i<8;i++){ // create new spaces to fill the row alternating between black and white spaces
-            if (valid){
-                space.add(new Space(i,piece,true));
-            }
-            else{
-                space.add(new Space(i,null,false));
+        for (int i = 0; i < 8; i++) { // create new spaces to fill the row alternating between black and white spaces
+            if (valid) {
+                space.add(new Space(i, piece, true));
+            } else {
+                space.add(new Space(i, null, false));
             }
             valid = !valid;
         }
-
     }
 
     /**
@@ -51,7 +49,7 @@ public class Row implements Iterable<Space>{
      * @return Iterator of the space in the row
      */
     @Override
-    public Iterator<Space> iterator(){
+    public Iterator<Space> iterator() {
         return space.iterator();
     }
 
@@ -60,10 +58,9 @@ public class Row implements Iterable<Space>{
      *
      * @return The row number
      */
-    public int getIndex(){
+    public int getIndex() {
         return index;
     }
-
 
     /**
      * Get the space within the row
@@ -71,7 +68,7 @@ public class Row implements Iterable<Space>{
      * @param col The column of the space in the row
      * @return The space at the specified column
      */
-    public Space getSpace(int col){
+    public Space getSpace(int col) {
         return space.get(col);
     }
 

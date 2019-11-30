@@ -27,28 +27,25 @@ public class PostSignOutRoute implements Route {
      */
     private final GameCenter gameCenter;
 
-
     /**
      * Create the Spark Route (UI controller) to handle all {@code POST /signOut} HTTP requests.
      *
      * @param gameCenter The instance of the GameCenter
      */
-    public PostSignOutRoute(GameCenter gameCenter){
-
+    public PostSignOutRoute(GameCenter gameCenter) {
         this.gameCenter = gameCenter;
-
         LOG.config("PostSignOutRoute is initialized.");
     }
 
     /**
      * Render the WebCheckers Sign Out page.
      *
-     * @param request The HTTP request
+     * @param request  The HTTP request
      * @param response The HTTP response
      * @return Null
      */
     @Override
-    public Object handle(Request request, Response response){
+    public Object handle(Request request, Response response) {
 
         final Session httpSession = request.session();
 
@@ -57,16 +54,12 @@ public class PostSignOutRoute implements Route {
 
         vm.put(GetHomeRoute.TITLE_ATTR, "Sign Out");
         Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
-        httpSession.attribute(GetHomeRoute.CURRENT_PLAYER,null);
+        httpSession.attribute(GetHomeRoute.CURRENT_PLAYER, null);
         gameCenter.removePlayer(player.getName()); //removes the player
 
-        vm.put(GetHomeRoute.CURRENT_USER_ATTR,null);
-
+        vm.put(GetHomeRoute.CURRENT_USER_ATTR, null);
 
         response.redirect(WebServer.HOME_URL); //redirect home
         return null;
-
     }
-
-
 }

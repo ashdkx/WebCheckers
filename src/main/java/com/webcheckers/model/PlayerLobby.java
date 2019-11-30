@@ -7,7 +7,7 @@ import java.util.HashMap;
  *
  * @author Nicholas Curl
  */
-public class PlayerLobby{
+public class PlayerLobby {
     /**
      * Map of all players signed in
      */
@@ -16,7 +16,7 @@ public class PlayerLobby{
     /**
      * Representation of a lobby to store all of the players
      */
-    public PlayerLobby(){
+    public PlayerLobby() {
         this.players = new HashMap<>();
     }
 
@@ -26,7 +26,7 @@ public class PlayerLobby{
      * @param username The username of the player to get
      * @return The player with the specified username
      */
-    public Player getPlayer(String username){
+    public Player getPlayer(String username) {
         return players.get(username);
     }
 
@@ -35,7 +35,7 @@ public class PlayerLobby{
      *
      * @return The map of the stored players
      */
-    public synchronized   HashMap<String, Player> getPlayers() {
+    public synchronized HashMap<String, Player> getPlayers() {
         return players;
     }
 
@@ -44,17 +44,16 @@ public class PlayerLobby{
      *
      * @return The number of players in the lobby
      */
-    public synchronized int getNumPlayers(){
+    public synchronized int getNumPlayers() {
         return this.players.size();
     }
-
 
     /**
      * Removes a player from the lobby with specified username
      *
      * @param name The username of the player to remove
      */
-    public synchronized void removePlayer(String name ){
+    public synchronized void removePlayer(String name) {
         players.remove(name);
     }
 
@@ -63,7 +62,7 @@ public class PlayerLobby{
      *
      * @param username The username of the new player
      */
-    public synchronized void addPlayer(String username){
+    public synchronized void addPlayer(String username) {
         Player newPlayer = new Player(username);
         this.players.put(username, newPlayer);
     }

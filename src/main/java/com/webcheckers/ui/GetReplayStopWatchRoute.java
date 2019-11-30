@@ -31,7 +31,6 @@ public class GetReplayStopWatchRoute implements Route {
      */
     private final GameCenter gameCenter;
 
-
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /replay/stopWatching} HTTP requests.
      *
@@ -46,14 +45,15 @@ public class GetReplayStopWatchRoute implements Route {
     /**
      * Render the WebCheckers Replay stopWatch page.
      *
-     * @param request The HTTP request
+     * @param request  The HTTP request
      * @param response The HTTP response
      * @return The rendered HTML for the Replay stopWatch page
      */
     @Override
     public Object handle(Request request, Response response) {
-        final Session httpSession = request.session();
         LOG.finer("GetReplayStopWatchRoute is invoked.");
+
+        final Session httpSession = request.session();
         //
         Map<String, Object> vm = new HashMap<>();
         vm.put(GetHomeRoute.TITLE_ATTR, TITLE);
@@ -62,7 +62,7 @@ public class GetReplayStopWatchRoute implements Route {
         final SavedGame savedGame = gameCenter.getGameSave(request.queryParams(GetGameRoute.GAMEID_PARAM)); // get the saved game
         savedGame.resetSavedGame(); //resets the saved game back to the default state
         player.setReplaying(false); // sets the current player to not watching a game replay
-        vm.put(GetHomeRoute.CURRENT_USER_ATTR,player);
+        vm.put(GetHomeRoute.CURRENT_USER_ATTR, player);
         response.redirect(WebServer.HOME_URL); // redirects home
         return null;
     }

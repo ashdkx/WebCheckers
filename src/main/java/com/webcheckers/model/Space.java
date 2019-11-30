@@ -23,16 +23,14 @@ public class Space {
      */
     private boolean valid;
 
-
     /**
      * Representation of a space to be used in a row
      *
      * @param cellIdx The column of the space
-     * @param piece The piece to be set in the space
-     * @param valid Is the space a valid space
+     * @param piece   The piece to be set in the space
+     * @param valid   Is the space a valid space
      */
-    public Space(int cellIdx, Piece piece, boolean valid){
-
+    public Space(int cellIdx, Piece piece, boolean valid) {
         this.cellIdx = cellIdx;
         this.piece = piece;
         this.valid = valid;
@@ -43,10 +41,9 @@ public class Space {
      *
      * @return True if it's a black space and there isn't a piece
      */
-    public boolean isValid(){
-        return valid&&piece==null;
+    public boolean isValid() {
+        return valid && piece == null;
     }
-
 
     /**
      * Get the cell ID
@@ -71,7 +68,7 @@ public class Space {
      *
      * @param piece The piece to set
      */
-    public void setPiece(Piece piece){
+    public void setPiece(Piece piece) {
         this.piece = piece;
     }
 }
