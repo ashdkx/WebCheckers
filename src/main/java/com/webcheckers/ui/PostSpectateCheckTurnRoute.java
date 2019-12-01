@@ -10,7 +10,7 @@ import spark.*;
 import java.util.logging.Logger;
 
 /**
- * @author Nicholas Curl
+ * @author Alec Jackson
  */
 
 public class PostSpectateCheckTurnRoute implements Route {
