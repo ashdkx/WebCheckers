@@ -77,6 +77,9 @@ public class GetHomeRoute implements Route {
         if(player.isReplaying()){ //set player replaying a game to false
           player.setReplaying(false);
         }
+        if (player.isSpectating()) {
+          player.setSpectating(false);
+        }
         vm.remove(MESSAGE_ATTR, WELCOME_MSG);
         if(httpSession.attribute(MESSAGE)!=null){
           final String message = httpSession.attribute(MESSAGE);

@@ -79,9 +79,15 @@ public class GetGameRoute implements Route {
             response.redirect(WebServer.HOME_URL);
             return null;
           }
+          if(player2.isSpectating()){ //checks to see if player 2 is spectating a game
+            httpSession.attribute(GetHomeRoute.MESSAGE, "Player is spectating a game. Click a different player to begin a game of checkers.");
+            response.redirect(WebServer.HOME_URL);
+            return null;
+          }
           UUID uuid = UUID.randomUUID(); //Generates a UUID
           gameId = uuid.toString();
           gameCenter.addNewGame(gameId, player, player2);
+          gameCenter.addCurrentGame(gameId);
           response.redirect(WebServer.GAME_URL + "?gameID=" + gameId); //Redirects player to game with UUID
         }
       }
@@ -110,6 +116,7 @@ public class GetGameRoute implements Route {
         vm.put(MODEOPTIONS_PARAM, gson.toJson(modeOptions)); //converts the modeOptions map into a json
         board.getRedPlayer().setPlaying(false); //sets the red player to not be playing
         board.getWhitePlayer().setPlaying(false); //sets the white player to not be playing
+        gameCenter.removeCurrentGame(gameId);
         gameCenter.addGameSave(gameId);
       }
 

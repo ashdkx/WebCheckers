@@ -15,6 +15,7 @@ public class GameCenter{
 
     private Map<String, GameBoard> games = new HashMap<>(); //Map to store all of the games based on a unique identifier
     private Map<String, SavedGame> savedGames = new HashMap<>();
+    private Map<String, GameBoard> currentGames = new HashMap<>();
 
 
     /**
@@ -118,4 +119,37 @@ public class GameCenter{
     public Map<String, SavedGame> getSavedGames() {
         return savedGames;
     }
+
+    /**
+     * Get the current game specified by the gameID
+     * @param gameID the unique identifier for the saved current
+     * @return the current game
+     */
+    public GameBoard getCurrentGame(String gameID){
+        return currentGames.get(gameID);
+    }
+
+    /**
+     * Get the map of all the current games
+     * @return the map of all the current games
+     */
+    public Map<String, GameBoard> getCurrentGames() {
+        return currentGames;
+    }
+
+    /**
+     * adds game being played to the current game
+     */
+    public void addCurrentGame(String gameID){
+        currentGames.put(gameID,games.getGame(gameID));
+    }
+
+    /**
+     * removes game that has ended
+     */
+    public void removeCurrentGame(String gameID){
+        currentGames.remove(gameID);
+    }
+
+
 }

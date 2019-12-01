@@ -9,6 +9,7 @@ public class Player{
     // if the player is in a game
     private boolean playing = false;
     private boolean replaying = false; // if the player is replaying a game
+    private boolean spectating = false; // if the player is spectating
 
     public Player(String name) {
         this.name = name;
@@ -36,11 +37,28 @@ public class Player{
     }
 
     /**
+     * Sets the player be spectating
+     * @param spectating true if the player is spectating a game, false otherwise
+     */
+    public void setSpectating(boolean spectating) {
+        this.spectating = spectating;
+    }
+
+
+    /**
      * Is the player replaying a game
      * @return replaying
      */
     public boolean isReplaying() {
         return replaying;
+    }
+
+    /**
+     * Is the player spectating a game
+     * @return replaying
+     */
+    public boolean isSpectating() {
+        return spectating;
     }
 
 
