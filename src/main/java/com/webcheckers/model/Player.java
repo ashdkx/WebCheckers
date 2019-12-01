@@ -10,6 +10,7 @@ public class Player{
     private boolean playing = false;
     private boolean replaying = false; // if the player is replaying a game
     private boolean spectating = false; // if the player is spectating
+    private int spectatorCount = 0; //count for determine turn in spectator mode
 
     public Player(String name) {
         this.name = name;
@@ -73,4 +74,16 @@ public class Player{
     public String toString() {
         return this.name;
     }
+
+    /**
+     * returns counter for spectator mode
+     * @return spectator count
+     */
+    public int getSpectatorCount(){return spectatorCount;}
+
+    /**
+     * sets a new spectator count
+     * @param newCount new given spectator count
+     */
+    public void setSpectatorCount(int newCount){spectatorCount = newCount;}
 }

@@ -27,7 +27,7 @@
               <input type="submit" value="Replay a Game">
           </form>
           <br><br>
-          <form action="/spectate" method="GET">
+          <form action="/spectator" method="GET">
               <input type="submit" value="Spectate a Game">
           </form>
           <br>

@@ -24,6 +24,7 @@ public class GameBoard implements Iterable<Row> {
     private boolean gameOver = false; // is the game over
     private String gameOverMessage = ""; // the message associated to game over
     private ArrayList<MoveSave> moves  = new ArrayList<>(); // A list store the moves made
+    private int turnCount = 0;
 
     /**
      * The colors of the pieces and players
@@ -709,6 +710,7 @@ public class GameBoard implements Iterable<Row> {
      * Creates a new saved move and adds it to the moves list
      */
     public void addMove(){
+        turnCount++;
         MoveSave move = new MoveSave(getRedPlayerBoard(),getPlayerColor(playerTurn),gameOverMessage);
         moves.add(move);
     }
@@ -729,4 +731,10 @@ public class GameBoard implements Iterable<Row> {
     public Iterator<Row> iterator() {
         return game.getBoard().iterator();
     }
+
+    /**
+     * returns turn count for spectator mode
+     * @return turn count
+     */
+    public int getTurnCount(){return turnCount;}
 }

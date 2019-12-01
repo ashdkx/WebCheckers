@@ -30,7 +30,7 @@
             <h2>Current Games</h2><br>
             <#list currentGames?keys as key>
                 <br>
-                <form action="/spectate/game" method="GET">
+                <form action="/spectator/game" method="GET">
                     <input type="hidden" name="gameID" value="${key}">
                     <input type="submit" value="${currentGames[key].redPlayer.name} v. ${currentGames[key].whitePlayer.name}">
                 </form>

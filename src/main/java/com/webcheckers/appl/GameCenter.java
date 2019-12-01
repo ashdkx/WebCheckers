@@ -141,7 +141,7 @@ public class GameCenter{
      * adds game being played to the current game
      */
     public void addCurrentGame(String gameID){
-        currentGames.put(gameID,games.getGame(gameID));
+        currentGames.put(gameID,getGame(gameID));
     }
 
     /**

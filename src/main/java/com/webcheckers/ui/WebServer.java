@@ -67,6 +67,11 @@ public class WebServer {
   public static final String PREVTURN_URL = "/replay/previousTurn";
   public static final String STOPREPLAY_URL = "/replay/stopWatching";
   public static final String RESIGN_URL = "/resignGame";
+  public static final String SPECTATEMODE_URL = "/spectator";
+  public static final String SPECTATEGAME_URL ="/spectator/game";
+  public static final String SPECTATESTOP_URL = "/spectator/stopWatching";
+  public static final String SPECTATECHECK_URL = "/spectator/checkTurn";
+
   //
   // Attributes
   //
@@ -173,6 +178,11 @@ public class WebServer {
     post(PREVTURN_URL, new PostPreviousTurnRoute(gameCenter,gson));
     get(STOPREPLAY_URL, new GetReplayStopWatchRoute(gameCenter));
     post(RESIGN_URL, new PostResignGameRoute(gameCenter,gson));
+    get(SPECTATEGAME_URL, new GetSpectateGameRoute(gameCenter,templateEngine,gson));
+    get(SPECTATEMODE_URL, new GetSpectateRoute(gameCenter,templateEngine));
+    get(SPECTATECHECK_URL, new GetSpectateStopWatchingRoute(gameCenter));
+    get(SPECTATECHECK_URL, new PostSpectateCheckTurnRoute(gameCenter,gson) );
+
     //
     LOG.config("WebServer is initialized.");
   }
