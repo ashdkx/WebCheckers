@@ -45,8 +45,11 @@ the American Checkers rules. Obviously, this involves all types of movement and 
 * Required move
 * All direction move
 * Resignation
+
+### Roadmap of Enhancements
+* Replay match
 * Spectator mode
-* Replay mode
+* Help menu
 
 ## Application Domain
 This section describes the application domain.
@@ -59,8 +62,6 @@ This section describes the application domain.
 * The players make moves by moving the pieces.
 * There are different types of moves that can be made, and a player can lose by having no moves/pieces left, or 
 when he/she resigns from the match.
-* Logged in users can spectate a match that is going on
-* Players who have completed a match can use Replay mode to view their match again.
 
 ## Architecture and Design
 This section describes the application architecture.
@@ -112,10 +113,12 @@ having the page refresh at a set amount of time, we could refresh the page after
 flow smoother overall.
 
 ## Testing
-* Unit test classes have been made for most classes.
+* Unit test classes have been made for classes of different tiers. We encountered a bug 
+where a move was backed up incorrectly. However, after using several test cases, the bug was finally squashed, and all
+of our unit criteria tests have passed.
 
 ### Acceptance Testing
-* 17 user stories have passed all of their acceptance criteria tests. No user stories
+* 11 user stories have passed all of their acceptance criteria tests. No user stories
 have any acceptance criteria tests failing. 
 
 ### Unit Testing and Code Coverage
