@@ -28,7 +28,6 @@ public class GameView {
         this.whitePlayer = whitePlayer;
         this.board = new ArrayList<>();
         initBoard();
-        testGameOver();
     }
 
     /**
