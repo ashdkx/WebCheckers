@@ -1,129 +1,97 @@
 package com.webcheckers.model;
 
-import com.webcheckers.appl.GameBoard;
-
-
 /**
+ * The representation of the player
+ *
  * @author Nicholas Curl
  */
-public class Player{
+public class Player {
+
+    /**
+     * The username of the player
+     */
     private String name;
-    private String sessionID;
 
-    // if the player is in a game
+    /**
+     * Is the player in a game
+     */
     private boolean playing = false;
-    private boolean redPlayer = false;
-    private GameBoard game;
-    private GameBoard.color color;
-    private boolean myTurn = false;
-    private int totalPieces = 12;
-    private boolean singleMove = false;
 
-    public Player(String name, String sessionID) {
+    /**
+     * Is the player replaying a game
+     */
+    private boolean replaying = false;
+
+    /**
+     * The representation of the player
+     *
+     * @param name Username of the player
+     */
+    public Player(String name) {
         this.name = name;
-        this.sessionID = sessionID;
     }
 
+    /**
+     * Gets the username of the player
+     *
+     * @return The username of the player
+     */
     public String getName() {
         return name;
     }
 
-    public String getSessionID(){
-        return sessionID;
-    }
-
-
-    public void setPlaying(boolean status){
+    /**
+     * Sets the player to be playing
+     *
+     * @param status True if the player is playing a game, false otherwise
+     */
+    public void setPlaying(boolean status) {
         playing = status;
     }
 
-    public void setRedPlayer(boolean status){
-        redPlayer = status;
-    }
-
-    public boolean isRedPlayer() {
-        return redPlayer;
-    }
-
-    public boolean isPlaying(){
+    /**
+     * Is the player playing a game
+     *
+     * @return Playing
+     */
+    public boolean isPlaying() {
         return playing;
     }
 
-    public boolean equals(Player player){
-        if(this.name.equals(player.name)){
-            return true;
-        }
-        return false;
+    /**
+     * Sets the player be replaying
+     *
+     * @param replaying True if the player is replaying a game, false otherwise
+     */
+    public void setReplaying(boolean replaying) {
+        this.replaying = replaying;
     }
 
-    public void setGame(GameBoard game){
-        this.game = game;
+    /**
+     * Is the player replaying a game
+     *
+     * @return Replaying
+     */
+    public boolean isReplaying() {
+        return replaying;
     }
 
-    public GameBoard getGame() {
-        return game;
+    /**
+     * Checks to see if this player equals another player
+     *
+     * @param player The player to compare to
+     * @return True if the same, false otherwise
+     */
+    public boolean equals(Player player) {
+        return this.name.equals(player.name);
     }
 
     /**
      * Print out the username when called
-     * @return print username
+     *
+     * @return Print username
      */
     public String toString() {
         return this.name;
-    }
-
-    public void setColor(GameBoard.color color){
-        this.color = color;
-    }
-
-    public GameBoard.color getColor() {
-        return color;
-    }
-
-    public void setMyTurn(boolean myTurn){
-        this.myTurn = myTurn;
-    }
-
-    public boolean isMyTurn() {
-        return myTurn;
-    }
-
-    public int getTotalPieces() {
-        return totalPieces;
-    }
-
-    public void addTotalPieces(){
-        totalPieces++;
-    }
-
-    public void removeTotalPieces(int amount){
-        totalPieces-=amount;
-    }
-
-    public boolean isNotPlayerColor(Piece piece){
-        boolean valid = false;
-        if(piece != null) {
-            switch (piece.getColor()) {
-                case RED:
-                    if (color != GameBoard.color.RED) { // if player's color equals white and the piece's color is red return true
-                        valid = true;
-                    }
-                    break;
-                case WHITE:
-                    if (color != GameBoard.color.WHITE) { // if player's color equal red and the piece's color is white return true
-                        valid = true;
-                    }
-                    break;
-            }
-        }
-        return valid;
-    }
-
-    public boolean isSingleMove() {
-        return singleMove;
-    }
-
-    public void setSingleMove(boolean move){
-        singleMove = move;
     }
 }

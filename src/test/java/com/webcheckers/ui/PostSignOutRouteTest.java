@@ -36,7 +36,7 @@ class PostSignOutRouteTest {
 
         gameCenter = new GameCenter();
 
-        Cut = new PostSignOutRoute(gameCenter, templateEngine);
+        Cut = new PostSignOutRoute(gameCenter);
 
 
     }

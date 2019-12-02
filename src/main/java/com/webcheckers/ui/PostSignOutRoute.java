@@ -9,34 +9,43 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import static spark.Spark.halt;
 
 /**
+ * The UI Controller to POST the Sign Out page.
+ *
  * @author Nicholas Curl
  */
 public class PostSignOutRoute implements Route {
 
+    /**
+     * The logger of this class
+     */
     private static final Logger LOG = Logger.getLogger(PostSignOutRoute.class.getName());
 
-    private final TemplateEngine templateEngine;
+    /**
+     * The game center from the server
+     */
     private final GameCenter gameCenter;
 
-
-    public PostSignOutRoute(GameCenter gameCenter, final TemplateEngine templateEngine){
-
-        this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
-
+    /**
+     * Create the Spark Route (UI controller) to handle all {@code POST /signOut} HTTP requests.
+     *
+     * @param gameCenter The instance of the GameCenter
+     */
+    public PostSignOutRoute(GameCenter gameCenter) {
         this.gameCenter = gameCenter;
-
         LOG.config("PostSignOutRoute is initialized.");
-
-
     }
 
-
-
+    /**
+     * Render the WebCheckers Sign Out page.
+     *
+     * @param request  The HTTP request
+     * @param response The HTTP response
+     * @return Null
+     */
     @Override
-    public Object handle(Request request, Response response){
+    public Object handle(Request request, Response response) {
 
         final Session httpSession = request.session();
 
@@ -45,16 +54,12 @@ public class PostSignOutRoute implements Route {
 
         vm.put(GetHomeRoute.TITLE_ATTR, "Sign Out");
         Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
-        httpSession.attribute(GetHomeRoute.CURRENT_PLAYER,null);
-        gameCenter.removePlayer(player.getName());
+        httpSession.attribute(GetHomeRoute.CURRENT_PLAYER, null);
+        gameCenter.removePlayer(player.getName()); //removes the player
 
-        vm.put(GetHomeRoute.CURRENT_USER_ATTR,null);
+        vm.put(GetHomeRoute.CURRENT_USER_ATTR, null);
 
-
-        response.redirect(WebServer.HOME_URL);
+        response.redirect(WebServer.HOME_URL); //redirect home
         return null;
-
     }
-
-
 }

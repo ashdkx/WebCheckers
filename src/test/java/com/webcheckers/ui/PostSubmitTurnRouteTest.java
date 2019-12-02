@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.google.gson.Gson;
 import com.webcheckers.appl.GameBoard;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.*;
@@ -11,6 +12,7 @@ import spark.Response;
 import spark.Session;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -36,6 +38,8 @@ class PostSubmitTurnRouteTest {
     private Request request;
     private Session session;
     private Response response;
+    private Gson gson;
+    private String gameID;
 
     @BeforeEach
     public void setup() {
@@ -43,6 +47,7 @@ class PostSubmitTurnRouteTest {
         session = mock(Session.class);
         when(request.session()).thenReturn(session);
         response = mock(Response.class);
+        gson = new Gson();
 
         gameCenter = new GameCenter();
         gameCenter.addPlayer(p1);
@@ -51,25 +56,27 @@ class PostSubmitTurnRouteTest {
         gameBoard = new GameBoard(gameCenter.getPlayer(p1), gameCenter.getPlayer(p2));
 
         player1 = gameCenter.getPlayer(p1);
-        player1.setRedPlayer(true);
         player1.setPlaying(true);
-        player1.setColor(GameBoard.color.RED);
-        player1.setGame(gameBoard);
 
         player2 = gameCenter.getPlayer(p2);
         player2.setPlaying(true);
-        player2.setColor(GameBoard.color.WHITE);
-        player2.setGame(gameBoard);
 
         gameView = new GameView(player1, player2);
 
-        Cut = new PostSubmitTurnRoute();
+        //creating and adding the game with gameID into the game center
+        gameID = UUID.randomUUID().toString();
+        gameCenter.addNewGame(gameID, player1, player2);
+        gameBoard = gameCenter.getGame(gameID);
+        playerBoard = gameBoard.getPlayerBoard(player1);
+        when(request.queryParams(GetGameRoute.GAMEID_PARAM)).thenReturn(gameID);
+
+        Cut = new PostSubmitTurnRoute(gameCenter, gson);
     }
 
     @Test
     public void moveSinglePLayer1() {
         playerBoard = gameBoard.getPlayerBoard(player1);
-        player1.setMyTurn(true);
+        gameBoard.setPlayerTurn(player1);
         gameBoard.setActivePiece(gameBoard.getPiece(playerBoard, 5, 2));
         gameBoard.setActivePieceStart(new Position(5, 2));
         gameBoard.addActivePieceEnd(new Position(4,3));
@@ -84,7 +91,7 @@ class PostSubmitTurnRouteTest {
     @Test
     public void moveSinglePlayer2() {
         playerBoard = gameBoard.getPlayerBoard(player2);
-        player2.setMyTurn(true);
+        gameBoard.setPlayerTurn(player2);
         gameBoard.setActivePiece(gameBoard.getPiece(playerBoard, 2, 3));
         gameBoard.setActivePieceStart(new Position(2, 3));
         gameBoard.addActivePieceEnd(new Position(3,4));
@@ -100,7 +107,7 @@ class PostSubmitTurnRouteTest {
     @Test
     public void omniMovement() {
         playerBoard = gameBoard.getPlayerBoard(player1);
-        player1.setMyTurn(true);
+        gameBoard.setPlayerTurn(player1);
 
         gameBoard.setPiece(playerBoard, 3, 2, Piece.redKing);
         gameBoard.setPiece(playerBoard, 5, 4, null);
@@ -121,7 +128,7 @@ class PostSubmitTurnRouteTest {
     @Test
     public void crowning() {
         playerBoard = gameBoard.getPlayerBoard(player1);
-        player1.setMyTurn(true);
+        gameBoard.setPlayerTurn(player1);
 
         gameBoard.setPiece(playerBoard, 1, 4, Piece.redSingle);
         gameBoard.setPiece(playerBoard, 0, 5, null);
@@ -142,7 +149,7 @@ class PostSubmitTurnRouteTest {
     @Test
     public void jump() {
         playerBoard = gameBoard.getPlayerBoard(player1);
-        player1.setMyTurn(true);
+        gameBoard.setPlayerTurn(player1);
 
         int[] remove = {4, 3};
 
@@ -168,7 +175,7 @@ class PostSubmitTurnRouteTest {
     @Test
     public void multipleJump() {
         playerBoard = gameBoard.getPlayerBoard(player1);
-        player1.setMyTurn(true);
+        gameBoard.setPlayerTurn(player1);
 
         int[] remove = {4, 3};
         int[] remove2 = {2, 5};
