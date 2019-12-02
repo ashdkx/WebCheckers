@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
  */
 
 @Tag("UI-Tier")
-public class GetGameRouteTester {
+class GetGameRouteTester {
 
     private GetGameRoute CuT;
 
@@ -32,7 +32,6 @@ public class GetGameRouteTester {
     private TemplateEngine engine;
     private static final String SAMPLE_NAME = "Bob";
     private static final String SAMPLE_NAME_2 = "Steve";
-
 
 
     @BeforeEach
