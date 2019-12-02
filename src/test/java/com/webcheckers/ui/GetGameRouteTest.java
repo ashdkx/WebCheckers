@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
  */
 
 @Tag("UI-Tier")
-class GetGameRouteTester {
+class GetGameRouteTest {
 
     private GetGameRoute CuT;
 
