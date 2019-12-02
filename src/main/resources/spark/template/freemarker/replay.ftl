@@ -27,7 +27,7 @@
         </form>
         <br>
         <#if savedGames??>
-            <h2>Saved Games</h2><br>
+            <h2>Saved Games</h2>
             <#list savedGames?keys as key>
                 <br>
                 <form action="/replay/game" method="GET">

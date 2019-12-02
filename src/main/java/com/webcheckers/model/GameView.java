@@ -6,22 +6,42 @@ import java.util.List;
 
 
 /**
+ * The view of the game and modifying the pieces
+ *
  * @author Nicholas Curl
  */
 public class GameView {
 
+    /**
+     * Representation of the red player
+     */
+    private Player redPlayer;
 
-    private Player redPlayer; // Representation of the red player
-    private Player whitePlayer; // Representation of the white player
-    private List<Row> board; // the list used to display the board
-    private List<Row> redPlayerBoard = new ArrayList<>(); // the red player's board
-    private List<Row> whitePlayerBoard = new ArrayList<>(); // the white player's board
+    /**
+     * Representation of the white player
+     */
+    private Player whitePlayer;
 
+    /**
+     * The list used to display the board
+     */
+    private List<Row> board;
+
+    /**
+     * The red player's board
+     */
+    private List<Row> redPlayerBoard = new ArrayList<>();
+
+    /**
+     * The white player's board
+     */
+    private List<Row> whitePlayerBoard = new ArrayList<>();
 
     /**
      * Constructor for a new GameView for a GameBoard
-     * @param redPlayer the player to be the red player
-     * @param whitePlayer the player to be the white player
+     *
+     * @param redPlayer   The player to be the red player
+     * @param whitePlayer The player to be the white player
      */
     public GameView(Player redPlayer, Player whitePlayer) {
         this.redPlayer = redPlayer;
@@ -32,7 +52,8 @@ public class GameView {
 
     /**
      * Gets the board to be displayed
-     * @return the board to be displayed
+     *
+     * @return The board to be displayed
      */
     public List<Row> getBoard() {
         return board;
@@ -40,51 +61,50 @@ public class GameView {
 
     /**
      * Sets the board to be displayed
-     * @param board the board to be displayed
+     *
+     * @param board The board to be displayed
      */
-    public void setBoard(List<Row> board){
+    public void setBoard(List<Row> board) {
         this.board = board;
     }
 
     /**
      * Initializes both the red and white players' boards
      */
-    private void initBoard(){
+    private void initBoard() {
         initRedPlayer();
         initWhitePlayer();
     }
 
     /**
      * Initializes the red player's board
+     * <br>
+     * <pre>
+     *             0   1   2   3   4   5   6   7<br>
+     *         0   *   W   *   W   *   W   *   W<br>
+     *         1   W   *   W   *   W   *   W   *<br>
+     *         2   *   W   *   W   *   W   *   W<br>
+     *         3   *   *   *   *   *   *   *   *<br>
+     *         4   *   *   *   *   *   *   *   *<br>
+     *         5   R   *   R   *   R   *   R   *<br>
+     *         6   *   R   *   R   *   R   *   R<br>
+     *         7   R   *   R   *   R   *   R   *<br>
+     *
+     *         R = red single pieces
+     *         W = white single pieces
+     *         * = blank spaces
+     * </pre>
      */
-    private void initRedPlayer(){
+    private void initRedPlayer() {
         boolean valid1 = false;
 
-
-        /*
-            0   1   2   3   4   5   6   7
-        0   *   W   *   W   *   W   *   W
-        1   W   *   W   *   W   *   W   *
-        2   *   W   *   W   *   W   *   W
-        3   *   *   *   *   *   *   *   *
-        4   *   *   *   *   *   *   *   *
-        5   R   *   R   *   R   *   R   *
-        6   *   R   *   R   *   R   *   R
-        7   R   *   R   *   R   *   R   *
-
-        R = red single pieces
-        W = white single pieces
-        * = blank spaces
-        */
-        for(int i = 0; i < 8; i++){
-            if (i<=2){
-                redPlayerBoard.add(i,new Row(i,Piece.whiteSingle,valid1));
-            }
-            else if (i>=5){
-                redPlayerBoard.add(i, new Row(i,Piece.redSingle,valid1));
-            }
-            else{
-                redPlayerBoard.add(i, new Row(i,null,valid1));
+        for (int i = 0; i < 8; i++) {
+            if (i <= 2) {
+                redPlayerBoard.add(i, new Row(i, Piece.whiteSingle, valid1));
+            } else if (i >= 5) {
+                redPlayerBoard.add(i, new Row(i, Piece.redSingle, valid1));
+            } else {
+                redPlayerBoard.add(i, new Row(i, null, valid1));
             }
             valid1 = !valid1;
         }
@@ -92,34 +112,33 @@ public class GameView {
 
     /**
      * Initializes the white player's board
+     * <br>
+     * <pre>
+     *             0   1   2   3   4   5   6   7<br>
+     *         0   *   R   *   R   *   R   *   R<br>
+     *         1   R   *   R   *   R   *   R   *<br>
+     *         2   *   R   *   R   *   R   *   R<br>
+     *         3   *   *   *   *   *   *   *   *<br>
+     *         4   *   *   *   *   *   *   *   *<br>
+     *         5   W   *   W   *   W   *   W   *<br>
+     *         6   *   W   *   W   *   W   *   W<br>
+     *         7   W   *   W   *   W   *   W   *<br>
+     *
+     *         R = red single pieces
+     *         W = white single pieces
+     *         * = blank spaces
+     * </pre>
      */
-    private void initWhitePlayer(){
+    private void initWhitePlayer() {
         boolean valid2 = false;
 
-        /*
-            0   1   2   3   4   5   6   7
-        0   *   R   *   R   *   R   *   R
-        1   R   *   R   *   R   *   R   *
-        2   *   R   *   R   *   R   *   R
-        3   *   *   *   *   *   *   *   *
-        4   *   *   *   *   *   *   *   *
-        5   W   *   W   *   W   *   W   *
-        6   *   W   *   W   *   W   *   W
-        7   W   *   W   *   W   *   W   *
-
-        R = red single pieces
-        W = white single pieces
-        * = blank spaces
-        */
-        for(int i = 0; i < 8; i++){
-            if (i<=2){
-                whitePlayerBoard.add(i,new Row(i,Piece.redSingle,valid2));
-            }
-            else if (i>=5){
-                whitePlayerBoard.add(i, new Row(i,Piece.whiteSingle,valid2));
-            }
-            else{
-                whitePlayerBoard.add(i, new Row(i,null,valid2));
+        for (int i = 0; i < 8; i++) {
+            if (i <= 2) {
+                whitePlayerBoard.add(i, new Row(i, Piece.redSingle, valid2));
+            } else if (i >= 5) {
+                whitePlayerBoard.add(i, new Row(i, Piece.whiteSingle, valid2));
+            } else {
+                whitePlayerBoard.add(i, new Row(i, null, valid2));
             }
             valid2 = !valid2;
         }
@@ -127,14 +146,14 @@ public class GameView {
 
     /**
      * Sets the display board to the white players board when true
-     * @param whiteBoard if the display board should be the white player's board
+     *
+     * @param whiteBoard If the display board should be the white player's board
      */
-    public void isWhitePlayerBoard(boolean whiteBoard){
-        if(whiteBoard){
+    public void isWhitePlayerBoard(boolean whiteBoard) {
+        if (whiteBoard) {
 
             this.board = whitePlayerBoard;
-        }
-        else {
+        } else {
             this.board = redPlayerBoard;
         }
     }
@@ -142,10 +161,10 @@ public class GameView {
     /**
      * Updates the white player's board with the pieces from the red player board
      */
-    public void updateWhitePlayer(){
-        for(int i = 0; i<8;i++){
-            for (int j = 0; j<8;j++){
-                whitePlayerBoard.get(i).getSpace(7-j).setPiece(redPlayerBoard.get(7-i).getSpace(j).getPiece());
+    public void updateWhitePlayer() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                whitePlayerBoard.get(i).getSpace(7 - j).setPiece(redPlayerBoard.get(7 - i).getSpace(j).getPiece());
             }
         }
     }
@@ -153,25 +172,27 @@ public class GameView {
     /**
      * Updates the red player's board with the pieces from the white player board
      */
-    public void updateRedPlayer(){
-        for(int i = 0; i<8;i++){
-            for (int j = 0; j<8;j++){
-                redPlayerBoard.get(i).getSpace(7-j).setPiece(whitePlayerBoard.get(7-i).getSpace(j).getPiece());
+    public void updateRedPlayer() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                redPlayerBoard.get(i).getSpace(7 - j).setPiece(whitePlayerBoard.get(7 - i).getSpace(j).getPiece());
             }
         }
     }
 
     /**
      * Gets the red player's board
-     * @return the red player's board
+     *
+     * @return The red player's board
      */
-    public List<Row> getRedPlayerBoard(){
+    public List<Row> getRedPlayerBoard() {
         return redPlayerBoard;
     }
 
     /**
      * Gets the white player's board
-     * @return the white player's board
+     *
+     * @return The white player's board
      */
     public List<Row> getWhitePlayerBoard() {
         return whitePlayerBoard;
@@ -179,7 +200,8 @@ public class GameView {
 
     /**
      * Gets the red player
-     * @return the red player
+     *
+     * @return The red player
      */
     public Player getRedPlayer() {
         return redPlayer;
@@ -187,7 +209,8 @@ public class GameView {
 
     /**
      * Gets the white player
-     * @return the white player
+     *
+     * @return The white player
      */
     public Player getWhitePlayer() {
         return whitePlayer;
@@ -196,12 +219,8 @@ public class GameView {
     /**
      * A testing function to help with double jumps
      */
-    private void testDoubleJumpSingle(){
-        for(int i = 0; i<8; i++){
-            for(int j=0; j<8; j++){
-                redPlayerBoard.get(i).getSpace(j).setPiece(null);
-            }
-        }
+    private void testDoubleJumpSingle() {
+        clearBoard();
         redPlayerBoard.get(5).getSpace(2).setPiece(Piece.redSingle);
         redPlayerBoard.get(4).getSpace(3).setPiece(Piece.whiteSingle);
         redPlayerBoard.get(2).getSpace(3).setPiece(Piece.whiteSingle);
@@ -210,19 +229,24 @@ public class GameView {
 
     }
 
-
     /**
      * A testing function to help with game over states
      */
-    private void testGameOver(){
-        for(int i = 0; i<8; i++){
-            for(int j=0; j<8; j++){
-                redPlayerBoard.get(i).getSpace(j).setPiece(null);
-            }
-        }
+    private void testGameOver() {
+        clearBoard();
         redPlayerBoard.get(5).getSpace(2).setPiece(Piece.redSingle);
         redPlayerBoard.get(4).getSpace(3).setPiece(Piece.whiteSingle);
         updateWhitePlayer();
     }
 
+    /**
+     * Clears the board
+     */
+    public void clearBoard() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                redPlayerBoard.get(i).getSpace(j).setPiece(null);
+            }
+        }
+    }
 }
