@@ -19,7 +19,7 @@ public class GetSpectateRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(GetReplayRoute.class.getName());
 
-    static final String TITLE = "Replay";
+    static final String TITLE = "Spectator";
     private final GameCenter gameCenter;
 
     private final TemplateEngine templateEngine;
@@ -44,13 +44,13 @@ public class GetSpectateRoute implements Route {
         if(httpSession.attribute(GetHomeRoute.CURRENT_PLAYER) != null){
             final Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
             player.setSpectating(true);
-            if(gameCenter.getCurrentGames().isEmpty()){ //checks to see if there are any games saved, redirects back home if there aren't any
+            if(gameCenter.getCurrentGames().isEmpty()){ //checks to see if there are any games active, redirects back home if there aren't any
                 response.redirect(WebServer.HOME_URL);
                 halt();
                 return null;
             }
             vm.put(GetHomeRoute.CURRENT_USER_ATTR, player);
-            vm.put("currentGames", gameCenter.getCurrentGames()); //display the list of saved games
+            vm.put("currentGames", gameCenter.getCurrentGames()); //display the list of current games
             if(httpSession.attribute(GetHomeRoute.MESSAGE)!=null){ //display a message if necessary
                 final String message = httpSession.attribute(GetHomeRoute.MESSAGE);
                 vm.put(GetHomeRoute.MESSAGE_ATTR, Message.error(message));
@@ -65,6 +65,6 @@ public class GetSpectateRoute implements Route {
 
 
         // render the View
-        return templateEngine.render(new ModelAndView(vm , "replay.ftl"));
+        return templateEngine.render(new ModelAndView(vm , "spectate.ftl"));
     }
 }

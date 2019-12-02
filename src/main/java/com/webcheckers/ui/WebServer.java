@@ -180,8 +180,8 @@ public class WebServer {
     post(RESIGN_URL, new PostResignGameRoute(gameCenter,gson));
     get(SPECTATEGAME_URL, new GetSpectateGameRoute(gameCenter,templateEngine,gson));
     get(SPECTATEMODE_URL, new GetSpectateRoute(gameCenter,templateEngine));
-    get(SPECTATECHECK_URL, new GetSpectateStopWatchingRoute(gameCenter));
-    get(SPECTATECHECK_URL, new PostSpectateCheckTurnRoute(gameCenter,gson) );
+    get(SPECTATESTOP_URL, new GetSpectateStopWatchingRoute(gameCenter));
+    post(SPECTATECHECK_URL, new PostSpectateCheckTurnRoute(gameCenter,gson) );
 
     //
     LOG.config("WebServer is initialized.");
