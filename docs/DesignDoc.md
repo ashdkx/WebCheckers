@@ -45,6 +45,8 @@ the American Checkers rules. Obviously, this involves all types of movement and 
 * Required move
 * All direction move
 * Resignation
+
+## Enhancements
 * Spectator mode
 * Replay mode
 
