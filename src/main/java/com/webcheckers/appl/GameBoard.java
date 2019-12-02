@@ -52,6 +52,11 @@ public class GameBoard implements Iterable<Row> {
     private ArrayList<int[]> pieceRemove = new ArrayList<>();
 
     /**
+     *  the count of the moves made for spectator mode
+     */
+    private int turnCount = 0;
+
+    /**
      * The pieces that are required to move
      */
     private Map<int[], List<int[]>> requiredMovePieces = new HashMap<>();
@@ -822,6 +827,7 @@ public class GameBoard implements Iterable<Row> {
      */
     public void addMove() {
         MoveSave move = new MoveSave(getRedPlayerBoard(), getPlayerColor(playerTurn), gameOverMessage);
+        turnCount++;
         moves.add(move);
     }
 
@@ -843,4 +849,10 @@ public class GameBoard implements Iterable<Row> {
     public Iterator<Row> iterator() {
         return game.getBoard().iterator();
     }
+
+    /**
+     * returns turn count for spectator mode
+     * @return turn count
+     */
+    public int getTurnCount(){return turnCount;}
 }
