@@ -39,12 +39,6 @@ public class GetHomeRoute implements Route {
 
   private final TemplateEngine templateEngine;
 
-  /**
-   * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
-   *
-   * @param templateEngine
-   *   the HTML template rendering engine
-   */
   public GetHomeRoute(final GameCenter gameCenter, final TemplateEngine templateEngine) {
     this.gameCenter = gameCenter;
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
@@ -52,17 +46,7 @@ public class GetHomeRoute implements Route {
     LOG.config("GetHomeRoute is initialized.");
   }
 
-  /**
-   * Render the WebCheckers Home page.
-   *
-   * @param request
-   *   the HTTP request
-   * @param response
-   *   the HTTP response
-   *
-   * @return
-   *   the rendered HTML for the Home page
-   */
+
   @Override
   public Object handle(Request request, Response response) {
     final Session httpSession = request.session();
@@ -73,20 +57,34 @@ public class GetHomeRoute implements Route {
     // display a user message in the Home page
 
     // show active players
-    vm.put("numPlayers", gameCenter.getPlayers().size());
+
     if(httpSession.attribute(CURRENT_PLAYER) != null){
       final Player player = httpSession.attribute(CURRENT_PLAYER);
 
       if (player.isPlaying()){
-        response.redirect(WebServer.GAME_URL);
+        String gameID = "";
+        for (String keys : gameCenter.getGames().keySet()){ //Go through all the gameIDs and checks if player is in the game
+          if((player.equals(gameCenter.getGame(keys).getRedPlayer())||player.equals(gameCenter.getGame(keys).getWhitePlayer()))&&!gameCenter.getGame(keys).isGameOver()){ //sets the gameID when its not a completed game as well
+            gameID = keys;
+            break;
+          }
+        }
+        response.redirect(WebServer.GAME_URL+"?gameID="+gameID); //redirects other player to game with gameID
         halt();
         return null;
       }
       else {
+        if(player.isReplaying()){ //set player replaying a game to false
+          player.setReplaying(false);
+        }
+        if (player.isSpectating()) {
+          player.setSpectating(false);
+        }
         vm.remove(MESSAGE_ATTR, WELCOME_MSG);
         if(httpSession.attribute(MESSAGE)!=null){
           final String message = httpSession.attribute(MESSAGE);
           vm.put(MESSAGE_ATTR,Message.error(message));
+          httpSession.attribute(MESSAGE, null);
         }
         else{
           vm.put(MESSAGE_ATTR, OTHER_PLAYERS_MSG);
@@ -101,6 +99,7 @@ public class GetHomeRoute implements Route {
     }
     else{
         vm.put(MESSAGE_ATTR, WELCOME_MSG);
+        vm.put("numPlayers", gameCenter.getPlayers().size());
     }
 
 
