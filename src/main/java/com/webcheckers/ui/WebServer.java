@@ -122,6 +122,26 @@ public class WebServer {
      * The URL pattern to request the Replay Stop Watching page.
      */
     public static final String STOPREPLAY_URL = "/replay/stopWatching";
+
+    /**
+     * The URL pattern to request the Spectator page.
+     */
+    public static final String SPECTATEMODE_URL = "/spectator";
+
+    /**
+     * The URL pattern to request the Spectator Game page.
+     */
+    public static final String SPECTATEGAME_URL ="/spectator/game";
+
+    /**
+     * The URL pattern to stop spectating
+     */
+    public static final String SPECTATESTOP_URL = "/spectator/stopWatching";
+
+    /**
+     * The URL pattern to check for another turn in spectate mode
+     */
+    public static final String SPECTATECHECK_URL = "/spectator/checkTurn";
     //
     // Attributes
     //
@@ -259,6 +279,15 @@ public class WebServer {
 
         //Handles the player that stops watching a replayed game
         get(STOPREPLAY_URL, new GetReplayStopWatchRoute(gameCenter));
+
+        //Shows the spectator game page
+        get(SPECTATEGAME_URL, new GetSpectateGameRoute(gameCenter,templateEngine,gson));
+        //Shows the spectator game select page
+        get(SPECTATEMODE_URL, new GetSpectateRoute(gameCenter,templateEngine));
+        //Handles a request to stop spectating
+        get(SPECTATESTOP_URL, new GetSpectateStopWatchingRoute(gameCenter));
+        //Checks for a turn progressed in the game being spectated
+        post(SPECTATECHECK_URL, new PostSpectateCheckTurnRoute(gameCenter,gson) );
         //
         LOG.config("WebServer is initialized.");
     }

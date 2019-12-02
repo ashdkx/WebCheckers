@@ -23,6 +23,16 @@ public class Player {
     private boolean replaying = false;
 
     /**
+     * Is the player spectating a game
+     */
+    private boolean spectating = false;
+
+    /**
+     *  the player's local count o the turns seen
+     */
+    private int spectatorCount;
+
+    /**
      * The representation of the player
      *
      * @param name Username of the player
@@ -94,4 +104,32 @@ public class Player {
     public String toString() {
         return this.name;
     }
+
+    /**
+     * returns counter for spectator mode
+     * @return spectator count
+     */
+    public int getSpectatorCount(){return spectatorCount;}
+
+    /**
+     * sets a new spectator count
+     * @param newCount new given spectator count
+     */
+    public void setSpectatorCount(int newCount){spectatorCount = newCount;}
+    /**
+     * Sets the player be spectating
+     * @param spectating true if the player is spectating a game, false otherwise
+     */
+    public void setSpectating(boolean spectating) {
+        this.spectating = spectating;
+    }
+
+    /**
+     * Is the player spectating a game
+     * @return replaying
+     */
+    public boolean isSpectating() {
+        return spectating;
+    }
+
 }
