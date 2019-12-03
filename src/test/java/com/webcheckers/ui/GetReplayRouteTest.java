@@ -2,21 +2,19 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameBoard;
 import com.webcheckers.appl.GameCenter;
-import com.webcheckers.model.Row;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
-import java.awt.image.RescaleOp;
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
-class GetSpectateRouteTest {
+class GetReplayRouteTest {
 
-    private GetSpectateRoute Cut;
+    private GetReplayRoute Cut;
 
     private static final String PLAYER1 = "player1";
     private static final String PLAYER2 = "player2";
@@ -45,14 +43,15 @@ class GetSpectateRouteTest {
         gameCenter.addNewGame(gameID, gameCenter.getPlayer(PLAYER1), gameCenter.getPlayer(PLAYER2));
         gameBoard = gameCenter.getGame(gameID);
 
-        Cut = new GetSpectateRoute(gameCenter, templateEngine);
+        Cut = new GetReplayRoute(gameCenter, templateEngine);
     }
 
     @Test
     public void spectateTrue() {
         gameCenter.addCurrentGame(gameID);
+        gameCenter.addGameSave(gameID);
         when(session.attribute(GetHomeRoute.CURRENT_PLAYER)).thenReturn(gameCenter.getPlayer(PLAYER1));
-        when(session.attribute(GetHomeRoute.MESSAGE)).thenReturn("Spectating");
+        when(session.attribute(GetHomeRoute.MESSAGE)).thenReturn("Replaying");
         when(request.queryParams(GetGameRoute.GAMEID_PARAM)).thenReturn(gameID);
 
         Cut.handle(request, response);
