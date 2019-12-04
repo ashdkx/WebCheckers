@@ -128,18 +128,6 @@ public class SavedGame {
     }
 
     /**
-     * Goes through the entire board and removes all the pieces
-     */
-    private void clearBoard() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                List<Row> playerBoard = gameBoard.getPlayerBoard(gameBoard.getRedPlayer());
-                gameBoard.setPiece(playerBoard, i, j, null);
-            }
-        }
-    }
-
-    /**
      * Goes through the entire board and sets pieces at that space
      *
      * @param positions The 2d array of pieces to be set
@@ -178,6 +166,6 @@ public class SavedGame {
     public void resetSavedGame() {
         this.playerWatching = null;
         this.turnNumber = 0;
-        clearBoard();
+        gameBoard.getGame().clearBoard();
     }
 }

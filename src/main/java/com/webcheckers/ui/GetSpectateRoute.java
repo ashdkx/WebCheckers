@@ -50,10 +50,10 @@ public class GetSpectateRoute implements Route {
                 return null;
             }
             vm.put(GetHomeRoute.CURRENT_USER_ATTR, player);
-            vm.put("currentGames", gameCenter.getCurrentGames()); //display the list of current games
+            vm.put("currentGames", gameCenter.getGames()); //display the list of current games
             if(httpSession.attribute(GetHomeRoute.MESSAGE)!=null){ //display a message if necessary
-                final String message = httpSession.attribute(GetHomeRoute.MESSAGE);
-                vm.put(GetHomeRoute.MESSAGE_ATTR, Message.error(message));
+                final Message message = httpSession.attribute(GetHomeRoute.MESSAGE);
+                vm.put(GetHomeRoute.MESSAGE_ATTR, message);
                 httpSession.attribute(GetHomeRoute.MESSAGE, null);
             }
         }

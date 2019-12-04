@@ -29,11 +29,13 @@
         <#if currentGames??>
             <h2>Current Games</h2><br>
             <#list currentGames?keys as key>
-                <br>
-                <form action="/spectator/game" method="GET">
-                    <input type="hidden" name="gameID" value="${key}">
-                    <input type="submit" value="${currentGames[key].redPlayer.name} v. ${currentGames[key].whitePlayer.name}">
-                </form>
+                <#if !currentGames[key].isGameOver()>
+                    <br>
+                    <form action="/spectator/game" method="GET">
+                        <input type="hidden" name="gameID" value="${key}">
+                        <input type="submit" value="${currentGames[key].redPlayer.name} v. ${currentGames[key].whitePlayer.name}">
+                    </form>
+                </#if>
             </#list>
         </#if>
 

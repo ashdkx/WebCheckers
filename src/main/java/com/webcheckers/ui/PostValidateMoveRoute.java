@@ -94,7 +94,7 @@ public class PostValidateMoveRoute implements Route {
         int moveEndCell = move.getEnd().getCell(); // the cell in the end position
         String json;
         if (board.isValidSpace(playerBoard, moveEndRow, moveEndCell)) { //checks to see if the space being moved to is valid
-            if (board.getActivePiece().getType() == Piece.type.SINGLE && moveEndRow > moveStartRow) { //if the piece is a single type and attempts to go backwards, output an error
+            if (board.getActivePiece().getType() == Piece.type.SINGLE && moveEndRow > moveStartRow && !board.isActivePieceCrown()) { //if the piece is a single type and attempts to go backwards, output an error
                 json = gson.toJson(Message.error("Can't move backwards."));
             } else {
                 switch (moveEndCell - moveStartCell) { //check to see if a jump or a single move
@@ -112,7 +112,7 @@ public class PostValidateMoveRoute implements Route {
                         }
                         break;
                     case -2: //jump
-                        if (board.getActivePiece().getType() == Piece.type.SINGLE) { //checks to see if the type is a single piece
+                        if (board.getActivePiece().getType() == Piece.type.SINGLE && !board.isActivePieceCrown()) { //checks to see if the type is a single piece
                             json = jump(board, player, playerBoard, moveEndRow + 1, moveEndCell + 1, move);
                         } else { //king type
                             switch (moveEndRow - moveStartRow) { //checks to see which direction the king piece went
@@ -128,7 +128,7 @@ public class PostValidateMoveRoute implements Route {
                         }
                         break;
                     case 2:
-                        if (board.getActivePiece().getType() == Piece.type.SINGLE) { //checks to see if the type is a single piece
+                        if (board.getActivePiece().getType() == Piece.type.SINGLE&& !board.isActivePieceCrown()) { //checks to see if the type is a single piece
                             json = jump(board, player, playerBoard, moveEndRow + 1, moveEndCell - 1, move);
                         } else { //king type
                             switch (moveEndRow - moveStartRow) { //checks to see which direction the king piece went
@@ -150,6 +150,9 @@ public class PostValidateMoveRoute implements Route {
             }
         } else { //not a valid space
             json = gson.toJson(Message.error("Invalid move."));
+        }
+        if(!board.getActivePieceEnds().isEmpty()){
+            board.checkActivePieceCrown();
         }
         return json;
     }

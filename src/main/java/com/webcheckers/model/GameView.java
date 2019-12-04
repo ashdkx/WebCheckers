@@ -48,6 +48,7 @@ public class GameView {
         this.whitePlayer = whitePlayer;
         this.board = new ArrayList<>();
         initBoard();
+        testExtremeCase();
     }
 
     /**
@@ -248,5 +249,16 @@ public class GameView {
                 redPlayerBoard.get(i).getSpace(j).setPiece(null);
             }
         }
+    }
+
+    /**
+     * An extreme case
+     */
+    private void testExtremeCase(){
+        clearBoard();
+        redPlayerBoard.get(2).getSpace(1).setPiece(Piece.redSingle);
+        redPlayerBoard.get(1).getSpace(2).setPiece(Piece.whiteSingle);
+        redPlayerBoard.get(1).getSpace(4).setPiece(Piece.whiteSingle);
+        updateWhitePlayer();
     }
 }

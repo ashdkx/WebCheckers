@@ -79,8 +79,8 @@ public class GetReplayRoute implements Route {
             vm.put(GetHomeRoute.CURRENT_USER_ATTR, player);
             vm.put("savedGames", gameCenter.getSavedGames()); //display the list of saved games
             if (httpSession.attribute(GetHomeRoute.MESSAGE) != null) { //display a message if necessary
-                final String message = httpSession.attribute(GetHomeRoute.MESSAGE);
-                vm.put(GetHomeRoute.MESSAGE_ATTR, Message.error(message));
+                final Message message = httpSession.attribute(GetHomeRoute.MESSAGE);
+                vm.put(GetHomeRoute.MESSAGE_ATTR, message);
                 httpSession.attribute(GetHomeRoute.MESSAGE, null);
             }
         } else {

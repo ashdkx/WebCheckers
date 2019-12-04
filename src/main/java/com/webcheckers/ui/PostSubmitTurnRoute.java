@@ -72,7 +72,7 @@ public class PostSubmitTurnRoute implements Route {
 
         String json;
 
-        Position moveEnd = board.getActivePieceEnd();
+        Position moveEnd = board.getActivePieceEnds().peek();
         Position moveStart = board.getActivePieceStart();
         int[] position = new int[]{moveStart.getRow(), moveStart.getCell()};
 
@@ -103,11 +103,13 @@ public class PostSubmitTurnRoute implements Route {
         for (int[] jumpPositions : board.getRequiredMoveJumps(position)) { //go through the required jumps for the piece at position
             for (int[] jumps : board.getPieceRemove()) { //go through the pieces that are to be removed
                 if (jumps[0] == jumpPositions[0] && jumps[1] == jumpPositions[1]) { //checks to see if a piece to be removed is a required jump
+
                     jumped = true;
                     break;
                 }
             }
         }
+
         return jumped;
     }
 
@@ -158,7 +160,7 @@ public class PostSubmitTurnRoute implements Route {
             board.setPiece(playerBoard, moveStart.getRow(), moveStart.getCell(), null); // remove old piece position
 
 
-            if (moveEnd.getRow() == 0) { //Check to see if piece reached the end of the board and crown the piece
+            if (board.isActivePieceCrown()) { //Check to see if piece reached the end of the board and crown the piece
                 board.setPieceKing(player, playerBoard, moveEnd.getRow(), moveEnd.getCell());
                 board.addPlayerTotalPieces(player);
             } else {
@@ -181,6 +183,7 @@ public class PostSubmitTurnRoute implements Route {
             board.clearRequiredMovePieces();
             board.clearActivePieceEnd();
             board.getJumpPositions().clear();
+            board.setActivePieceCrown(false);
             board.checkGameOver();
             board.addMove(); // stores a move
             return gson.toJson(Message.info("Valid Move."));

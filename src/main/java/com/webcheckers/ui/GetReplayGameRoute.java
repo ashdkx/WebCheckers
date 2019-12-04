@@ -6,6 +6,7 @@ import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.MoveSave;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.SavedGame;
+import com.webcheckers.util.Message;
 import spark.*;
 
 import java.util.HashMap;
@@ -89,7 +90,7 @@ public class GetReplayGameRoute implements Route {
             if (savedGame.getPlayerWatching() == null) { //checks to see if there is no one watching
                 savedGame.setPlayerWatching(player);
             } else if (!(savedGame.getPlayerWatching().equals(player)) && savedGame.getPlayerWatching() != null) { //checks to see if the player matches the player watching and the watching player is not null
-                httpSession.attribute(GetHomeRoute.MESSAGE, "Player is already replaying the game. Click a different game to replay.");
+                httpSession.attribute(GetHomeRoute.MESSAGE, Message.error("Player is already replaying the game. Click a different game to replay."));
                 response.redirect(WebServer.REPLAYMODE_URL);
                 return null;
             }

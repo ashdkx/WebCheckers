@@ -82,8 +82,8 @@ public class GetHomeRoute implements Route {
         }
         vm.remove(MESSAGE_ATTR, WELCOME_MSG);
         if(httpSession.attribute(MESSAGE)!=null){
-          final String message = httpSession.attribute(MESSAGE);
-          vm.put(MESSAGE_ATTR,Message.error(message));
+          final Message message = httpSession.attribute(MESSAGE);
+          vm.put(MESSAGE_ATTR,message);
           httpSession.attribute(MESSAGE, null);
         }
         else{
