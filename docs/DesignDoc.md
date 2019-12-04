@@ -96,7 +96,8 @@ to the home page, where they sign in. After they sign in with an unique username
 all of the other signed in players. Then, they are able to click on one of the other available users, which starts up a 
 game. In the game, player moves are checked by the PostValidateMoveRoute. Each move they make before they submit it can 
 be cancelled by the backup feature, or, if they do not wish to backup, they can simply submit their moves. After they are
-finished with their game, players can then sign out. 
+finished with their game, players can then sign out. To spectate a match, simply click on an ongoing match. To replay a 
+finished match, click on the replay option after finishing a match.
 
 
 ### Application Tier
