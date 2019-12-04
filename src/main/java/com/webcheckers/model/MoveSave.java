@@ -4,7 +4,6 @@ import com.webcheckers.appl.GameBoard;
 
 import java.util.List;
 
-
 /**
  * Stores values of a move
  *

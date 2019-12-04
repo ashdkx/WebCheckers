@@ -734,7 +734,6 @@ public class GameBoard implements Iterable<Row> {
         }
 
         return false;
-
     }
 
     /**

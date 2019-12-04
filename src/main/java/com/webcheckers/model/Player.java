@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+
 /**
  * The representation of the player
  *

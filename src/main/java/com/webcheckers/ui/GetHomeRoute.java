@@ -13,6 +13,7 @@ import com.webcheckers.util.Message;
 
 import static spark.Spark.halt;
 
+
 /**
  * The UI Controller to GET the Home page.
  *

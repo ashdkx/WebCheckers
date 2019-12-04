@@ -1,6 +1,7 @@
 package com.webcheckers.model;
 
 
+
 /**
  * The representation of a space that piece can be placed in
  *

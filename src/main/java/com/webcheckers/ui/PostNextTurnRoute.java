@@ -10,6 +10,7 @@ import spark.Route;
 
 import java.util.logging.Logger;
 
+
 /**
  * The Ajax Controller for going to the next move in replay.
  *

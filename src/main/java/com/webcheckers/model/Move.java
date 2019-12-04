@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+
 /**
  * Data structure for move to be used by the Gson
  *

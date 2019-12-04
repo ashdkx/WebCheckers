@@ -9,6 +9,7 @@ import spark.*;
 
 import java.util.logging.Logger;
 
+
 /**
  * The Ajax Controller for resigning a game.
  *
