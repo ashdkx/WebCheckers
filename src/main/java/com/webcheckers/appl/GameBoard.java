@@ -861,18 +861,40 @@ public class GameBoard implements Iterable<Row> {
         }
     }
 
+    /**
+     * Sets the active piece to be crowned or not
+     *
+     * @param crown True if the piece is meant to be crowned, false otherwise
+     */
     public void setActivePieceCrown(boolean crown) {
         this.activePieceCrown = crown;
     }
 
+    /**
+     * Is the active piece meant to be king?
+     *
+     * @return activePieceCrown
+     */
     public boolean isActivePieceCrown() {
         return activePieceCrown;
     }
 
+    /**
+     * Gets the active piece's end positions
+     *
+     * @return The stack of the active
+     */
     public Stack<Position> getActivePieceEnds() {
         return activePieceEnds;
     }
 
+    /**
+     * Checks to see if a piece jumped a piece
+     *
+     * @param row The row number of the piece being checked
+     * @param column The column number of the piece being checked
+     * @return True if the piece has been jumped, false otherwise
+     */
     private boolean hasJumpedPiece(int row, int column){
         boolean jumpedPiece = false;
         for (int[] positions:pieceRemove){

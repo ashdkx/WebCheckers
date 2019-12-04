@@ -51,8 +51,9 @@ public class GameCenter{
 
     /**
      * Gets the player based on the username from the lobby
-     * @param username the string identifier of the player
-     * @return the player associated with the username from the lobby
+     *
+     * @param username The string identifier of the player
+     * @return The player associated with the username from the lobby
      */
     public Player getPlayer(String username){
         return lobby.getPlayer(username);
@@ -60,8 +61,9 @@ public class GameCenter{
 
     /**
      * Get the GameBoard based on the gameID
-     * @param gameId the unique identifier for the game
-     * @return the GameBoard based on the gameID
+     *
+     * @param gameId The unique identifier for the game
+     * @return The GameBoard based on the gameID
      */
     public GameBoard getGame(String gameId){
 
@@ -71,7 +73,8 @@ public class GameCenter{
 
     /**
      * Gets all the games
-     * @return the entire map of every game
+     *
+     * @return The entire map of every game
      */
     public Map<String, GameBoard> getGames() {
         return games;
@@ -80,9 +83,10 @@ public class GameCenter{
 
     /**
      * Creates a new game and adds it to the games
-     * @param gameId a unique string identifier
-     * @param redPlayer player going to be the red player
-     * @param whitePlayer player going to be the white player
+     *
+     * @param gameId A unique string identifier
+     * @param redPlayer Player going to be the red player
+     * @param whitePlayer Player going to be the white player
      */
     public void addNewGame(String gameId, Player redPlayer, Player whitePlayer){
         GameBoard board = new GameBoard(redPlayer,whitePlayer); //create a new GameBoard
@@ -95,7 +99,8 @@ public class GameCenter{
 
     /**
      * Creates a new saved game based on the gameID
-     * @param gameID the unique identifier of the game
+     *
+     * @param gameID The unique identifier of the game
      */
     public void addGameSave(String gameID){
         GameBoard board = games.get(gameID); // gets game board associated to the gameID
@@ -105,8 +110,9 @@ public class GameCenter{
 
     /**
      * Get the saved game specified by the gameID
-     * @param gameID the unique identifier for the saved game
-     * @return the saved game
+     *
+     * @param gameID The unique identifier for the saved game
+     * @return The saved game
      */
     public SavedGame getGameSave(String gameID){
         return savedGames.get(gameID);
@@ -114,7 +120,8 @@ public class GameCenter{
 
     /**
      * Get the map of all the saved games
-     * @return the map of all the saved games
+     *
+     * @return The map of all the saved games
      */
     public Map<String, SavedGame> getSavedGames() {
         return savedGames;
@@ -122,8 +129,9 @@ public class GameCenter{
 
     /**
      * Get the current game specified by the gameID
-     * @param gameID the unique identifier for the saved current
-     * @return the current game
+     *
+     * @param gameID The unique identifier for the saved current
+     * @return The current game
      */
     public GameBoard getCurrentGame(String gameID){
         return currentGames.get(gameID);
@@ -131,21 +139,22 @@ public class GameCenter{
 
     /**
      * Get the map of all the current games
-     * @return the map of all the current games
+     *
+     * @return The map of all the current games
      */
     public Map<String, GameBoard> getCurrentGames() {
         return currentGames;
     }
 
     /**
-     * adds game being played to the current game
+     * Adds game being played to the current game
      */
     public void addCurrentGame(String gameID){
         currentGames.put(gameID,getGame(gameID));
     }
 
     /**
-     * removes game that has ended
+     * Removes game that has ended
      */
     public void removeCurrentGame(String gameID){
         currentGames.remove(gameID);

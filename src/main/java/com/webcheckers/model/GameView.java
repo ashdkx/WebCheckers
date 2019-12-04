@@ -48,8 +48,8 @@ public class GameView {
         this.whitePlayer = whitePlayer;
         this.board = new ArrayList<>();
         initBoard();
-        //bugFix();
-        testExtremeCase();
+        //bugFix(); //tests generic
+        //testExtremeCase(); //tests extreme cases
     }
 
     /**
@@ -263,6 +263,10 @@ public class GameView {
         updateWhitePlayer();
     }
 
+
+    /**
+     * Generic bug fixing
+     */
     private void bugFix(){
         clearBoard();
         redPlayerBoard.get(0).getSpace(3).setPiece(Piece.whiteSingle);
