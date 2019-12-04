@@ -52,7 +52,7 @@ public class GameBoard implements Iterable<Row> {
     private ArrayList<int[]> pieceRemove = new ArrayList<>();
 
     /**
-     *  the count of the moves made for spectator mode
+     * the count of the moves made for spectator mode
      */
     private int turnCount = 0;
 
@@ -64,12 +64,12 @@ public class GameBoard implements Iterable<Row> {
     /**
      * The total amount of red pieces
      */
-    private int redPlayerTotalPieces = 12;
+    private int redPlayerTotalPieces = 1;
 
     /**
      * The total amount of white pieces
      */
-    private int whitePlayerTotalPieces = 12;
+    private int whitePlayerTotalPieces = 2;
 
     /**
      * The positions of pieces that can be jumped
@@ -95,6 +95,11 @@ public class GameBoard implements Iterable<Row> {
      * A list to store the moves made
      */
     private ArrayList<MoveSave> moves = new ArrayList<>();
+
+    /**
+     * Is the active piece supposed to be king
+     */
+    private boolean activePieceCrown = false;
 
     /**
      * The colors of the players
@@ -630,7 +635,7 @@ public class GameBoard implements Iterable<Row> {
             Piece pieceJump = getPiece(playerBoard, row - 1, col + 1); //get piece at validPos1
             boolean isCorrectColor = isNotPlayerColor(pieceJump, player); //check if piece at validPos1 is the opponent color
             boolean isValidSpace = isValidSpace(playerBoard, row - 2, col + 2); //Check to see if open space to jump to
-            validPos1 = isValidSpace && isCorrectColor;
+            validPos1 = isValidSpace && isCorrectColor && !hasJumpedPiece(row -1, col+1);
             if (validPos1) {
                 jumpPositions.add(new int[]{row - 1, col + 1}); //if it is valid add it to possible jumps
             }
@@ -639,7 +644,7 @@ public class GameBoard implements Iterable<Row> {
             Piece pieceJump = getPiece(playerBoard, row - 1, col - 1); //get piece at validPos2
             boolean isCorrectColor = isNotPlayerColor(pieceJump, player); //check if piece at validPos2 is the opponent color
             boolean isValidSpace = isValidSpace(playerBoard, row - 2, col - 2); //Check to see if open space to jump to
-            validPos2 = isCorrectColor && isValidSpace;
+            validPos2 = isCorrectColor && isValidSpace && !hasJumpedPiece(row -1, col-1);
 
             if (validPos2) {
                 jumpPositions.add(new int[]{row - 1, col - 1}); //if it is valid add it to possible jumps
@@ -647,12 +652,12 @@ public class GameBoard implements Iterable<Row> {
 
         }
 
-        if (piece.getType() == Piece.type.KING) { // check to see if the piece being checked is a King type
+        if (piece.getType() == Piece.type.KING || activePieceCrown) { // check to see if the piece being checked is a King type
             if (getPiece(playerBoard, row + 1, col + 1) != null) {
                 Piece pieceJump = getPiece(playerBoard, row + 1, col + 1); //get piece at validPos3
                 boolean isCorrectColor = isNotPlayerColor(pieceJump, player); //check if piece at validPos3 is the opponent color
                 boolean isValidSpace = isValidSpace(playerBoard, row + 2, col + 2); //Check to see if open space to jump to
-                validPos3 = isValidSpace && isCorrectColor;
+                validPos3 = isValidSpace && isCorrectColor && !hasJumpedPiece(row +1, col+1);
                 if (validPos3) {
                     jumpPositions.add(new int[]{row + 1, col + 1}); //if it is valid add it to possible jumps
                 }
@@ -661,7 +666,7 @@ public class GameBoard implements Iterable<Row> {
                 Piece pieceJump = getPiece(playerBoard, row + 1, col - 1); //get piece at validPos4
                 boolean isCorrectColor = isNotPlayerColor(pieceJump, player); //check if piece at validPos4 is the opponent color
                 boolean isValidSpace = isValidSpace(playerBoard, row + 2, col - 2); //Check to see if open space to jump to
-                validPos4 = isValidSpace && isCorrectColor;
+                validPos4 = isValidSpace && isCorrectColor && !hasJumpedPiece(row +1, col-1);
                 if (validPos4) {
                     jumpPositions.add(new int[]{row + 1, col - 1}); //if it is valid add it to possible jumps
                 }
@@ -707,7 +712,7 @@ public class GameBoard implements Iterable<Row> {
             validPos2 = true;
         }
 
-        if (piece.getType() == Piece.type.KING) { // check to see if the piece being checked is a King type
+        if (piece.getType() == Piece.type.KING || activePieceCrown) { // check to see if the piece being checked is a King type
             if (isValidSpace(playerBoard, row + 1, col + 1)) { // check to see if validPos3 is a valid space
                 validPos3 = true;
             }
@@ -840,6 +845,42 @@ public class GameBoard implements Iterable<Row> {
         return moves;
     }
 
+
+    /**
+     * Checks to see if the active piece should be crowned and sets it to true if it is
+     */
+    public void checkActivePieceCrown() {
+        for (Position ends : activePieceEnds) {
+            if (ends.getRow() == 0) {
+                activePieceCrown = true;
+                break;
+            }
+        }
+    }
+
+    public void setActivePieceCrown(boolean crown) {
+        this.activePieceCrown = crown;
+    }
+
+    public boolean isActivePieceCrown() {
+        return activePieceCrown;
+    }
+
+    public Stack<Position> getActivePieceEnds() {
+        return activePieceEnds;
+    }
+
+    private boolean hasJumpedPiece(int row, int column){
+        boolean jumpedPiece = false;
+        for (int[] positions:pieceRemove){
+            if(row == positions[0] && column == positions[1]){
+                jumpedPiece = true;
+                break;
+            }
+        }
+        return jumpedPiece;
+    }
+
     /**
      * Iterates the board for displaying
      *
@@ -852,7 +893,10 @@ public class GameBoard implements Iterable<Row> {
 
     /**
      * returns turn count for spectator mode
+     *
      * @return turn count
      */
-    public int getTurnCount(){return turnCount;}
+    public int getTurnCount() {
+        return turnCount;
+    }
 }

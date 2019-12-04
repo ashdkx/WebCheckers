@@ -6,6 +6,7 @@ import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.MoveSave;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.SavedGame;
+import com.webcheckers.util.Message;
 import spark.*;
 
 import java.util.HashMap;
@@ -41,7 +42,6 @@ public class GetSpectateGameRoute implements Route {
         LOG.finer("GetSpectateGameRoute is invoked.");
         //
         Map<String, Object> vm = new HashMap<>();
-        final Map<String, Object> modeOptions = new HashMap<>(4);
         vm.put(GetHomeRoute.TITLE_ATTR, TITLE);
         // display a user message in the Home page
 
@@ -51,14 +51,20 @@ public class GetSpectateGameRoute implements Route {
             final String gameID = request.queryParams(GetGameRoute.GAMEID_PARAM);
             vm.put(GetHomeRoute.CURRENT_USER_ATTR, player);
             vm.put(GetGameRoute.VIEWMODE_PARAM, GetGameRoute.mode.SPECTATOR);
-            GameBoard game = gameCenter.getCurrentGame(gameID); //gets the saved game
-
+            GameBoard game = gameCenter.getGame(gameID); //gets the saved game
 
             vm.put(GetGameRoute.ACTIVECOLOR_PARAM,game.getPlayerColor(game.getPlayerTurn()));
+            game.isWhitePlayerBoard(false);
             vm.put(GetGameRoute.BOARD_PARAM, game);
             vm.put(GetGameRoute.REDPLAYER_PARAM, game.getRedPlayer());
             vm.put(GetGameRoute.WHITEPLAYER_PARAM, game.getWhitePlayer());
-            vm.put(GetGameRoute.MODEOPTIONS_PARAM, gson.toJson(modeOptions));
+            if(game.isGameOver()){
+
+                httpSession.attribute(GetHomeRoute.MESSAGE, Message.info(game.getGameOverMessage()));
+                response.redirect(WebServer.HOME_URL);
+                return null;
+            }
+
 
         }
         else{

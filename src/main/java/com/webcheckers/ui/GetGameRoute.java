@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.webcheckers.appl.GameBoard;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Player;
+import com.webcheckers.util.Message;
 import spark.*;
 
 import java.util.HashMap;
@@ -70,17 +71,17 @@ public class GetGameRoute implements Route {
         if (!player.isPlaying()) { // checks to see if player2 is already playing a game
           Player player2 = gameCenter.getPlayer(request.queryParams(PLAYER_PARAM));
           if (player2.isPlaying()) {
-            httpSession.attribute(GetHomeRoute.MESSAGE, "Player already in game. Click a different player to begin a game of checkers.");
+            httpSession.attribute(GetHomeRoute.MESSAGE, Message.error("Player already in game. Click a different player to begin a game of checkers."));
             response.redirect(WebServer.HOME_URL);
             return null;
           }
           if(player2.isReplaying()){ //checks to see if player 2 is replaying a game
-            httpSession.attribute(GetHomeRoute.MESSAGE, "Player is replaying a game. Click a different player to begin a game of checkers.");
+            httpSession.attribute(GetHomeRoute.MESSAGE, Message.error("Player is replaying a game. Click a different player to begin a game of checkers."));
             response.redirect(WebServer.HOME_URL);
             return null;
           }
           if(player2.isSpectating()){ //checks to see if player 2 is spectating a game
-            httpSession.attribute(GetHomeRoute.MESSAGE, "Player is spectating a game. Click a different player to begin a game of checkers.");
+            httpSession.attribute(GetHomeRoute.MESSAGE, Message.error("Player is spectating a game. Click a different player to begin a game of checkers."));
             response.redirect(WebServer.HOME_URL);
             return null;
           }
@@ -93,7 +94,7 @@ public class GetGameRoute implements Route {
       }
       else {
         if(gameId.equals("")){ //Checks for an error and fixes it
-          httpSession.attribute(GetHomeRoute.MESSAGE, "Not in a game, player should not be playing.");
+          httpSession.attribute(GetHomeRoute.MESSAGE, Message.error("Not in a game, player should not be playing."));
           player.setPlaying(false);
           response.redirect(WebServer.HOME_URL);
           return null;
@@ -116,7 +117,6 @@ public class GetGameRoute implements Route {
         vm.put(MODEOPTIONS_PARAM, gson.toJson(modeOptions)); //converts the modeOptions map into a json
         board.getRedPlayer().setPlaying(false); //sets the red player to not be playing
         board.getWhitePlayer().setPlaying(false); //sets the white player to not be playing
-        gameCenter.removeCurrentGame(gameId);
         gameCenter.addGameSave(gameId);
       }
 
