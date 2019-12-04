@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+
 /**
  * The data structure for a piece's position to be used by Gson
  *

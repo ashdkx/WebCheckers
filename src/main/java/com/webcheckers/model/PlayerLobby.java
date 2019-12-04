@@ -2,6 +2,7 @@ package com.webcheckers.model;
 
 import java.util.HashMap;
 
+
 /**
  * The controller that stores all players
  *

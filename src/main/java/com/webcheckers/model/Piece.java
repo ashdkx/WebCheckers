@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+
 /**
  * Creates the pieces need to play the game
  *

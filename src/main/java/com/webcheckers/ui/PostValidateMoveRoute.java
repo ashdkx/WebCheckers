@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 
+
 /**
  * The AJax Controller for validating a move.
  *
