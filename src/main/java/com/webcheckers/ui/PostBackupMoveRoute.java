@@ -67,13 +67,16 @@ public class PostBackupMoveRoute implements Route {
         if (board.getActivePieceMoves() == 0) { //Checks to see if there are no pending moves
             board.setActivePiece(null);
             board.getActivePieceEnd(); //pops the activePieceEnd
+            board.setActivePieceCrown(false);
             json = gson.toJson(Message.info("Backup Successful."));
         } else if (board.getActivePieceMoves() < 0 || board.getActivePiece() == null) { //Error checking if player attempts to undo move
             board.setActivePieceMoves(0);
             board.clearActivePieceEnd();
+            board.setActivePieceCrown(false);
             json = gson.toJson(Message.error("Cannot Backup."));
         } else {
             board.getActivePieceEnd();
+            board.checkActivePieceCrown();
             json = gson.toJson(Message.info("Backup Successful."));
         }
         return json;

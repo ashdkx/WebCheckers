@@ -48,6 +48,7 @@ public class GameView {
         this.whitePlayer = whitePlayer;
         this.board = new ArrayList<>();
         initBoard();
+        //bugFix();
         testExtremeCase();
     }
 
@@ -259,6 +260,29 @@ public class GameView {
         redPlayerBoard.get(2).getSpace(1).setPiece(Piece.redSingle);
         redPlayerBoard.get(1).getSpace(2).setPiece(Piece.whiteSingle);
         redPlayerBoard.get(1).getSpace(4).setPiece(Piece.whiteSingle);
+        updateWhitePlayer();
+    }
+
+    private void bugFix(){
+        clearBoard();
+        redPlayerBoard.get(0).getSpace(3).setPiece(Piece.whiteSingle);
+        redPlayerBoard.get(0).getSpace(5).setPiece(Piece.whiteSingle);
+        redPlayerBoard.get(0).getSpace(7).setPiece(Piece.whiteSingle);
+        redPlayerBoard.get(0).getSpace(1).setPiece(Piece.redKing);
+        redPlayerBoard.get(2).getSpace(1).setPiece(Piece.redSingle);
+        redPlayerBoard.get(2).getSpace(3).setPiece(Piece.whiteSingle);
+        redPlayerBoard.get(2).getSpace(5).setPiece(Piece.whiteSingle);
+        redPlayerBoard.get(2).getSpace(7).setPiece(Piece.whiteSingle);
+        redPlayerBoard.get(3).getSpace(6).setPiece(Piece.whiteSingle);
+        redPlayerBoard.get(4).getSpace(7).setPiece(Piece.redSingle);
+        redPlayerBoard.get(5).getSpace(0).setPiece(Piece.redSingle);
+        redPlayerBoard.get(5).getSpace(2).setPiece(Piece.whiteSingle);
+        redPlayerBoard.get(5).getSpace(6).setPiece(Piece.redSingle);
+        redPlayerBoard.get(6).getSpace(3).setPiece(Piece.whiteSingle);
+        redPlayerBoard.get(6).getSpace(7).setPiece(Piece.redSingle);
+        redPlayerBoard.get(7).getSpace(0).setPiece(Piece.redSingle);
+        redPlayerBoard.get(7).getSpace(4).setPiece(Piece.redSingle);
+        redPlayerBoard.get(7).getSpace(6).setPiece(Piece.redSingle);
         updateWhitePlayer();
     }
 }

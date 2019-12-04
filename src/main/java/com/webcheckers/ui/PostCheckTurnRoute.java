@@ -60,6 +60,9 @@ public class PostCheckTurnRoute implements Route {
         Player player = httpSession.attribute(GetHomeRoute.CURRENT_PLAYER);
         GameBoard board = gameCenter.getGame(request.queryParams(GetGameRoute.GAMEID_PARAM));
 
+
+        LOG.finer("Red Player pieces: "+board.getRedPlayerTotalPieces());
+        LOG.finer("White Player pieces: "+board.getWhitePlayerTotalPieces());
         String json;
         if (board.checkGameOver()) { //checks if game should be over
             json = gson.toJson(Message.info("true"));

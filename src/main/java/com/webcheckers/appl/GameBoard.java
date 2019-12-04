@@ -64,12 +64,12 @@ public class GameBoard implements Iterable<Row> {
     /**
      * The total amount of red pieces
      */
-    private int redPlayerTotalPieces = 1;
+    private int redPlayerTotalPieces = 12;
 
     /**
      * The total amount of white pieces
      */
-    private int whitePlayerTotalPieces = 2;
+    private int whitePlayerTotalPieces = 12;
 
     /**
      * The positions of pieces that can be jumped
@@ -652,7 +652,7 @@ public class GameBoard implements Iterable<Row> {
 
         }
 
-        if (piece.getType() == Piece.type.KING || activePieceCrown) { // check to see if the piece being checked is a King type
+        if (piece.getType() == Piece.type.KING || (activePieceCrown&& (row==activePieceStart.getRow()||row==activePieceEnds.peek().getRow())&& (col==activePieceStart.getCell()||col==activePieceEnds.peek().getCell())) ){ // check to see if the piece being checked is a King type
             if (getPiece(playerBoard, row + 1, col + 1) != null) {
                 Piece pieceJump = getPiece(playerBoard, row + 1, col + 1); //get piece at validPos3
                 boolean isCorrectColor = isNotPlayerColor(pieceJump, player); //check if piece at validPos3 is the opponent color
@@ -712,7 +712,7 @@ public class GameBoard implements Iterable<Row> {
             validPos2 = true;
         }
 
-        if (piece.getType() == Piece.type.KING || activePieceCrown) { // check to see if the piece being checked is a King type
+        if (piece.getType() == Piece.type.KING || (activePieceCrown&& (row==activePieceStart.getRow()||row==activePieceEnds.peek().getRow())&& (col==activePieceStart.getCell()||col==activePieceEnds.peek().getCell()))) { // check to see if the piece being checked is a King type
             if (isValidSpace(playerBoard, row + 1, col + 1)) { // check to see if validPos3 is a valid space
                 validPos3 = true;
             }
@@ -851,9 +851,12 @@ public class GameBoard implements Iterable<Row> {
      */
     public void checkActivePieceCrown() {
         for (Position ends : activePieceEnds) {
-            if (ends.getRow() == 0) {
+            if (ends.getRow() == 0&&activePiece.getType()== Piece.type.SINGLE) {
                 activePieceCrown = true;
                 break;
+            }
+            else {
+                activePieceCrown = false;
             }
         }
     }

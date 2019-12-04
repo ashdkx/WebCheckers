@@ -206,7 +206,7 @@ public class PostSubmitTurnRoute implements Route {
             json = submit(board, playerBoard, player, moveStart, moveEnd);
         } else {
             if (board.canJump(player, playerBoard, moveEnd.getRow(), moveEnd.getCell(), board.getActivePiece())) { //handles multiple jump
-                json = gson.toJson(Message.error("Piece is still able to jump."));
+                json = gson.toJson(Message.error("Active piece is still able to jump."));
             } else {
                 while (!board.getPieceRemove().isEmpty()) { //goes through the entire list of pieces to remove
                     int[] positionRemove = board.removePieceRemove();

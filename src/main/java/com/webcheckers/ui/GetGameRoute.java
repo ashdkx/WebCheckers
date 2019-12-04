@@ -117,6 +117,7 @@ public class GetGameRoute implements Route {
         vm.put(MODEOPTIONS_PARAM, gson.toJson(modeOptions)); //converts the modeOptions map into a json
         board.getRedPlayer().setPlaying(false); //sets the red player to not be playing
         board.getWhitePlayer().setPlaying(false); //sets the white player to not be playing
+        gameCenter.removeCurrentGame(gameId);
         gameCenter.addGameSave(gameId);
       }
 
